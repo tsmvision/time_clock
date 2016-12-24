@@ -9,12 +9,12 @@ use App\PunchRecord;
 
 class clockController extends Controller
 {
-    public $today;
+    public $dateTime;
     public $currentTime;
 
     public function __construct()
     {
-        $this->dateTime = Carbon::now();
+        $this->dateTime = Carbon::now()->format('Ymd');
         $this->currentTime = Carbon::now()->format('H:m:s');
     }
 
@@ -31,10 +31,20 @@ class clockController extends Controller
     public function punchNow()
     {
 
+
+
         $user = new PunchRecord;
+
+        $user = PunchRecord::get()->all();
+
+        dd($user);
+
         $user->jjanID = 'namjoong';
         $user->clockTime = $this->dateTime;
+
         $user->save();
+
+        dd('1');
 
         return view('clock.clockMain');
 
