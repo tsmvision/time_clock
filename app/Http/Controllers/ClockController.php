@@ -20,6 +20,7 @@ class clockController extends Controller
 
     public function clock()
     {
+
         return view('clock.clockMain');
     }
 
@@ -33,16 +34,14 @@ class clockController extends Controller
 
         $user = new PunchRecord;
 
-        $user = PunchRecord::first('1');
-
-        dd($user);
-
         $user->jjanID = 'namjoong';
         $user->clockTime = $this->dateTime;
 
         $user->save();
 
+
         return view('clock.clockMain');
+
 
     }
 }

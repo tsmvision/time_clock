@@ -9,6 +9,8 @@ class PunchRecord extends Authenticatable
 {
     use Notifiable;
 
+    protected $table = 'punchRecords';
+
     /**
      * The attributes that are mass assignable.
      *
