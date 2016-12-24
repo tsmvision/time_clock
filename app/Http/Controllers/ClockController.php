@@ -31,11 +31,9 @@ class clockController extends Controller
     public function punchNow()
     {
 
-
-
         $user = new PunchRecord;
 
-        $user = PunchRecord::get()->all();
+        $user = PunchRecord::first('1');
 
         dd($user);
 
@@ -43,8 +41,6 @@ class clockController extends Controller
         $user->clockTime = $this->dateTime;
 
         $user->save();
-
-        dd('1');
 
         return view('clock.clockMain');
 
