@@ -66,6 +66,22 @@ class clockController extends Controller
 
     }
 
+    public function HRHistory(Request $request)
+    {
+
+        $currentUrl = $request->path();
+
+        $history = PunchRecord::get()->all();
+
+
+        return view('history.historyMain')
+            ->with(
+                compact('history','currentUrl')
+            );
+
+
+    }
+
     public function test()
     {
         $test = DB::table('punchRecords as records')

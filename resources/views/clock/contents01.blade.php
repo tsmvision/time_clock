@@ -22,7 +22,7 @@
                 <p><a type="button" class="btn btn-default" href="{{url('/punchNow')}}">Yes, Punch it now</a></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Later</button>
             </div>
         </div>
 
