@@ -40,7 +40,6 @@ class HourController extends Controller
                 , 'users.firstNm'
                 , 'users.lastNm'
                 , 'records.clockTime'
-
             );
 
         if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
@@ -63,11 +62,41 @@ class HourController extends Controller
 
         }
 
+        $a = $list->get();
+
         $list = $list
             ->orderBy('records.clockTime', 'DESC')
             ->orderBy('records.id', 'DESC')
             ->paginate(15);
 
+        $workingHourArray = [];
+        $countPerJJANID = [];
+        $numberOfWorkingHourPairs = [];
+        $year1 = 0;
+        $month1 = 0;
+        $day1 = 0;
+    /*    foreach($a as $a1)
+        {
+            foreach()
+            {
+                //first day: calculating working hours, second day: working hours ........ last day: calculating working Hours
+                //foreach()
+                $year1 = Carbon::parse($a1->clockTime)->format('Y');
+                $month1 = Carbon::parse($a1->clockTime)->format('m');
+                $day1 = Carbon::parse($a1->clockTime)->format('d');
+                $workingHourArray[$a1->jjanID][$a1->clockTime] = $a1->clockTime;
+            }
+        }
+
+        // Calculate the number of
+        foreach($a as $a1)
+        {
+            $countPerJJANID[$a1->jjanID] = collect($workingHourArray[$a1->jjanID])->count();
+           // $numberOfWorkingHourPairs[$a1->jjanID] =
+        }
+*/
+
+        //dd($countPerJJANID);
 
 
 //        $startTime = Carbon::parse($this->start_time);
