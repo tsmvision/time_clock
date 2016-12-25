@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+
+
 @section('mainTabs')
     @include('mainTabs')
 @endsection

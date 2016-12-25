@@ -1,4 +1,9 @@
 <!-- Main component for a primary marketing message or call to action -->
+@if (session('message'))
+    <div class="alert alert-success">
+        {{ session('message') }}
+    </div>
+@endif
 <div class="jumbotron">
     <h3>Current Time is <span id="txt"></span></h3>
 

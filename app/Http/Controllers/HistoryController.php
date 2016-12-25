@@ -31,15 +31,21 @@ class HistoryController extends Controller
         $user->save();
 
 
-        return view('clock.clockMain', compact(
-                                        'dateTime'
-                                        ,'currentUrl'
-                                        )
-        );
+    //    return view('clock.clockMain', compact(
+    //                                    'dateTime'
+    //                                    ,'currentUrl'
+    //                                    )
+    //);
+
+        $request->session()->flash('alert-success', 'Punch is successfully completed.');
+
+         return redirect('clock')->with('message', 'Punch completed successfully!');
+
+
 
     }
 
-    public function read(Request $request)
+    public function display(Request $request)
     {
         $request->flash();
         $currentUrl = $request->path();
@@ -55,7 +61,8 @@ class HistoryController extends Controller
             ->join('users', 'records.jjanID', '=', 'users.jjanID')
             ->distinct()
             ->select(
-                'records.jjanID'
+                'records.id'
+                ,'records.jjanID'
                 , 'users.firstNm'
                 , 'users.lastNm'
                 , 'records.clockTime'
@@ -106,9 +113,15 @@ class HistoryController extends Controller
     }
 
 
-    public function delete()
+    public function delete(Request $request)
     {
+        $request->flash();
 
+
+
+
+
+        return redirect('/display')->with('status', 'aaa is deleted!');
     }
 
 

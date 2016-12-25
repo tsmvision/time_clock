@@ -1,4 +1,5 @@
 <!-- Main component for a primary marketing message or call to action -->
+
 <h2>History</h2>
 <table class="table table-responsive">
     <thead>
@@ -20,11 +21,11 @@
             <td> {{$history1->jjanID}} </td>
             <td> {{$history1->firstNm}} </td>
             <td> {{$history1->lastNm}} </td>
-            <td> {{\Carbon\Carbon::parse($history1->clockTime)->format('H:m:s a')}} </td>
+            <td> {{\Carbon\Carbon::parse($history1->clockTime)->format("h:i:s a")}} </td>
             <td> {{\Carbon\Carbon::parse($history1->clockTime)->format('m/d/Y')}} </td>
             <td>
-                <a type="button" class="btn btn-primary btn-sm" href="#">Modify</a>
-                <a type="button" class="btn btn-danger btn-sm" href="#">Delete</a>
+                <button type="button" class="btn btn-primary btn-sm" href="{{url('/delete')}}" name="{{$history1->id}}" id="{{$history1->id}}" >Modify</button>
+                <button type="button" class="btn btn-danger btn-sm" href="{{url('/modify')}}" name="{{$history1->id}}" id="{{$history1->id}}" >Delete</button>
 
             </td>
         </tr>
