@@ -31,7 +31,7 @@ class HourController extends Controller
         $year = Carbon::now()->format('Y');
         $lastMonth = Carbon::now()->subMonth()->format('m');
 
-        $history = DB::table('punchRecords as records ')
+        $list = DB::table('punchRecords as records ')
             ->join('users', 'records.jjanID', '=', 'users.jjanID')
             ->distinct()
             ->select(
@@ -39,23 +39,23 @@ class HourController extends Controller
                 ,'records.jjanID'
                 , 'users.firstNm'
                 , 'users.lastNm'
-                , DB::raw("SUM(records.clockTime) as workingHours")
+                , 'records.clockTime'
 
             );
 
         if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
-            $history = $history
+            $list = $list
                 ->whereRaw("DAY(records.clockTime) = $day")
                 ->whereRaw("MONTH(records.clockTime) = $month")
                 ->whereRaw("YEAR(records.clockTime) = $year");
 
         } elseif ($getSearchPeriod === 'thisMonth') {
-            $history = $history
+            $list = $list
                 ->whereRaw("MONTH(records.clockTime) = $month")
                 ->whereRaw("YEAR(records.clockTime) = $year");
 
         } elseif ($getSearchPeriod === 'lastMonth') {
-            $history = $history
+            $list = $list
                 ->whereRaw("MONTH(records.clockTime) = $lastMonth")
                 ->whereRaw("YEAR(records.clockTime) = $year");
 
@@ -63,17 +63,21 @@ class HourController extends Controller
 
         }
 
-        $history = $history
+        $list = $list
             ->orderBy('records.clockTime', 'DESC')
             ->orderBy('records.id', 'DESC')
             ->paginate(15);
-        //    ->toArray();
 
-        //dd($history);
+
+
+//        $startTime = Carbon::parse($this->start_time);
+//        $finishTime = Carbon::parse($this->finish_time);
+//        $finishTime->diff($startTime)->format('%H:%i');
+
 
         return view('hours.hourMain')
             ->with(compact(
-                    'history'
+                    'list'
                     , 'currentUrl'
                     , 'getSearchPeriod'
                     , 'getMemberName'

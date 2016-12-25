@@ -5,6 +5,7 @@
     <thead>
     <tr>
         <th>#</th>
+        <th> Period</th>
         <th> JJAN ID</th>
         <th> Firstname</th>
         <th> Lastname</th>
@@ -17,6 +18,7 @@
     @foreach($history as $history1)
         <tr>
             <td> {{$count++}} </td>
+            <td> {{$getSearchPeriod}}</td>
             <td> {{$history1->jjanID}} </td>
             <td> {{$history1->firstNm}} </td>
             <td> {{$history1->lastNm}} </td>
