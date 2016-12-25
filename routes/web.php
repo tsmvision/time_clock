@@ -21,8 +21,8 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('/clock', 'ClockController@clock');
 
-Route::get('/history', 'ClockController@history');
-Route::put('/history', 'ClockController@history');
+Route::get('/history', 'HistoryController@read');
+Route::post('/history', 'HistoryController@read');
 
 Route::get('/checkIfInOut', 'ClockController@checkIfInOut');
 

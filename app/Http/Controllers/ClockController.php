@@ -36,7 +36,6 @@ class clockController extends Controller
     public function punchNow()
     {
 
-
         $user = new PunchRecord;
 
         $user->jjanID = 'namjoong';
@@ -47,58 +46,6 @@ class clockController extends Controller
 
         return view('clock.clockMain', compact('dateTime'));
 
-
-    }
-
-    public function history(Request $request)
-    {
-
-        $request->flash();
-        $currentUrl = $request->path();
-        $getSearchPeriod = $request->getSearchPeriod;
-        $getMemberName = $request->getMemberName;
-
-        $day = Carbon::now()->format('d');
-        $month = Carbon::now()->format('m');
-        $year = Carbon::now()->format('Y');
-
-        $history = DB::table('punchRecords as records ')
-            ->join('users', 'records.jjanID', '=', 'users.jjanID')
-            ->distinct()
-            ->select(
-                'records.jjanID'
-                , 'users.firstNm'
-                , 'users.lastNm'
-                , 'records.clockTime'
-            );
-
-        if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
-            $history = $history
-                ->whereRaw('DAY(records.clockTime)', $day)
-                ->whereRaw('DAY(records.clockTime)', $month)
-                ->whereRaw('DAY(records.clockTime)', $year);
-
-        } elseif ($getSearchPeriod === 'thisWeek') {
-
-        } elseif ($getSearchPeriod === 'thisMonth') {
-
-        } elseif ($getSearchPeriod === 'customPeriod') {
-
-        }
-
-        $history = $history->get();
-        //    ->toArray();
-
-        //dd($history);
-
-        return view('history.historyMain')
-            ->with(compact(
-                    'history'
-                    , 'currentUrl'
-                    , 'getSearchPeriod'
-                    , 'getMemberName'
-                )
-            );
     }
 
     public function HRHistory(Request $request)
@@ -113,8 +60,6 @@ class clockController extends Controller
             ->with(
                 compact('history', 'currentUrl')
             );
-
-
     }
 
     public function test()
