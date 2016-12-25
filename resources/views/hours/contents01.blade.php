@@ -15,13 +15,13 @@
     </thead>
     <?php $count = 1 ?>
     <tbody>
-    @foreach($history as $history1)
+    @foreach($list as $list1)
         <tr>
             <td> {{$count++}} </td>
             <td> {{$getSearchPeriod}}</td>
-            <td> {{$history1->jjanID}} </td>
-            <td> {{$history1->firstNm}} </td>
-            <td> {{$history1->lastNm}} </td>
+            <td> {{$list1->jjanID}} </td>
+            <td> {{$list1->firstNm}} </td>
+            <td> {{$list1->lastNm}} </td>
             <td></td>
 
         </tr>
@@ -30,4 +30,4 @@
     </tbody>
 </table>
 
-{{ $history->links() }}
+{{ $list->links() }}

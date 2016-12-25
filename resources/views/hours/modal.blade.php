@@ -1,5 +1,5 @@
 <!-- Modal -->
-@foreach($history as $history1)
+@foreach($list as $list1)
     <div id="modify" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
