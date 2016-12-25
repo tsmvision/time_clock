@@ -26,4 +26,9 @@ class PunchRecord extends Authenticatable
      * @var array
      */
 
+    public function user()
+    {
+        return $this->belongsTo('App\User','jjanID');
+    }
+
 }

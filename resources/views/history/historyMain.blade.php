@@ -5,5 +5,5 @@
 @endsection
 
 @section('contents01')
-    @include('clock.contents01')
+    @include('history.contents01')
 @endsection

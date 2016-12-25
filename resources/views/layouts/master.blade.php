@@ -34,9 +34,6 @@
                 <a class="navbar-brand" href="#">DCO Clocking-In</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if (Route::has('login'))
                         <li> <a href="{{ url('/login') }}">Login</a> </li>
@@ -49,17 +46,8 @@
     @yield('mainTabs')
 
 
-    <!-- Main component for a primary marketing message or call to action -->
-    <div class="jumbotron">
-        <h3>Current Time is <span id="txt"></span></h3>
+    @yield('contents01')
 
-        <p> Please clock-in and out when you begin and end work; and when leave and return from meal times.
-        </p>
-        <p>
-            <a class="btn btn-lg btn-primary" href="{{url('/punchNow')}}" role="button"> Punch In & Out Now</a>
-        </p>
-    </div>
-    <div id="txt"></div>
 
 </div> <!-- /container -->
 

@@ -20,7 +20,10 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 Route::get('/clock', 'ClockController@clock');
+Route::get('/history', 'ClockController@history');
 
 Route::get('/checkIfInOut', 'ClockController@checkIfInOut');
 
 Route::get('/punchNow', 'ClockController@punchNow');
+
+Route::get('/test', 'ClockController@test');

@@ -14,14 +14,18 @@ class clockController extends Controller
 
     public function __construct()
     {
-        $this->dateTime = Carbon::now()->format('Ymd');
+        $this->dateTime = Carbon::now()->format('Y-m-d H:i:s');
         $this->currentTime = Carbon::now()->format('H:m:s');
     }
 
-    public function clock()
+    public function clock(Request $request)
     {
 
-        return view('clock.clockMain');
+        $currentUrl = $request->path();
+        return view('clock.clockMain')
+                ->with(
+                    compact('currentUrl')
+                );
     }
 
     public function checkIfInOut()
@@ -32,6 +36,7 @@ class clockController extends Controller
     public function punchNow()
     {
 
+
         $user = new PunchRecord;
 
         $user->jjanID = 'namjoong';
@@ -40,8 +45,40 @@ class clockController extends Controller
         $user->save();
 
 
-        return view('clock.clockMain');
+        return view('clock.clockMain',compact('dateTime'));
 
 
+    }
+
+    public function history(Request $request)
+    {
+
+        $currentUrl = $request->path();
+
+        $history = PunchRecord::get()->all();
+
+
+        return view('history.historyMain')
+                ->with(
+                    compact('history','currentUrl')
+                );
+
+
+    }
+
+    public function test()
+    {
+        $test = DB::table('punchRecords as records')
+            ->distinct()
+            ->join('users','records.jjanID','=','users.jjanID')
+            ->select(
+                'records.jjanID'
+            //     ,'users.firstNm'
+            //    ,'users.lastNm'
+            )
+            ->get()
+            ->toArray();
+
+        dd($test);
     }
 }
