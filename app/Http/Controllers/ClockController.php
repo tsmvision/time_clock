@@ -52,8 +52,9 @@ class clockController extends Controller
 
     public function history(Request $request)
     {
-
+        $request->flash();
         $currentUrl = $request->path();
+        $getSearchPeriod = $request->getSearchPeriod;
 
         $history = DB::table('punchRecords as records ')
                     ->join('users','records.jjanID','=','users.jjanID')
@@ -72,7 +73,11 @@ class clockController extends Controller
 
         return view('history.historyMain')
                 ->with(
-                    compact('history','currentUrl')
+                    compact(
+                        'history'
+                        ,'currentUrl'
+                        ,'getSearchPeriod'
+                    )
                 );
 
 

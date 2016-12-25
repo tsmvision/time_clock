@@ -1,8 +1,9 @@
-{{--
+<p></p>
+<p></p>
 <form class='form-inline' method="post" id="centerMembers" name="centermembers"
-      action='#'
+      action='{{url('/history')}}'
       id="centerMembers" name="centerMembers" enctype="multipart/form-data">
-    {{--   <input type="hidden" name="_token" value="{{ csrf_token() }}">
+       <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="form-group">
              <select class="form-control" id="getSearchPeriod" name="getSearchPeriod">
                  <option value="this_month"
@@ -13,11 +14,12 @@
                      Last Month
                  </option>
                  <option value="today" @if ($getSearchPeriod == 'today' ) selected @endif> 2 Months Ago </option>
-                 <option value="yesterday"> 3 Months Ago</option>
+                 <option value="thisWeek"> This Week</option>
+                 <option value="thisMonth"> This Month</option>
                  <option value="custom_period"> Custom Period</option>
              </select>
          </div>
-         <div class="form-group">
+      {{--   <div class="form-group">
              <select class="form-control" id="getIsShow" name="getIsShow">
                  <option value="1" >Active - Default</option>
                  <option value="0" >Inactive</option>
