@@ -5,13 +5,6 @@
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
     <div class="form-group">
-        <select class="form-control" id="getReportType" name="getReportType">
-            <option value="All the History"> Total Hours Daily</option>
-            <option value="TotalHoursOnly"> History In Detail</option>
-        </select>
-    </div>
-
-    <div class="form-group">
         <select class="form-control" id="getSearchPeriod" name="getSearchPeriod">
             <option value="today" @if ($getSearchPeriod === null || $getSearchPeriod === 'today' ) selected @endif> Today</option>
             <option value="thisMonth" @if ($getSearchPeriod === 'thisMonth' ) selected @endif> This Month</option>
