@@ -73,6 +73,10 @@ class HourController extends Controller
         // calculating per jjanID
         // calculating day by day
 
+        foreach()
+        {
+
+        }
 
 
 
