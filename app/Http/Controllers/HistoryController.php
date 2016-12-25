@@ -117,8 +117,7 @@ class HistoryController extends Controller
     {
         $request->flash();
 
-
-
+        dd('delete');
 
 
         return redirect('/display')->with('status', 'aaa is deleted!');
