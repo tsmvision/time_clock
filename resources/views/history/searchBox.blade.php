@@ -5,14 +5,7 @@
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="form-group">
         <select class="form-control" id="getSearchPeriod" name="getSearchPeriod">
-            <option value="this_month"
-                    @if ($getSearchPeriod == null or $getSearchPeriod == '0' or $getSearchPeriod == 'this_month' ) selected @endif>
-                This Month
-            </option>
-            <option value="last_month">
-                Last Month
-            </option>
-            <option value="today" @if ($getSearchPeriod == 'today' ) selected @endif> 2 Months Ago</option>
+            <option value="today" @if ($getSearchPeriod === 'today' ) selected @endif> Today</option>
             <option value="thisWeek"> This Week</option>
             <option value="thisMonth"> This Month</option>
             <option value="customPeriod"> Custom Period</option>
