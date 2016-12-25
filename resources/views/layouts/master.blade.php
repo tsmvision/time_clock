@@ -45,7 +45,8 @@
     </nav>
     @yield('mainTabs')
 
-
+    @yield('searchBox')
+    
     @yield('contents01')
 
 

@@ -55,8 +55,9 @@ class clockController extends Controller
 
         $currentUrl = $request->path();
 
-        $history = PunchRecord::get()->all();
-
+        $history = DB::table('punchRecords as records')
+                    ->join('users', 'records.jjanID','=','users.jjanID')
+                        ->get();
 
         return view('history.historyMain')
                 ->with(
