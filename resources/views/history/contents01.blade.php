@@ -24,9 +24,8 @@
             <td> {{\Carbon\Carbon::parse($history1->clockTime)->format("h:i:s a")}} </td>
             <td> {{\Carbon\Carbon::parse($history1->clockTime)->format('m/d/Y')}} </td>
             <td>
-                <button type="button" class="btn btn-primary btn-sm" href="{{url('/delete')}}" name="{{$history1->id}}" id="{{$history1->id}}" >Modify</button>
-                <button type="button" class="btn btn-danger btn-sm" href="{{url('/modify')}}" name="{{$history1->id}}" id="{{$history1->id}}" >Delete</button>
-
+                <a type='button' class="btn btn-lg btn-primary btn-sm" data-toggle="modal" data-target="#modify" role="button"> Modify</a>
+                <a type='button' class="btn btn-lg btn-primary btn-sm" data-toggle="modal" data-target="#delete" role="button"> Delete</a>
             </td>
         </tr>
     @endforeach
