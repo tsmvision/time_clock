@@ -24,13 +24,13 @@ Route::get('/clock', 'ClockController@clock');
 Route::get('/history', 'HistoryController@display');
 Route::post('/history', 'HistoryController@display');
 
-Route::get('/history/list', 'HistoryController@display');
-Route::post('/history/list', 'HistoryController@display');
-
 Route::post('/history/modify', 'HistoryController@modify');
 
 Route::get('/history/delete/{id}', 'HistoryController@delete');
 Route::post('/history/delete/{id}', 'HistoryController@delete');
+
+Route::get('/hours', 'HourController@display');
+Route::post('/hours', 'HourController@display');
 
 Route::get('/checkIfInOut', 'ClockController@checkIfInOut');
 

@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use DB;
 use App\PunchRecord;
 
-class HistoryController extends Controller
+class HourController extends Controller
 {
     public $dateTime;
     public $currentTime;
@@ -18,32 +18,6 @@ class HistoryController extends Controller
         $this->currentTime = Carbon::now()->format('H:m:s');
     }
 
-    public function punchNow(Request $request)
-    {
-        $request->flash();
-        $currentUrl = $request->path();
-
-        $user = new PunchRecord;
-
-        $user->jjanID = 'namjoong';
-        $user->clockTime = $this->dateTime;
-
-        $user->save();
-
-
-    //    return view('clock.clockMain', compact(
-    //                                    'dateTime'
-    //                                    ,'currentUrl'
-    //                                    )
-    //);
-
-        $request->session()->flash('alert-success', 'Punch is successfully completed.');
-
-         return redirect('clock')->with('message', 'Punch completed successfully!');
-
-
-
-    }
 
     public function display(Request $request)
     {
@@ -65,7 +39,8 @@ class HistoryController extends Controller
                 ,'records.jjanID'
                 , 'users.firstNm'
                 , 'users.lastNm'
-                , 'records.clockTime'
+                , DB::raw("SUM(records.clockTime) as workingHours")
+
             );
 
         if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
@@ -96,7 +71,7 @@ class HistoryController extends Controller
 
         //dd($history);
 
-        return view('history.historyMain')
+        return view('hours.hourMain')
             ->with(compact(
                     'history'
                     , 'currentUrl'

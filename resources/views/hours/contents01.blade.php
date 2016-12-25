@@ -8,9 +8,8 @@
         <th> JJAN ID</th>
         <th> Firstname</th>
         <th> Lastname</th>
-        <th> Date </th>
-        <th> Time</th>
-        <th></th>
+        <th> Working Hours </th>
+
     </tr>
     </thead>
     <?php $count = 1 ?>
@@ -21,12 +20,8 @@
             <td> {{$history1->jjanID}} </td>
             <td> {{$history1->firstNm}} </td>
             <td> {{$history1->lastNm}} </td>
-            <td> {{\Carbon\Carbon::parse($history1->clockTime)->format("h:i:s a")}} </td>
-            <td> {{\Carbon\Carbon::parse($history1->clockTime)->format('m/d/Y')}} </td>
-            <td>
-                <a type='button' class="btn btn-lg btn-primary btn-sm" data-toggle="modal" data-target="#modify" role="button"> Modify</a>
-                <a type='button' class="btn btn-lg btn-danger btn-sm" data-toggle="modal" data-target="#delete" role="button"> Delete</a>
-            </td>
+            <td></td>
+
         </tr>
     @endforeach
 
