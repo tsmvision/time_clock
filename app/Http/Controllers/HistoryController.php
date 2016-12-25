@@ -9,15 +9,32 @@ use App\PunchRecord;
 
 class HistoryController extends Controller
 {
+    public $dateTime;
+    public $currentTime;
 
-    public function create()
+    public function __construct()
     {
+        $this->dateTime = Carbon::now()->format('Y-m-d H:i:s');
+        $this->currentTime = Carbon::now()->format('H:m:s');
+    }
+
+    public function punchNow()
+    {
+
+        $user = new PunchRecord;
+
+        $user->jjanID = 'namjoong';
+        $user->clockTime = $this->dateTime;
+
+        $user->save();
+
+
+        return view('clock.clockMain', compact('dateTime'));
 
     }
 
     public function read(Request $request)
     {
-
         $request->flash();
         $currentUrl = $request->path();
         $getSearchPeriod = $request->input('getSearchPeriod');

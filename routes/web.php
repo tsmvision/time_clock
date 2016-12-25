@@ -26,6 +26,6 @@ Route::post('/history', 'HistoryController@read');
 
 Route::get('/checkIfInOut', 'ClockController@checkIfInOut');
 
-Route::get('/punchNow', 'ClockController@punchNow');
+Route::get('/punchNow', 'HistoryController@punchNow');
 
 Route::get('/test', 'ClockController@test');

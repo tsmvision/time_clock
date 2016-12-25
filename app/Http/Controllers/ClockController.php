@@ -33,20 +33,7 @@ class clockController extends Controller
         dd($this->today->format('m/d/Y'), $this->currentTime);
     }
 
-    public function punchNow()
-    {
 
-        $user = new PunchRecord;
-
-        $user->jjanID = 'namjoong';
-        $user->clockTime = $this->dateTime;
-
-        $user->save();
-
-
-        return view('clock.clockMain', compact('dateTime'));
-
-    }
 
     public function HRHistory(Request $request)
     {
