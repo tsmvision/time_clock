@@ -13,7 +13,3 @@
 @endsection
 
 @include('history.modal')
-
-
-
-
