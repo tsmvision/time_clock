@@ -18,7 +18,7 @@
     @foreach($list as $list1)
         <tr>
             <td> {{$count++}} </td>
-            <td> {{$getSearchPeriod}}</td>
+            <td> @if ($getSearchPeriod == null) {{$getSearchPeriod}} @else {{$getSearchPeriod}} @endif</td>
             <td> {{$list1->jjanID}} </td>
             <td> {{$list1->firstNm}} </td>
             <td> {{$list1->lastNm}} </td>

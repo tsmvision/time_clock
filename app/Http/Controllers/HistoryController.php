@@ -96,6 +96,12 @@ class HistoryController extends Controller
 
         //dd($history);
 
+        if ($getSearchPeriod === null )
+        {
+            $getSearchPeriod = 'today';
+        }
+
+
         return view('history.historyMain')
             ->with(compact(
                     'history'
