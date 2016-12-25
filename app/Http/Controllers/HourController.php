@@ -69,6 +69,13 @@ class HourController extends Controller
             ->orderBy('records.id', 'DESC')
             ->paginate(15);
 
+        // get the first day and last day.
+        // calculating per jjanID
+        // calculating day by day
+
+
+
+
         $workingHourArray = [];
         $countPerJJANID = [];
         $numberOfWorkingHourPairs = [];
