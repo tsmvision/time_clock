@@ -18,8 +18,10 @@ class HistoryController extends Controller
         $this->currentTime = Carbon::now()->format('H:m:s');
     }
 
-    public function punchNow()
+    public function punchNow(Request $request)
     {
+        $request->flash();
+        $currentUrl = $request->path();
 
         $user = new PunchRecord;
 
@@ -29,7 +31,11 @@ class HistoryController extends Controller
         $user->save();
 
 
-        return view('clock.clockMain', compact('dateTime'));
+        return view('clock.clockMain', compact(
+                                        'dateTime'
+                                        ,'currentUrl'
+                                        )
+        );
 
     }
 
