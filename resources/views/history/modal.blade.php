@@ -36,8 +36,8 @@
                 </div>
                 <div class="modal-body">
                     <p>
-                    <h4>{{\Carbon\Carbon::parse($history1->clockTime)->format("h:i:s a")}}
-                        {{\Carbon\Carbon::parse($history1->clockTime)->format('m/d/Y')}}</h4>
+                    <h4>{{\Carbon\Carbon::parse($history1->punchTime)->format("h:i:s a")}}
+                        {{\Carbon\Carbon::parse($history1->punchTime)->format('m/d/Y')}}</h4>
                     </p>
                 </div>
                 <div class="modal-footer">

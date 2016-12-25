@@ -58,7 +58,7 @@ class clockController extends Controller
                 'records.jjanID'
                 , 'users.firstNm'
                 , 'users.lastNm'
-                , 'records.clockTime'
+                , 'records.punchTime'
             )
             ->get()
             ->toArray();

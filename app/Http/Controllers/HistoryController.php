@@ -18,7 +18,7 @@ class HistoryController extends Controller
         $this->currentTime = Carbon::now()->format('H:m:s');
     }
 
-    public function punchNow(Request $request)
+    public function punchNow(Request $request, $punchType)
     {
         $request->flash();
         $currentUrl = $request->path();
@@ -26,7 +26,8 @@ class HistoryController extends Controller
         $user = new PunchRecord;
 
         $user->jjanID = 'namjoong';
-        $user->clockTime = $this->dateTime;
+        $user->punchTime = $this->dateTime;
+        $user->punchType = $punchType;
 
         $user->save();
 
@@ -65,31 +66,33 @@ class HistoryController extends Controller
                 ,'records.jjanID'
                 , 'users.firstNm'
                 , 'users.lastNm'
-                , 'records.clockTime'
+                , 'records.punchTime'
             );
+
+       // dd($history->get()->all());
 
         if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
             $history = $history
-                ->whereRaw("DAY(records.clockTime) = $day")
-                ->whereRaw("MONTH(records.clockTime) = $month")
-                ->whereRaw("YEAR(records.clockTime) = $year");
+                ->whereRaw("DAY(records.punchTime) = $day")
+                ->whereRaw("MONTH(records.punchTime) = $month")
+                ->whereRaw("YEAR(records.punchTime) = $year");
 
         } elseif ($getSearchPeriod === 'thisMonth') {
             $history = $history
-                ->whereRaw("MONTH(records.clockTime) = $month")
-                ->whereRaw("YEAR(records.clockTime) = $year");
+                ->whereRaw("MONTH(records.punchTime) = $month")
+                ->whereRaw("YEAR(records.punchTime) = $year");
 
         } elseif ($getSearchPeriod === 'lastMonth') {
             $history = $history
-                ->whereRaw("MONTH(records.clockTime) = $lastMonth")
-                ->whereRaw("YEAR(records.clockTime) = $year");
+                ->whereRaw("MONTH(records.punchTime) = $lastMonth")
+                ->whereRaw("YEAR(records.punchTime) = $year");
 
         } elseif ($getSearchPeriod === 'customPeriod') {
 
         }
 
         $history = $history
-            ->orderBy('records.clockTime', 'DESC')
+            ->orderBy('records.punchTime', 'DESC')
             ->orderBy('records.id', 'DESC')
             ->paginate(15);
         //    ->toArray();

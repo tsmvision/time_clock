@@ -39,24 +39,24 @@ class HourController extends Controller
                 ,'records.jjanID'
                 , 'users.firstNm'
                 , 'users.lastNm'
-                , 'records.clockTime'
+                , 'records.punchTime'
             );
 
         if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
             $list = $list
-                ->whereRaw("DAY(records.clockTime) = $day")
-                ->whereRaw("MONTH(records.clockTime) = $month")
-                ->whereRaw("YEAR(records.clockTime) = $year");
+                ->whereRaw("DAY(records.punchTime) = $day")
+                ->whereRaw("MONTH(records.punchTime) = $month")
+                ->whereRaw("YEAR(records.punchTime) = $year");
 
         } elseif ($getSearchPeriod === 'thisMonth') {
             $list = $list
-                ->whereRaw("MONTH(records.clockTime) = $month")
-                ->whereRaw("YEAR(records.clockTime) = $year");
+                ->whereRaw("MONTH(records.punchTime) = $month")
+                ->whereRaw("YEAR(records.punchTime) = $year");
 
         } elseif ($getSearchPeriod === 'lastMonth') {
             $list = $list
-                ->whereRaw("MONTH(records.clockTime) = $lastMonth")
-                ->whereRaw("YEAR(records.clockTime) = $year");
+                ->whereRaw("MONTH(records.punchTime) = $lastMonth")
+                ->whereRaw("YEAR(records.punchTime) = $year");
 
         } elseif ($getSearchPeriod === 'customPeriod') {
 
@@ -65,7 +65,7 @@ class HourController extends Controller
         $a = $list->get();
 
         $list = $list
-            ->orderBy('records.clockTime', 'DESC')
+            ->orderBy('records.punchTime', 'DESC')
             ->orderBy('records.id', 'DESC')
             ->paginate(15);
 
@@ -73,12 +73,10 @@ class HourController extends Controller
         // calculating per jjanID
         // calculating day by day
 
-        foreach()
-        {
-
-        }
-
-
+       // foreach()
+       // {
+//
+  //      }
 
         $workingHourArray = [];
         $countPerJJANID = [];
@@ -92,10 +90,10 @@ class HourController extends Controller
             {
                 //first day: calculating working hours, second day: working hours ........ last day: calculating working Hours
                 //foreach()
-                $year1 = Carbon::parse($a1->clockTime)->format('Y');
-                $month1 = Carbon::parse($a1->clockTime)->format('m');
-                $day1 = Carbon::parse($a1->clockTime)->format('d');
-                $workingHourArray[$a1->jjanID][$a1->clockTime] = $a1->clockTime;
+                $year1 = Carbon::parse($a1->punchTime)->format('Y');
+                $month1 = Carbon::parse($a1->punchTime)->format('m');
+                $day1 = Carbon::parse($a1->punchTime)->format('d');
+                $workingHourArray[$a1->jjanID][$a1->punchTime] = $a1->punchTime;
             }
         }
 
@@ -113,6 +111,37 @@ class HourController extends Controller
 //        $startTime = Carbon::parse($this->start_time);
 //        $finishTime = Carbon::parse($this->finish_time);
 //        $finishTime->diff($startTime)->format('%H:%i');
+
+        $userList = DB::table('users')
+                        ->select('jjanID')
+                        ->get()
+                        ;
+        $punchRecords = DB::table('punchRecords')
+                            ->select('jjanID','punchTime')
+                            ->get()
+                            ;
+
+        $array = [];
+        foreach ($userList as $userList1)
+        {
+            foreach ($punchRecords as $punchRecords1)
+            {
+                if ($userList1->jjanID === $punchRecords1->jjanID)
+                {
+                    $year = Carbon::parse($punchRecords1->punchTime)->format('Y');
+                    $month = Carbon::parse($punchRecords1->punchTime)->format('m');
+                    $day = Carbon::parse($punchRecords1->punchTime)->format('d');
+                    $time = Carbon::parse($punchRecords1->punchTime)->format('H:i');
+
+                    $array[$userList1->jjanID][$year][$month][$day][] =  $time;
+
+                }
+            }
+        }
+
+        dd($array);
+
+
 
 
         return view('hours.hourMain')
