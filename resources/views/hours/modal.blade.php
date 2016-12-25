@@ -12,7 +12,7 @@
                 <div class="modal-body">
                     <p>
                         <button type="button" class="btn btn-danger" href="{{url('history/update')}}"
-                                name="updateID" id="updateID" value="{{$history1->id}}">Proceed to update
+                                name="updateID" id="updateID" value="{{$list1->id}}">Proceed to update
                         </button>
                     </p>
                 </div>
@@ -36,12 +36,12 @@
                 </div>
                 <div class="modal-body">
                     <p>
-                    <h4>{{\Carbon\Carbon::parse($history1->clockTime)->format("h:i:s a")}}
-                        {{\Carbon\Carbon::parse($history1->clockTime)->format('m/d/Y')}}</h4>
+                    <h4>{{\Carbon\Carbon::parse($list1->clockTime)->format("h:i:s a")}}
+                        {{\Carbon\Carbon::parse($list1->clockTime)->format('m/d/Y')}}</h4>
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="btn btn-danger" href="{{url('history/delete')}}/{{$history1->id}}">Yes,
+                    <a type="button" class="btn btn-danger" href="{{url('history/delete')}}/{{$list1->id}}">Yes,
                         Proceed to delete this</a>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
