@@ -55,9 +55,20 @@ class clockController extends Controller
 
         $currentUrl = $request->path();
 
-        $history = DB::table('punchRecords as records')
-                    ->join('users', 'records.jjanID','=','users.jjanID')
-                        ->get();
+        $history = DB::table('punchRecords as records ')
+                    ->join('users','records.jjanID','=','users.jjanID')
+            ->distinct()
+            ->select(
+                'records.jjanID'
+                ,'users.firstNm'
+                ,'users.lastNm'
+                ,'records.clockTime'
+            )
+            ->get()
+            ;
+        //    ->toArray();
+
+        //dd($history);
 
         return view('history.historyMain')
                 ->with(
@@ -90,8 +101,9 @@ class clockController extends Controller
             ->join('users','records.jjanID','=','users.jjanID')
             ->select(
                 'records.jjanID'
-            //     ,'users.firstNm'
-            //    ,'users.lastNm'
+                 ,'users.firstNm'
+                ,'users.lastNm'
+                ,'records.clockTime'
             )
             ->get()
             ->toArray();
