@@ -15,7 +15,7 @@
             <option value="today" @if ($getSearchPeriod == 'today' ) selected @endif> 2 Months Ago</option>
             <option value="thisWeek"> This Week</option>
             <option value="thisMonth"> This Month</option>
-            <option value="custom_period"> Custom Period</option>
+            <option value="customPeriod"> Custom Period</option>
         </select>
     </div>
 
