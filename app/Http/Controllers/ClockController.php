@@ -55,6 +55,7 @@ class clockController extends Controller
         $request->flash();
         $currentUrl = $request->path();
         $getSearchPeriod = $request->getSearchPeriod;
+        $getMemberName = $request->getMemberName;
 
         $history = DB::table('punchRecords as records ')
                     ->join('users','records.jjanID','=','users.jjanID')
