@@ -45,6 +45,8 @@
     </nav>
     @yield('mainTabs')
 
+    @yield('message')
+
     @yield('searchBox')
     
     @yield('contents01')

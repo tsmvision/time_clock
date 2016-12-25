@@ -28,7 +28,9 @@ Route::get('/history/list', 'HistoryController@display');
 Route::post('/history/list', 'HistoryController@display');
 
 Route::post('/history/modify', 'HistoryController@modify');
-Route::post('/history/delete', 'HistoryController@delete');
+
+Route::get('/history/delete/{id}', 'HistoryController@delete');
+Route::post('/history/delete/{id}', 'HistoryController@delete');
 
 Route::get('/checkIfInOut', 'ClockController@checkIfInOut');
 

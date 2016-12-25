@@ -35,9 +35,8 @@
                 </div>
                 <div class="modal-body">
                     <p>
-                    <form method="get" action="{{url('history/delete')}}">
-                        <button type="submit" class="btn btn-danger" name="deleteID" id="deleteID" value="{{$history1->id}}">Yes, Proceed to delete this</button>
-                    </form>
+                        <a type="button" class="btn btn-danger" href="{{url('history/delete')}}/{{$history1->id}}">Yes,
+                            Proceed to delete this</a>
                     </p>
                 </div>
                 <div class="modal-footer">

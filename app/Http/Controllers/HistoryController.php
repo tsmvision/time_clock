@@ -107,20 +107,21 @@ class HistoryController extends Controller
 
     }
 
-    public function update()
+    public function update($id)
     {
 
     }
 
 
-    public function delete(Request $request)
+    public function delete($id)
     {
-        $request->flash();
 
-        dd('delete');
+        $punchRecord = PunchRecord::find($id);
+
+        $punchRecord->delete();
 
 
-        return redirect('/display')->with('status', 'aaa is deleted!');
+        return redirect('/history/list')->with('message', 'deleted!');
     }
 
 

@@ -4,6 +4,10 @@
     @include('mainTabs')
 @endsection
 
+@section('message')
+    @include('history.message')
+@endsection
+
 @section('searchBox')
     @include('history.searchBox')
 @endsection
