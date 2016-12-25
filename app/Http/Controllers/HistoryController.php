@@ -127,7 +127,7 @@ class HistoryController extends Controller
         $punchRecord->delete();
 
 
-        return redirect('/history/list')->with('message', 'deleted!');
+        return redirect('/history')->with('message', 'deleted!');
     }
 
 
