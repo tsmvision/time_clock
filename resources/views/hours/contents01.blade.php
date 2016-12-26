@@ -30,4 +30,4 @@
     </tbody>
 </table>
 
-{{ $list->links() }}
+{{-- $list->links() --}}

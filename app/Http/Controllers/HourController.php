@@ -33,6 +33,8 @@ class HourController extends Controller
         $startingDate = 0;
         $endingDate = 0;
 
+
+
         $list = DB::table('punchRecords as records ')
             ->join('users', 'records.jjanID', '=', 'users.jjanID')
             ->distinct()
@@ -45,6 +47,8 @@ class HourController extends Controller
                 , 'records.punchType'
                 , 'records.punchTypePairNo'
             );
+
+
 
        // dd($list->get()->toArray());
 
@@ -70,12 +74,12 @@ class HourController extends Controller
 
         }
 
-        $a = $list->get();
+      //  $a = $list->get();
 
-        $list = $list
-            ->orderBy('records.punchTime', 'DESC')
-            ->orderBy('records.id', 'DESC')
-            ->paginate(15);
+      //  $list = $list
+      //      ->orderBy('records.punchTime', 'DESC')
+      //      ->orderBy('records.id', 'DESC')
+      //      ->paginate(15);
 
         // get the first day and last day.
         // calculating per jjanID
@@ -146,7 +150,57 @@ class HourController extends Controller
             }
 
 
-        dd($array);
+       // dd($array);
+
+        // today calculation
+
+        $today = DB::table('punchRecords')
+                        ->where('jjanID','namjoong')
+                        ->where('')
+                        ->select(
+                            'jjanID'
+                            ,'punchTime'
+                            ,'punchType'
+                            ,'punchTypePairNo'
+                        )
+                        ->get()
+                        ;
+         $aaa = [];
+        foreach ($today as $today1)
+        {
+            $year = Carbon::parse($today1->punchTime)->format('Y');
+            $month = Carbon::parse($today1->punchTime)->format('m');
+            $day = Carbon::parse($today1->punchTime)->format('d');
+            $time = Carbon::parse($today1->punchTime)->format('H:i');
+
+            $aaa[$today1->jjanID][$year][$month][$day] = 0;
+
+            $aaa[$today1->jjanID][$year][$month][$day] = [
+                                                            $today1->punchType
+                                                            ,$today1->punchTypePairNo
+            ];
+
+
+        }
+
+
+
+            dd($today->toArray());
+
+
+
+
+
+
+
+        $list = DB::table('users')
+            ->select(
+                'users.jjanID'
+                ,'users.firstNm'
+                ,'users.lastNm'
+            );
+
+        $list = $list->get();
 
         return view('hours.hourMain')
             ->with(compact(

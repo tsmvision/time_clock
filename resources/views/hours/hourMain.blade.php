@@ -16,4 +16,4 @@
     @include('hours.contents01')
 @endsection
 
-@include('hours.modal')
+{{--@include('hours.modal')--}}
