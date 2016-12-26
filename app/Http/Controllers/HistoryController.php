@@ -91,7 +91,7 @@ class HistoryController extends Controller
             // when end Work, insert 1 to punchTypePairNo that means start work and end work using same pair No.
         } elseif ($punchType === '2') {
 
-            if ($numberOfPreviousStartMealBreakToday === 0) {
+            if ($numberOfPreviousStartWorkToday === 0) {
                 return redirect('clock')->with('message1', 'Start Work not registered yet');
             }
 
@@ -100,15 +100,17 @@ class HistoryController extends Controller
             // when 'start meal break', if not existing meal history then insert 2 else 3. ???
         } elseif ($punchType === '3') {
 
-            if ($numberOfPreviousStartMealBreakToday === 0) {
+            if ($numberOfPreviousStartWorkToday === 0) {
                 return redirect('clock')->with('message1', 'Start Work not registered yet');
+            }elseif ($numberOfPreviousEndWorkToday === 1) {
+                return redirect('clock')->with('message1', 'End Work registered already');
             }
 
             //when number of start meal and end meal doesn't matched then get error.
             elseif ($numberOfPreviousStartMealBreakToday !== $numberOfPreviousEndMealBreakToday) {
                 return redirect('clock')->with('message1', 'No End Meal registered yet');
 
-            } elseif ($numberOfPreviousStartMealBreakToday = 2) {
+            } elseif ($numberOfPreviousStartMealBreakToday === 2) {
                 return redirect('clock')->with('message1', 'No More Meal Break Registration available');
             }
 
@@ -116,10 +118,12 @@ class HistoryController extends Controller
 
         } elseif ($punchType === '4') {
 
-            if ($numberOfPreviousStartMealBreakToday === 0) {
+            if ($numberOfPreviousStartWorkToday === 0) {
                 return redirect('clock')->with('message1', 'Start Work not registered yet');
 
-            } elseif ($numberOfPreviousStartMealBreakToday === $numberOfPreviousEndMealBreakToday) {
+            }elseif ($numberOfPreviousEndWorkToday === 1) {
+                return redirect('clock')->with('message1', 'End Work registered already');
+            }elseif ($numberOfPreviousStartMealBreakToday === $numberOfPreviousEndMealBreakToday) {
                 return redirect('clock')->with('message1', 'Start Meal not registered yet');
             } else {
                 $user->punchTypePairNo = $numberOfPreviousStartMealBreakToday + 2;
