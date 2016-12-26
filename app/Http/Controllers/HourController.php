@@ -31,6 +31,9 @@ class HourController extends Controller
         $year = Carbon::now()->format('Y');
         $lastMonth = Carbon::now()->subMonth()->format('m');
 
+        $startingDate = 0;
+        $endingDate = 0;
+
         $list = DB::table('punchRecords as records ')
             ->join('users', 'records.jjanID', '=', 'users.jjanID')
             ->distinct()
@@ -47,6 +50,8 @@ class HourController extends Controller
                 ->whereRaw("DAY(records.punchTime) = $day")
                 ->whereRaw("MONTH(records.punchTime) = $month")
                 ->whereRaw("YEAR(records.punchTime) = $year");
+
+
 
         } elseif ($getSearchPeriod === 'thisMonth') {
             $list = $list
@@ -112,21 +117,20 @@ class HourController extends Controller
 //        $finishTime = Carbon::parse($this->finish_time);
 //        $finishTime->diff($startTime)->format('%H:%i');
 
-        $userList = DB::table('users')
-                        ->select('jjanID')
-                        ->get()
-                        ;
+
         $punchRecords = DB::table('punchRecords')
-                            ->select('jjanID','punchTime')
+                            ->select('jjanID','punchTime','punchType')
                             ->get()
                             ;
 
         $array = [];
-        foreach ($userList as $userList1)
-        {
+        $startingDate = 0;
+        $endingDate = 0;
+
+
+
             foreach ($punchRecords as $punchRecords1)
             {
-                if ($userList1->jjanID === $punchRecords1->jjanID)
                 {
                     $year = Carbon::parse($punchRecords1->punchTime)->format('Y');
                     $month = Carbon::parse($punchRecords1->punchTime)->format('m');
@@ -137,7 +141,7 @@ class HourController extends Controller
 
                 }
             }
-        }
+
 
         dd($array);
 

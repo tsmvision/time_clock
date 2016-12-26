@@ -11,11 +11,19 @@ class HistoryController extends Controller
 {
     public $dateTime;
     public $currentTime;
+    public $punchType;
 
     public function __construct()
     {
         $this->dateTime = Carbon::now()->format('Y-m-d H:i:s');
         $this->currentTime = Carbon::now()->format('H:m:s');
+        $this->punchType = [
+            0 => 'N/A'
+            , 1 => 'Start Work'
+            , 2 => 'End Work'
+            , 3 => 'Start Meal Break'
+            , 4 => 'End Meal Break'
+        ];
     }
 
     public function punchNow(Request $request, $punchType)
@@ -23,25 +31,109 @@ class HistoryController extends Controller
         $request->flash();
         $currentUrl = $request->path();
 
-        $user = new PunchRecord;
+        $year = Carbon::now()->format('Y');
+        $month = Carbon::now()->format('m');
+        $day = Carbon::now()->format('d');
 
+        $numberOfPreviousStartWorkToday = PunchRecord::whereRaw("YEAR(punchTime) = $year")
+            ->whereRaw("MONTH(punchTime) = $month")
+            ->whereRaw("DAY(punchTime) = $day")
+            ->where('punchType', 1)
+            ->where('jjanID', 'namjoong')
+            ->select('id')
+            ->get()
+            ->count();
+
+        $numberOfPreviousEndWorkToday = PunchRecord::whereRaw("YEAR(punchTime) = $year")
+            ->whereRaw("MONTH(punchTime) = $month")
+            ->whereRaw("DAY(punchTime) = $day")
+            ->where('punchType', 2)
+            ->where('jjanID', 'namjoong')
+            ->select('id')
+            ->get()
+            ->count();
+
+        $numberOfPreviousStartMealBreakToday = PunchRecord::whereRaw("YEAR(punchTime) = $year")
+            ->whereRaw("MONTH(punchTime) = $month")
+            ->whereRaw("DAY(punchTime) = $day")
+            ->where('punchType', 3)
+            //->where('punchTypePairNo',2)
+            ->where('jjanID', 'namjoong')
+            ->select('id')
+            ->get()
+            ->count();
+
+        $numberOfPreviousEndMealBreakToday = PunchRecord::whereRaw("YEAR(punchTime) = $year")
+            ->whereRaw("MONTH(punchTime) = $month")
+            ->whereRaw("DAY(punchTime) = $day")
+            ->where('punchType', 4)
+            // ->where('punchTypePairNo', 2)
+            ->where('jjanID', 'namjoong')
+            ->select('id')
+            ->get()
+            ->count();
+
+        // dd($numberOfPreviousStartWorkToday, $numberOfPreviousEndWorkToday, $numberOfPreviousStartMealBreakToday, $numberOfPreviousEndMealBreakToday);
+
+        $user = new PunchRecord;
         $user->jjanID = 'namjoong';
+
+        // when start work, insert 0 to punchTypePairNo
+        if ($punchType === '1') {
+
+            // if start work is already registered today, then got error.
+            if ($numberOfPreviousStartWorkToday !== 0) {
+                return redirect('clock')->with('message1', 'Duplicated Start Work');
+            }
+
+            $user->punchTypePairNo = 1;
+
+            // when end Work, insert 1 to punchTypePairNo that means start work and end work using same pair No.
+        } elseif ($punchType === '2') {
+
+            if ($numberOfPreviousStartMealBreakToday === 0) {
+                return redirect('clock')->with('message1', 'Start Work not registered yet');
+            }
+
+            $user->punchTypePairNo = 1;
+
+            // when 'start meal break', if not existing meal history then insert 2 else 3. ???
+        } elseif ($punchType === '3') {
+
+            if ($numberOfPreviousStartMealBreakToday === 0) {
+                return redirect('clock')->with('message1', 'Start Work not registered yet');
+            }
+
+            //when number of start meal and end meal doesn't matched then get error.
+            elseif ($numberOfPreviousStartMealBreakToday !== $numberOfPreviousEndMealBreakToday) {
+                return redirect('clock')->with('message1', 'No End Meal registered yet');
+
+            } elseif ($numberOfPreviousStartMealBreakToday = 2) {
+                return redirect('clock')->with('message1', 'No More Meal Break Registration available');
+            }
+
+            $user->punchTypePairNo = $numberOfPreviousStartMealBreakToday + 2;
+
+        } elseif ($punchType === '4') {
+
+            if ($numberOfPreviousStartMealBreakToday === 0) {
+                return redirect('clock')->with('message1', 'Start Work not registered yet');
+
+            } elseif ($numberOfPreviousStartMealBreakToday === $numberOfPreviousEndMealBreakToday) {
+                return redirect('clock')->with('message1', 'Start Meal not registered yet');
+            } else {
+                $user->punchTypePairNo = $numberOfPreviousStartMealBreakToday + 2;
+            }
+        }
+
         $user->punchTime = $this->dateTime;
         $user->punchType = $punchType;
 
         $user->save();
 
-
-    //    return view('clock.clockMain', compact(
-    //                                    'dateTime'
-    //                                    ,'currentUrl'
-    //                                    )
-    //);
-
         $request->session()->flash('alert-success', 'Punch is successfully completed.');
 
-         return redirect('clock')->with('message', 'Punch completed successfully!');
-
+        return redirect('clock')->with('message', 'Punch completed successfully!');
 
 
     }
@@ -58,18 +150,21 @@ class HistoryController extends Controller
         $year = Carbon::now()->format('Y');
         $lastMonth = Carbon::now()->subMonth()->format('m');
 
+        $punchType = $this->punchType;
+
         $history = DB::table('punchRecords as records ')
             ->join('users', 'records.jjanID', '=', 'users.jjanID')
             ->distinct()
             ->select(
                 'records.id'
-                ,'records.jjanID'
+                , 'records.jjanID'
                 , 'users.firstNm'
                 , 'users.lastNm'
                 , 'records.punchTime'
+                , 'records.punchType'
             );
 
-       // dd($history->get()->all());
+        // dd($history->get()->all());
 
         if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
             $history = $history
@@ -99,8 +194,7 @@ class HistoryController extends Controller
 
         //dd($history);
 
-        if ($getSearchPeriod === null )
-        {
+        if ($getSearchPeriod === null) {
             $getSearchPeriod = 'today';
         }
 
@@ -111,6 +205,7 @@ class HistoryController extends Controller
                     , 'currentUrl'
                     , 'getSearchPeriod'
                     , 'getMemberName'
+                    , 'punchType'
                 )
             );
 

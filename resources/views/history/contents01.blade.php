@@ -10,6 +10,7 @@
         <th> Lastname</th>
         <th> Date </th>
         <th> Time</th>
+        <th> Punch Type</th>
         <th></th>
     </tr>
     </thead>
@@ -23,6 +24,7 @@
             <td> {{$history1->lastNm}} </td>
             <td> {{\Carbon\Carbon::parse($history1->punchTime)->format("h:i:s a")}} </td>
             <td> {{\Carbon\Carbon::parse($history1->punchTime)->format('m/d/Y')}} </td>
+            <td> {{$punchType[$history1->punchType]}}</td>
             <td>
                 <a type='button' class="btn btn-lg btn-primary btn-sm" data-toggle="modal" data-target="#modify" role="button"> Modify</a>
                 <a type='button' class="btn btn-lg btn-danger btn-sm" data-toggle="modal" data-target="#delete" role="button"> Delete</a>

@@ -63,6 +63,11 @@ class clockController extends Controller
             ->get()
             ->toArray();
 
-        dd($test);
+        $test = DB::table('punchRecords as records')
+            ->select(DB::raw('CURTIME()'))
+            ->get()
+        ;
+        dd($test->all());
+
     }
 }

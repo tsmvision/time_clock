@@ -14,7 +14,7 @@ class ModifyPunchRecordsTable extends Migration
     public function up()
     {
         Schema::table('punchRecords', function ($table) {
-            $table->tinyInteger('punchType');
+            $table->tinyInteger('punchTypePairNo');
         });
 
     }
