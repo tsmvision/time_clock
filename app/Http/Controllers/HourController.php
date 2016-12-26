@@ -174,7 +174,7 @@ class HourController extends Controller
 
         $startWork = $today->where('punchType',1);
 
-        $workingHours = [];
+        $workingHours[] = [];
 
         foreach ($startWork as $startWork1)
         {
@@ -188,36 +188,41 @@ class HourController extends Controller
           $workingHours['endWork'] = $endWork1->punchTime;
         }
 
-        $startMealBreak = $today->where('punchType',3)
+        $startMealBreak01 = $today->where('punchType',3)
                                 ->where('punchTypePairNo',1);
 
-        foreach ($startMealBreak as $startMealBreak1)
+        foreach ($startMealBreak01 as $startMealBreak1)
         {
             $workingHours['startBreak01'] = $startMealBreak1->punchTime;
         }
 
-        $endMealBreak = $today->where('punchType',4)
+        $endMealBreak01 = $today->where('punchType',4)
             ->where('punchTypePairNo',1);
 
-        foreach ($endMealBreak as $endMealBreak1)
+        foreach ($endMealBreak01 as $endMealBreak1)
         {
             $workingHours['endBreak01'] = $endMealBreak1->punchTime;
+        }
+
+        $startMealBreak02 = $today->where('punchType',3)
+            ->where('punchTypePairNo',2);
+
+        foreach ($startMealBreak02 as $startMealBreak1)
+        {
+            $workingHours['startBreak02'] = $startMealBreak1->punchTime;
+        }
+
+        $endMealBreak02 = $today->where('punchType',4)
+            ->where('punchTypePairNo',2);
+
+        foreach ($endMealBreak02 as $startMealBreak1)
+        {
+            $workingHours['endBreak02'] = $startMealBreak1->punchTime;
         }
 
         dd($workingHours);
 
         // Please choose
-
-         $aaa = [];
-
-
-            dd($aaa);
-
-
-
-
-
-
 
         $list = DB::table('users')
             ->select(
