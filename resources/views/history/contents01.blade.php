@@ -8,8 +8,8 @@
         <th> JJAN ID</th>
         <th> Firstname</th>
         <th> Lastname</th>
-        <th> Date </th>
-        <th> Time</th>
+        <th> Time </th>
+        <th> Date</th>
         <th> Punch Type</th>
         <th></th>
     </tr>

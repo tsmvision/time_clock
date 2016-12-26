@@ -18,7 +18,6 @@ class HourController extends Controller
         $this->currentTime = Carbon::now()->format('H:m:s');
     }
 
-
     public function display(Request $request)
     {
         $request->flash();
@@ -43,7 +42,11 @@ class HourController extends Controller
                 , 'users.firstNm'
                 , 'users.lastNm'
                 , 'records.punchTime'
+                , 'records.punchType'
+                , 'records.punchTypePairNo'
             );
+
+       // dd($list->get()->toArray());
 
         if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
             $list = $list
@@ -137,16 +140,13 @@ class HourController extends Controller
                     $day = Carbon::parse($punchRecords1->punchTime)->format('d');
                     $time = Carbon::parse($punchRecords1->punchTime)->format('H:i');
 
-                    $array[$userList1->jjanID][$year][$month][$day][] =  $time;
+                  //  $array[$userList1->jjanID][$year][$month][$day][] =  $time;
 
                 }
             }
 
 
         dd($array);
-
-
-
 
         return view('hours.hourMain')
             ->with(compact(

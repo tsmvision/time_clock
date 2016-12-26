@@ -86,7 +86,7 @@ class HistoryController extends Controller
                 return redirect('clock')->with('message1', 'Duplicated Start Work');
             }
 
-            $user->punchTypePairNo = 1;
+            $user->punchTypePairNo = 0;
 
             // when end Work, insert 1 to punchTypePairNo that means start work and end work using same pair No.
         } elseif ($punchType === '2') {
@@ -95,18 +95,16 @@ class HistoryController extends Controller
                 return redirect('clock')->with('message1', 'Start Work not registered yet');
             }
 
-            $user->punchTypePairNo = 1;
+            $user->punchTypePairNo = 0;
 
             // when 'start meal break', if not existing meal history then insert 2 else 3. ???
         } elseif ($punchType === '3') {
 
             if ($numberOfPreviousStartWorkToday === 0) {
                 return redirect('clock')->with('message1', 'Start Work not registered yet');
-            }elseif ($numberOfPreviousEndWorkToday === 1) {
+            } elseif ($numberOfPreviousEndWorkToday === 1) {
                 return redirect('clock')->with('message1', 'End Work registered already');
-            }
-
-            //when number of start meal and end meal doesn't matched then get error.
+            } //when number of start meal and end meal doesn't matched then get error.
             elseif ($numberOfPreviousStartMealBreakToday !== $numberOfPreviousEndMealBreakToday) {
                 return redirect('clock')->with('message1', 'No End Meal registered yet');
 
@@ -114,123 +112,125 @@ class HistoryController extends Controller
                 return redirect('clock')->with('message1', 'No More Meal Break Registration available');
             }
 
-            $user->punchTypePairNo = $numberOfPreviousStartMealBreakToday + 2;
+            $user->punchTypePairNo = $numberOfPreviousStartMealBreakToday + 1;
 
         } elseif ($punchType === '4') {
 
             if ($numberOfPreviousStartWorkToday === 0) {
                 return redirect('clock')->with('message1', 'Start Work not registered yet');
 
-            }elseif ($numberOfPreviousEndWorkToday === 1) {
+            } elseif ($numberOfPreviousEndWorkToday === 1) {
                 return redirect('clock')->with('message1', 'End Work registered already');
-            }elseif ($numberOfPreviousStartMealBreakToday === $numberOfPreviousEndMealBreakToday) {
+            } elseif ($numberOfPreviousStartMealBreakToday === $numberOfPreviousEndMealBreakToday) {
                 return redirect('clock')->with('message1', 'Start Meal not registered yet');
             } else {
-                $user->punchTypePairNo = $numberOfPreviousStartMealBreakToday + 2;
+                $user->punchTypePairNo = $numberOfPreviousStartMealBreakToday;
             }
         }
 
-        $user->punchTime = $this->dateTime;
-        $user->punchType = $punchType;
+            $user->punchTime = $this->dateTime;
+            $user->punchType = $punchType;
 
-        $user->save();
+            $user->save();
 
-        $request->session()->flash('alert-success', 'Punch is successfully completed.');
+            $request->session()->flash('alert-success', 'Punch is successfully completed.');
 
-        return redirect('clock')->with('message', 'Punch completed successfully!');
-
-
-    }
-
-    public function display(Request $request)
-    {
-        $request->flash();
-        $currentUrl = $request->path();
-        $getSearchPeriod = $request->input('getSearchPeriod');
-        $getMemberName = $request->input('getMemberName');
-
-        $day = Carbon::now()->format('d');
-        $month = Carbon::now()->format('m');
-        $year = Carbon::now()->format('Y');
-        $lastMonth = Carbon::now()->subMonth()->format('m');
-
-        $punchType = $this->punchType;
-
-        $history = DB::table('punchRecords as records ')
-            ->join('users', 'records.jjanID', '=', 'users.jjanID')
-            ->distinct()
-            ->select(
-                'records.id'
-                , 'records.jjanID'
-                , 'users.firstNm'
-                , 'users.lastNm'
-                , 'records.punchTime'
-                , 'records.punchType'
-            );
-
-        // dd($history->get()->all());
-
-        if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
-            $history = $history
-                ->whereRaw("DAY(records.punchTime) = $day")
-                ->whereRaw("MONTH(records.punchTime) = $month")
-                ->whereRaw("YEAR(records.punchTime) = $year");
-
-        } elseif ($getSearchPeriod === 'thisMonth') {
-            $history = $history
-                ->whereRaw("MONTH(records.punchTime) = $month")
-                ->whereRaw("YEAR(records.punchTime) = $year");
-
-        } elseif ($getSearchPeriod === 'lastMonth') {
-            $history = $history
-                ->whereRaw("MONTH(records.punchTime) = $lastMonth")
-                ->whereRaw("YEAR(records.punchTime) = $year");
-
-        } elseif ($getSearchPeriod === 'customPeriod') {
+            return redirect('clock')->with('message', 'Punch completed successfully!');
 
         }
 
-        $history = $history
-            ->orderBy('records.punchTime', 'DESC')
-            ->orderBy('records.id', 'DESC')
-            ->paginate(15);
-        //    ->toArray();
+        public
+        function display(Request $request)
+        {
+            $request->flash();
+            $currentUrl = $request->path();
+            $getSearchPeriod = $request->input('getSearchPeriod');
+            $getMemberName = $request->input('getMemberName');
 
-        //dd($history);
+            $day = Carbon::now()->format('d');
+            $month = Carbon::now()->format('m');
+            $year = Carbon::now()->format('Y');
+            $lastMonth = Carbon::now()->subMonth()->format('m');
 
-        if ($getSearchPeriod === null) {
-            $getSearchPeriod = 'today';
+            $punchType = $this->punchType;
+
+            $history = DB::table('punchRecords as records ')
+                ->join('users', 'records.jjanID', '=', 'users.jjanID')
+                ->distinct()
+                ->select(
+                    'records.id'
+                    , 'records.jjanID'
+                    , 'users.firstNm'
+                    , 'users.lastNm'
+                    , 'records.punchTime'
+                    , 'records.punchType'
+                );
+
+            // dd($history->get()->all());
+
+            if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
+                $history = $history
+                    ->whereRaw("DAY(records.punchTime) = $day")
+                    ->whereRaw("MONTH(records.punchTime) = $month")
+                    ->whereRaw("YEAR(records.punchTime) = $year");
+
+            } elseif ($getSearchPeriod === 'thisMonth') {
+                $history = $history
+                    ->whereRaw("MONTH(records.punchTime) = $month")
+                    ->whereRaw("YEAR(records.punchTime) = $year");
+
+            } elseif ($getSearchPeriod === 'lastMonth') {
+                $history = $history
+                    ->whereRaw("MONTH(records.punchTime) = $lastMonth")
+                    ->whereRaw("YEAR(records.punchTime) = $year");
+
+            } elseif ($getSearchPeriod === 'customPeriod') {
+
+            }
+
+            $history = $history
+                ->orderBy('records.punchTime', 'DESC')
+                ->orderBy('records.id', 'DESC')
+                ->paginate(15);
+            //    ->toArray();
+
+            //dd($history);
+
+            if ($getSearchPeriod === null) {
+                $getSearchPeriod = 'today';
+            }
+
+
+            return view('history.historyMain')
+                ->with(compact(
+                        'history'
+                        , 'currentUrl'
+                        , 'getSearchPeriod'
+                        , 'getMemberName'
+                        , 'punchType'
+                    )
+                );
+
+        }
+
+        public
+        function update($id)
+        {
+
         }
 
 
-        return view('history.historyMain')
-            ->with(compact(
-                    'history'
-                    , 'currentUrl'
-                    , 'getSearchPeriod'
-                    , 'getMemberName'
-                    , 'punchType'
-                )
-            );
+        public
+        function delete($id)
+        {
+
+            $punchRecord = PunchRecord::find($id);
+
+            $punchRecord->delete();
+
+
+            return redirect('/history')->with('message', 'deleted!');
+        }
+
 
     }
-
-    public function update($id)
-    {
-
-    }
-
-
-    public function delete($id)
-    {
-
-        $punchRecord = PunchRecord::find($id);
-
-        $punchRecord->delete();
-
-
-        return redirect('/history')->with('message', 'deleted!');
-    }
-
-
-}
