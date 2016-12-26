@@ -245,7 +245,10 @@ class HourController extends Controller
             $mealBreakHours02 = Carbon::parse($workingHourArray['startMealBreak02'])->diffInMinutes(Carbon::parse($workingHourArray['endMealBreak02']));
         }
 
-        dd($workingHours, $mealBreakHours01,$mealBreakHours02);
+
+        $workingHours = round(($workingHours - $mealBreakHours01 - $mealBreakHours02)/60,2);
+
+       // dd($workingHours);
 
       //  $workingHours1- $mealBreakHours01
 
@@ -268,6 +271,7 @@ class HourController extends Controller
                     , 'currentUrl'
                     , 'getSearchPeriod'
                     , 'getMemberName'
+                    ,'workingHours'
                 )
             );
 

@@ -18,11 +18,11 @@
     @foreach($list as $list1)
         <tr>
             <td> {{$count++}} </td>
-            <td> @if ($getSearchPeriod == null) {{$getSearchPeriod}} @else {{$getSearchPeriod}} @endif</td>
+            <td> @if ($getSearchPeriod == null) Today @else {{$getSearchPeriod}} @endif</td>
             <td> {{$list1->jjanID}} </td>
             <td> {{$list1->firstNm}} </td>
             <td> {{$list1->lastNm}} </td>
-            <td></td>
+            <td> {{$workingHours}} hours </td>
 
         </tr>
     @endforeach
