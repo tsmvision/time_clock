@@ -154,38 +154,64 @@ class HourController extends Controller
 
         // today calculation
 
+        $year = Carbon::now()->format('Y');
+        $month = Carbon::now()->format('m');
+        $day = Carbon::now()->format('d');
+
+
         $today = DB::table('punchRecords')
                         ->where('jjanID','namjoong')
-                        ->where('')
+                        ->whereRaw("YEAR(punchTime) = $year")
+                        ->whereRaw("MONTH(punchTime) = $month")
+                        ->whereRaw("DAY(punchTime) = $day")
                         ->select(
                             'jjanID'
                             ,'punchTime'
                             ,'punchType'
                             ,'punchTypePairNo'
-                        )
-                        ->get()
+                        )->get()
                         ;
-         $aaa = [];
-        foreach ($today as $today1)
+
+        $startWork = $today->where('punchType',1);
+
+        $workingHours = [];
+
+        foreach ($startWork as $startWork1)
         {
-            $year = Carbon::parse($today1->punchTime)->format('Y');
-            $month = Carbon::parse($today1->punchTime)->format('m');
-            $day = Carbon::parse($today1->punchTime)->format('d');
-            $time = Carbon::parse($today1->punchTime)->format('H:i');
-
-            $aaa[$today1->jjanID][$year][$month][$day] = 0;
-
-            $aaa[$today1->jjanID][$year][$month][$day] = [
-                                                            $today1->punchType
-                                                            ,$today1->punchTypePairNo
-            ];
-
-
+            $workingHours['startWork'] = $startWork1->punchTime;
         }
 
+        $endWork = $today->where('punchType',2);
+
+        foreach ($endWork as $endWork1)
+        {
+          $workingHours['endWork'] = $endWork1->punchTime;
+        }
+
+        $startMealBreak = $today->where('punchType',3)
+                                ->where('punchTypePairNo',1);
+
+        foreach ($startMealBreak as $startMealBreak1)
+        {
+            $workingHours['startBreak01'] = $startMealBreak1->punchTime;
+        }
+
+        $endMealBreak = $today->where('punchType',4)
+            ->where('punchTypePairNo',1);
+
+        foreach ($endMealBreak as $endMealBreak1)
+        {
+            $workingHours['endBreak01'] = $endMealBreak1->punchTime;
+        }
+
+        dd($workingHours);
+
+        // Please choose
+
+         $aaa = [];
 
 
-            dd($today->toArray());
+            dd($aaa);
 
 
 
