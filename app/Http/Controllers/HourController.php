@@ -181,6 +181,10 @@ class HourController extends Controller
         $workingHourArray['startMealBreak02'] = 0;
         $workingHourArray['endMealBreak02'] = 0;
 
+        $workingHours = 0;
+        $mealBreakHours01 = 0;
+        $mealBreakHours02 = 0;
+
 
         foreach ($startWork as $startWork1)
         {
@@ -226,27 +230,22 @@ class HourController extends Controller
             $workingHourArray['endMealBreak02'] = $startMealBreak1->punchTime;
         }
 
-        if ($workingHourArray['startWork'] === 0 or $workingHourArray['endWork'] === 0)
+        if ($workingHourArray['startWork'] !== 0 and $workingHourArray['endWork'] !== 0)
         {
-
+            $workingHours = Carbon::parse($workingHourArray['startWork'])->diffInMinutes(Carbon::parse($workingHourArray['endWork']));
         }
 
-        $workingHours1 = Carbon::parse($workingHourArray['startWork'])->diffInMinutes(Carbon::parse($workingHourArray['endWork']));
 
-        if ($workingHourArray['startMealBreak01'] === 0 or $workingHourArray['endMealBreak01'] === 0 ) {
-            $mealBreakHours01  = 0;
+        if ($workingHourArray['startMealBreak01'] !== 0 and $workingHourArray['endMealBreak01'] !== 0 ) {
 
-        } else {
             $mealBreakHours01 = Carbon::parse($workingHourArray['startMealBreak01'])->diffInMinutes(Carbon::parse($workingHourArray['endMealBreak01']));
         }
-        if ($workingHourArray['startMealBreak02'] !== 0 or $workingHourArray['endMealBreak02'] !== 0 ) {
-            $mealBreakHours02 = 0;
+        if ($workingHourArray['startMealBreak02'] !== 0 and $workingHourArray['endMealBreak02'] !== 0 ) {
 
-        } else {
             $mealBreakHours02 = Carbon::parse($workingHourArray['startMealBreak02'])->diffInMinutes(Carbon::parse($workingHourArray['endMealBreak02']));
         }
 
-        dd($mealBreakHours02);
+        dd($workingHours, $mealBreakHours01,$mealBreakHours02);
 
       //  $workingHours1- $mealBreakHours01
 
