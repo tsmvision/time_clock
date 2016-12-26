@@ -174,18 +174,24 @@ class HourController extends Controller
 
         $startWork = $today->where('punchType',1);
 
-        $workingHours[] = [];
+        $workingHourArray['startWork'] = 0;
+        $workingHourArray['endWork'] = 0;
+        $workingHourArray['startMealBreak01'] = 0;
+        $workingHourArray['endMealBreak01'] = 0;
+        $workingHourArray['startMealBreak02'] = 0;
+        $workingHourArray['endMealBreak02'] = 0;
+
 
         foreach ($startWork as $startWork1)
         {
-            $workingHours['startWork'] = $startWork1->punchTime;
+            $workingHourArray['startWork'] = $startWork1->punchTime;
         }
 
         $endWork = $today->where('punchType',2);
 
         foreach ($endWork as $endWork1)
         {
-          $workingHours['endWork'] = $endWork1->punchTime;
+          $workingHourArray['endWork'] = $endWork1->punchTime;
         }
 
         $startMealBreak01 = $today->where('punchType',3)
@@ -193,7 +199,7 @@ class HourController extends Controller
 
         foreach ($startMealBreak01 as $startMealBreak1)
         {
-            $workingHours['startBreak01'] = $startMealBreak1->punchTime;
+            $workingHourArray['startMealBreak01'] = $startMealBreak1->punchTime;
         }
 
         $endMealBreak01 = $today->where('punchType',4)
@@ -201,7 +207,7 @@ class HourController extends Controller
 
         foreach ($endMealBreak01 as $endMealBreak1)
         {
-            $workingHours['endBreak01'] = $endMealBreak1->punchTime;
+            $workingHourArray['endMealBreak01'] = $endMealBreak1->punchTime;
         }
 
         $startMealBreak02 = $today->where('punchType',3)
@@ -209,7 +215,7 @@ class HourController extends Controller
 
         foreach ($startMealBreak02 as $startMealBreak1)
         {
-            $workingHours['startBreak02'] = $startMealBreak1->punchTime;
+            $workingHourArray['startMealBreak02'] = $startMealBreak1->punchTime;
         }
 
         $endMealBreak02 = $today->where('punchType',4)
@@ -217,10 +223,34 @@ class HourController extends Controller
 
         foreach ($endMealBreak02 as $startMealBreak1)
         {
-            $workingHours['endBreak02'] = $startMealBreak1->punchTime;
+            $workingHourArray['endMealBreak02'] = $startMealBreak1->punchTime;
         }
 
-        dd($workingHours);
+        if ($workingHourArray['startWork'] === 0 or $workingHourArray['endWork'] === 0)
+        {
+
+        }
+
+        $workingHours1 = Carbon::parse($workingHourArray['startWork'])->diffInMinutes(Carbon::parse($workingHourArray['endWork']));
+
+        if ($workingHourArray['startMealBreak01'] === 0 or $workingHourArray['endMealBreak01'] === 0 ) {
+            $mealBreakHours01  = 0;
+
+        } else {
+            $mealBreakHours01 = Carbon::parse($workingHourArray['startMealBreak01'])->diffInMinutes(Carbon::parse($workingHourArray['endMealBreak01']));
+        }
+        if ($workingHourArray['startMealBreak02'] !== 0 or $workingHourArray['endMealBreak02'] !== 0 ) {
+            $mealBreakHours02 = 0;
+
+        } else {
+            $mealBreakHours02 = Carbon::parse($workingHourArray['startMealBreak02'])->diffInMinutes(Carbon::parse($workingHourArray['endMealBreak02']));
+        }
+
+        dd($mealBreakHours02);
+
+      //  $workingHours1- $mealBreakHours01
+
+
 
         // Please choose
 
