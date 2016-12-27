@@ -9,12 +9,14 @@ use App\PunchRecord;
 
 class HistoryController extends Controller
 {
+    public $today;
     public $dateTime;
     public $currentTime;
     public $punchType;
 
     public function __construct()
     {
+        $this->today = $today = Carbon::now()->format('Y-m-d');
         $this->dateTime = Carbon::now()->format('Y-m-d H:i:s');
         $this->currentTime = Carbon::now()->format('H:m:s');
         $this->punchType = [
@@ -32,7 +34,7 @@ class HistoryController extends Controller
         $currentUrl = $request->path();
 
         $today = Carbon::now()->format('Y-m-d');
-        $currentTime = Carbon::now()->format('h:i:s');
+        $currentTime = $this->currentTime;
 
         $numberOfPreviousStartWorkToday = PunchRecord::where('punchDate',$today)
             ->where('punchType', 1)
