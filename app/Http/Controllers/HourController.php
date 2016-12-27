@@ -266,9 +266,6 @@ class HourController extends Controller
             }
         }
 
-        dd($workingHourArray);
-
-
         return view('hours.hourMain')
             ->with(compact(
                     'users'
