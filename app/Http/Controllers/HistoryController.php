@@ -136,7 +136,9 @@ class HistoryController extends Controller
             $getSearchPeriod = $request->input('getSearchPeriod');
             $getMemberName = $request->input('getMemberName');
 
-            $day = Carbon::now()->format('d');
+
+            $today = Carbon::now()->format('Y-m-d');
+
             $month = Carbon::now()->format('m');
             $year = Carbon::now()->format('Y');
             $lastMonth = Carbon::now()->subMonth()->format('m');
@@ -152,16 +154,17 @@ class HistoryController extends Controller
                     , 'users.firstNm'
                     , 'users.lastNm'
                     , 'records.punchTime'
+                    , 'records.punchDate'
                     , 'records.punchType'
                 );
+
 
             // dd($history->get()->all());
 
             if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
                 $history = $history
-                    ->whereRaw("DAY(records.punchTime) = $day")
-                    ->whereRaw("MONTH(records.punchTime) = $month")
-                    ->whereRaw("YEAR(records.punchTime) = $year");
+                    ->where('punchDate',$today);
+
 
             } elseif ($getSearchPeriod === 'thisMonth') {
                 $history = $history
@@ -178,9 +181,11 @@ class HistoryController extends Controller
             }
 
             $history = $history
+                ->orderBy('records.punchDate', 'DESC')
                 ->orderBy('records.punchTime', 'DESC')
-                ->orderBy('records.id', 'DESC')
-                ->paginate(15);
+                ->get()
+                ;
+              //  ->paginate(15);
             //    ->toArray();
 
             //dd($history);
@@ -188,6 +193,8 @@ class HistoryController extends Controller
             if ($getSearchPeriod === null) {
                 $getSearchPeriod = 'today';
             }
+
+          //  dd($history->get())
 
 
             return view('history.historyMain')

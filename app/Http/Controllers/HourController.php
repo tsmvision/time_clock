@@ -86,8 +86,6 @@ class HourController extends Controller
         }
 
         $searchPeriod = DB::table('punchRecords as records')
-         //   ->join('users', 'records.jjanID', '=', 'users.jjanID')
-         //   ->distinct()
             ->select(
                  'records.jjanID'
                 ,'records.punchTime'
@@ -95,14 +93,7 @@ class HourController extends Controller
                 ,'records.punchType'
                 ,'records.punchTypePairNo'
             )
-         //   ->whereRaw("DATE_FORMAT(punchTime,'%Y%m%d') >= '$startingDate'")
-         //   ->whereRaw("DATE_FORMAT(punchTime,'%Y%m%d') <= '$endingDate'")
-          //  ->get()
         ;
-
-      //  dd($searchPeriod->get()->all());
-
-
 
         $workingHours = 0;
         $mealBreakHours01 = 0;

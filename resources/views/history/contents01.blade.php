@@ -35,4 +35,4 @@
     </tbody>
 </table>
 
-{{ $history->links() }}
+{{-- $history->links() --}}
