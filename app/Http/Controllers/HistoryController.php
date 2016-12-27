@@ -84,6 +84,8 @@ class HistoryController extends Controller
 
             if ($numberOfPreviousStartWorkToday === 0) {
                 return redirect('clock')->with('message1', 'Start Work not registered yet');
+            }elseif ($numberOfPreviousEndWorkToday !== 0) {
+                return redirect('clock')->with('message1', 'Duplicated End Work');
             }
 
             $user->punchTypePairNo = 0;
