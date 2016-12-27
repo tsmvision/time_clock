@@ -210,7 +210,6 @@ class HourController extends Controller
 
                 $workingHourArray['namjoong'][$date]['workingHours'] = $workingHours;
 
-
                 dd($workingHourArray);
 
 
