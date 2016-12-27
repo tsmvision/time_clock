@@ -227,31 +227,28 @@ class HourController extends Controller
                 // Calculating working minutes per user per date.
                 // count as valid minutes only when StartWork and endWork, both of them punched.
 
-                if ($startWorkArray[$user->jjanID][$date2] !== 0 and $endWorkArray[$user->jjanID][$date2] !== 0)
-                {
+                if ($startWorkArray[$user->jjanID][$date2] !== 0 and $endWorkArray[$user->jjanID][$date2] !== 0) {
                     $workingMinutes[$user->jjanID] = Carbon::parse($startWorkArray[$user->jjanID][$date2])->diffInMinutes(Carbon::parse($endWorkArray[$user->jjanID][$date2]));
                 }
 
-                    //initiate
-                    $mealBreakHours01[$user->jjanID] = 0;
+                //initiate
+                $mealBreakHours01[$user->jjanID] = 0;
 
-                    // if $startMealBreak01Array's value and $endMealBreak01Array's value exist then calculate otherwise set to 0.
-                    if ($startMealBreak01Array[$user->jjanID][$date2] !== 0 and $endMealBreak01Array[$user->jjanID][$date2] !== 0)
-                        {
-                            $mealBreakHours01[$user->jjanID] = Carbon::parse($startMealBreak01Array[$user->jjanID][$date2])->diffInMinutes(Carbon::parse($endMealBreak01Array[$user->jjanID][$date2]));
-                        }
+                // if $startMealBreak01Array's value and $endMealBreak01Array's value exist then calculate otherwise set to 0.
+                if ($startMealBreak01Array[$user->jjanID][$date2] !== 0 and $endMealBreak01Array[$user->jjanID][$date2] !== 0) {
+                    $mealBreakHours01[$user->jjanID] = Carbon::parse($startMealBreak01Array[$user->jjanID][$date2])->diffInMinutes(Carbon::parse($endMealBreak01Array[$user->jjanID][$date2]));
+                }
 
-                        // initiate
-                        $mealBreakHours02[$user->jjanID] = 0;
+                // initiate
+                $mealBreakHours02[$user->jjanID] = 0;
 
-                        // if startMealBreak02 and endMealBreak02, both of them are not 0 then calculate the value, otherwise set to 0
-                        if ($startMealBreak02Array[$user->jjanID][$date2] !== 0 and $endMealBreak02Array[$user->jjanID][$date2] !== 0)
-                        {
-                            $mealBreakHours02[$user->jjanID] = Carbon::parse($startMealBreak02Array[$user->jjanID][$date2])->diffInMinutes(Carbon::parse($endMealBreak02Array[$user->jjanID][$date2]));
-                        }
+                // if startMealBreak02 and endMealBreak02, both of them are not 0 then calculate the value, otherwise set to 0
+                if ($startMealBreak02Array[$user->jjanID][$date2] !== 0 and $endMealBreak02Array[$user->jjanID][$date2] !== 0) {
+                    $mealBreakHours02[$user->jjanID] = Carbon::parse($startMealBreak02Array[$user->jjanID][$date2])->diffInMinutes(Carbon::parse($endMealBreak02Array[$user->jjanID][$date2]));
+                }
 
-                        $totalWorkingMinutes[$user->jjanID][$date2] = round(($workingMinutes[$user->jjanID] - $mealBreakHours01[$user->jjanID] - $mealBreakHours02[$user->jjanID]), 2);
-
+                $totalWorkingMinutes[$user->jjanID][$date2] = round(($workingMinutes[$user->jjanID] - $mealBreakHours01[$user->jjanID] - $mealBreakHours02[$user->jjanID]), 2);
+            }
 
                 // sum all the minutes for the jjanID in this period and convert minutes to hours.
 
@@ -263,35 +260,36 @@ class HourController extends Controller
             }
 
 
+            return view('hours.hourMain')
+                ->with(compact(
+                        'users'
+                        , 'currentUrl'
+                        , 'getSearchPeriod'
+                        , 'getMemberName'
+                        , 'workingHourArray'
+                        , 'totalWorkingHours'
+                    )
+                );
+        }
 
-        return view('hours.hourMain')
-            ->with(compact(
-                    'users'
-                    , 'currentUrl'
-                    , 'getSearchPeriod'
-                    , 'getMemberName'
-                    , 'workingHourArray'
-                    , 'totalWorkingHours'
-                )
-            );
+        public
+        function update($id)
+        {
+
+        }
+
+
+        public
+        function delete($id)
+        {
+
+            $punchRecord = PunchRecord::find($id);
+
+            $punchRecord->delete();
+
+
+            return redirect('/history/list')->with('message', 'deleted!');
+        }
+
+
     }
-
-    public function update($id)
-    {
-
-    }
-
-
-    public function delete($id)
-    {
-
-        $punchRecord = PunchRecord::find($id);
-
-        $punchRecord->delete();
-
-
-        return redirect('/history/list')->with('message', 'deleted!');
-    }
-
-
-}
