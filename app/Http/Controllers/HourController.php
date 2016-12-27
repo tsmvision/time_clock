@@ -141,7 +141,7 @@ class HourController extends Controller
                     ;
 
                // dd($startWork->all());
-
+                $startWorkArray[$jjanID][$date2] = 0;
                 foreach ($startWork as $startWork1) {
                     $startWorkArray[$jjanID][$date2] = $startWork1->punchTime;
 
@@ -154,7 +154,7 @@ class HourController extends Controller
                     ;
 
                // dd($endWork->all());
-
+                $endWorkArray[$jjanID][$date2] = 0;
                 foreach ($endWork as $endWork1) {
                     $endWorkArray[$jjanID][$date2] = $endWork1->punchTime;
                 }
@@ -214,7 +214,7 @@ class HourController extends Controller
                               }
 
 
-                $workingHours = round(($workingHours - $mealBreakHours01 - $mealBreakHours02) / 60, 2);
+                $totalWorkingHours = round(($workingHours - $mealBreakHours01 - $mealBreakHours02) / 60, 2);
 
                 $workingHourArray['workingHours'] = $workingHours;
 
@@ -235,7 +235,7 @@ class HourController extends Controller
                     , 'getSearchPeriod'
                     , 'getMemberName'
                     , 'workingHourArray'
-                    , 'workingHours'
+                    , 'totalWorkingHours'
                 )
             );
 

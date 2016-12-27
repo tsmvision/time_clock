@@ -22,7 +22,7 @@
             <td> {{$list1->jjanID}} </td>
             <td> {{$list1->firstNm}} </td>
             <td> {{$list1->lastNm}} </td>
-            <td> {{$workingHours}} hours </td>
+            <td> {{$totalWorkingHours}} hours </td>
 
         </tr>
     @endforeach
