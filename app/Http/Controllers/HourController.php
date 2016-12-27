@@ -34,100 +34,18 @@ class HourController extends Controller
         $startingDate = 0;
         $endingDate = 0;
 
-        $list = DB::table('punchRecords as records ')
-            ->join('users', 'records.jjanID', '=', 'users.jjanID')
-            ->distinct()
-            ->select(
-                'records.id'
-                , 'records.jjanID'
-                , 'users.firstNm'
-                , 'users.lastNm'
-                , 'records.punchTime'
-                , 'records.punchType'
-                , 'records.punchTypePairNo'
-            );
-
-
-        // dd($list->get()->toArray());
-        /*
-                if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
-                    $list = $list
-                        ->whereRaw("DAY(records.punchTime) = $day")
-                        ->whereRaw("MONTH(records.punchTime) = $month")
-                        ->whereRaw("YEAR(records.punchTime) = $year");
-
-
-
-                } elseif ($getSearchPeriod === 'thisMonth') {
-                    $list = $list
-                        ->whereRaw("MONTH(records.punchTime) = $month")
-                        ->whereRaw("YEAR(records.punchTime) = $year");
-
-                } elseif ($getSearchPeriod === 'lastMonth') {
-                    $list = $list
-                        ->whereRaw("MONTH(records.punchTime) = $lastMonth")
-                        ->whereRaw("YEAR(records.punchTime) = $year");
-
-                } elseif ($getSearchPeriod === 'customPeriod') {
-
-                }
-        */
-        //  $a = $list->get();
-
-        //  $list = $list
-        //      ->orderBy('records.punchTime', 'DESC')
-        //      ->orderBy('records.id', 'DESC')
-        //      ->paginate(15);
-
-        // get the first day and last day.
-        // calculating per jjanID
-        // calculating day by day
-
-        // foreach()
-        // {
-//
-        //      }
-
-//        $workingHourArray = [];
-        //     $countPerJJANID = [];
-        //     $numberOfWorkingHourPairs = [];
-        //     $year1 = 0;
-        //     $month1 = 0;
-        //     $day1 = 0;
-        /*    foreach($a as $a1)
-            {
-                foreach()
-                {
-                    //first day: calculating working hours, second day: working hours ........ last day: calculating working Hours
-                    //foreach()
-                    $year1 = Carbon::parse($a1->punchTime)->format('Y');
-                    $month1 = Carbon::parse($a1->punchTime)->format('m');
-                    $day1 = Carbon::parse($a1->punchTime)->format('d');
-                    $workingHourArray[$a1->jjanID][$a1->punchTime] = $a1->punchTime;
-                }
-            }
-
-            // Calculate the number of
-            foreach($a as $a1)
-            {
-                $countPerJJANID[$a1->jjanID] = collect($workingHourArray[$a1->jjanID])->count();
-               // $numberOfWorkingHourPairs[$a1->jjanID] =
-            }
-    */
-
-        //dd($countPerJJANID);
-
-
-//        $startTime = Carbon::parse($this->start_time);
-//        $finishTime = Carbon::parse($this->finish_time);
-//        $finishTime->diff($startTime)->format('%H:%i');
-
-
-        //       $punchRecords = DB::table('punchRecords')
-        //                           ->select('jjanID','punchTime','punchType')
-        //                           ->get()
-        //                           ;
-
+        //    $list = DB::table('punchRecords as records ')
+        //        ->join('users', 'records.jjanID', '=', 'users.jjanID')
+        //        ->distinct()
+        //        ->select(
+        //            'records.id'
+        //            , 'records.jjanID'
+        //            , 'users.firstNm'
+        //            , 'users.lastNm'
+        //            , 'records.punchTime'
+        //            , 'records.punchType'
+        //            , 'records.punchTypePairNo'
+        //        );
 
         $list = DB::table('users')
             ->select(
@@ -137,21 +55,14 @@ class HourController extends Controller
             )
             ->get();
 
-
         // today calculation
 
         $startingDate = 0;
         $endingDate = 0;
 
-        $searchPeriod = DB::table('punchRecords as records')
-            ->where('jjanID', 'namjoong')
-            ->select(
-                'jjanID'
-                , 'punchTime'
-                , 'punchType'
-                , 'punchTypePairNo'
-            );
+        $jjanID = 'namjoong';
 
+        // change the search period depending on the value of search menu interface.
         $getSearchPeriod = 'today';
 
         if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
@@ -187,36 +98,34 @@ class HourController extends Controller
 
         }
 
+        $searchPeriod = DB::table('punchRecords as records')
+            ->join('users', 'records.jjanID', '=', 'users.jjanID')
+            ->distinct()
+            ->select(
+                DB::raw('DATE(punchTime) AS date')
+                , 'users.jjanID'
+                , 'users.firstNm'
+                , 'users.lastNm'
+                , 'records.punchType'
+                , 'records.punchTypePairNo'
+            )
+            ->whereRaw("DATE(punchTime) >= '$startingDate'")
+            ->whereRaw("DATE(punchTime) <= '$endingDate'"))
+        ;
+
         $workingHours = 0;
         $mealBreakHours01 = 0;
         $mealBreakHours02 = 0;
+
 
         // get all the dates (Y-m-d) in between $startindDate through $endingDate (including startind Date and ending Date).
 
         $dateRangeArray = new GeneralPurpose;
         $dateRangeArray = $dateRangeArray->getDatesFromRange($startingDate, $endingDate);
 
-        // dd($dateRangeArray);
-
-        //    foreach ($dateRangeArray as $index => $value )
-        //    {
-        //        $indexNumbers[] = $index;
-        //    }
-
         // looping from $startingDate through $endingDate.
 
-        $workingHourArray = [];
-
-        foreach ($list as $list1) {
             foreach ($dateRangeArray as $index => $date) {
-
-                //  ['namjoong'][$dateRangeArray1]['startWork'] = 0;
-                //   $workingHourArray['namjoong'][$dateRangeArray1]['endWork'] = 0;
-                //   $workingHourArray['namjoong'][$dateRangeArray1]['startMealBreak01'] = 0;
-                //   $workingHourArray['namjoong'][$dateRangeArray1]['endMealBreak01'] = 0;
-                //   $workingHourArray['namjoong'][$dateRangeArray1]['startMealBreak02'] = 0;
-                //   $workingHourArray['namjoong'][$dateRangeArray1]['endMealBreak02'] = 0;
-                //   $workingHourArray['namjoong'][$dateRangeArray1]['workingHours'] = 0;
 
                 $startWork = clone $searchPeriod;
                 $endWork = clone $searchPeriod;
@@ -226,28 +135,16 @@ class HourController extends Controller
                 $endMealBreak02 = clone $searchPeriod;
 
 
-                $workingHourArray[$index] =
-                    [
-                        $index => ['idx' => $index
-                            , 'jjanID' => $list1->jjanID
-                            , 'startWorking' => 0
-                            , 'endWorking' => 0
-                            , 'startMealBreak01' => 0
-                            , 'endMealBreak01' => 0
-                            , 'startMealBreak02' => 0
-                            , 'endMealBreak02' => 0
-                        ]
-                    ];
-
                 $startWork = $startWork
                     ->where('punchType', 1)
                     ->whereRaw("DATE(records.punchTime) = '$date'")
                     ->get();
 
                 foreach ($startWork as $startWork1) {
-                    $workingHourArray[$index]['startWorking'] = $startWork1->punchTime;
+                    $workingHourArray[$index]['startWork'] = $startWork1->punchTime;
 
                 }
+
 
                 $endWork = $endWork
                     ->where('punchType', 2)
@@ -255,7 +152,7 @@ class HourController extends Controller
                     ->get();
 
                 foreach ($endWork as $endWork1) {
-                    $workingHourArray[$index]['endWork'] = $endWork1->punchTime;
+                    $workingHourArray[$index]['endWorking'] = $endWork1->punchTime;
                 }
 
                 $startMealBreak01 = $startMealBreak01
@@ -297,24 +194,28 @@ class HourController extends Controller
                     $workingHourArray['endMealBreak02'] = $startMealBreak1->punchTime;
                 }
 
-                if ($workingHourArray['startWork'] !== 0 and $workingHourArray['endWork'] !== 0) {
-                    $workingHours = Carbon::parse($workingHourArray['startWork'])->diffInMinutes(Carbon::parse($workingHourArray['endWork']));
-                }
-
-                if ($workingHourArray['startMealBreak01'] !== 0 and $workingHourArray['endMealBreak01'] !== 0) {
-                    $mealBreakHours01 = Carbon::parse($workingHourArray['startMealBreak01'])->diffInMinutes(Carbon::parse($workingHourArray['endMealBreak01']));
-                }
-                if ($workingHourArray['startMealBreak02'] !== 0 and $workingHourArray['endMealBreak02'] !== 0) {
-                    $mealBreakHours02 = Carbon::parse($workingHourArray['startMealBreak02'])->diffInMinutes(Carbon::parse($workingHourArray['endMealBreak02']));
-                }
+                //              if ($workingHourArray['startWork'] !== 0 and $workingHourArray['endWork'] !== 0) {
+                //                  $workingHours = Carbon::parse($workingHourArray['startWork'])->diffInMinutes(Carbon::parse($workingHourArray['endWork']));
+                //              }
+                //
+                //              if ($workingHourArray['startMealBreak01'] !== 0 and $workingHourArray['endMealBreak01'] !== 0) {
+                //                  $mealBreakHours01 = Carbon::parse($workingHourArray['startMealBreak01'])->diffInMinutes(Carbon::parse($workingHourArray['endMealBreak01']));
+                //              }
+                //              if ($workingHourArray['startMealBreak02'] !== 0 and $workingHourArray['endMealBreak02'] !== 0) {
+                //                  $mealBreakHours02 = Carbon::parse($workingHourArray['startMealBreak02'])->diffInMinutes(Carbon::parse($workingHourArray['endMealBreak02']));
+                //              }
 
 
                 $workingHours = round(($workingHours - $mealBreakHours01 - $mealBreakHours02) / 60, 2);
 
                 $workingHourArray['namjoong'][$date]['workingHours'] = $workingHours;
 
+
+                dd($workingHourArray);
+
+
             }
-        }
+
 
         $workingHourCollection = collect($workingHourArray);
 
