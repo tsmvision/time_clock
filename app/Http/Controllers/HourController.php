@@ -108,7 +108,7 @@ class HourController extends Controller
 
         // looping from $startingDate through $endingDate.
 
-        foreach ($users as $users1) {
+        foreach ($users as $user) {
 
             foreach ($dateRangeArray as $index => $date) {
 
@@ -121,12 +121,6 @@ class HourController extends Controller
                 $startMealBreak02 = clone $searchPeriod;
                 $endMealBreak02 = clone $searchPeriod;
 
-                $workingHourArray['startWork'] = 0;
-                $workingHourArray['endWork'] = 0;
-                $workingHourArray['startMealBreak01'] = 0;
-                $workingHourArray['endMealBreak01'] = 0;
-                $workingHourArray['startMealBreak02'] = 0;
-                $workingHourArray['endMealBreak02'] = 0;
 
                 $startWorkArray = [];
                 $endWorkArray = [];
@@ -138,100 +132,124 @@ class HourController extends Controller
                 $startWork = $startWork
                     ->where('punchType', 1)
                     ->where('punchDate', $date2)
+                    ->where('jjanID',$user->jjanID)
                     //  ->select('punchTime')
                     ->get();
 
                 // dd($startWork->all());
-                $startWorkArray[$jjanID][$date2] = 0;
+                $startWorkArray[$user->jjanID][$date2] = 0;
                 foreach ($startWork as $startWork1) {
-                    $startWorkArray[$jjanID][$date2] = $startWork1->punchTime;
+                    $startWorkArray[$user->jjanID][$date2] = $startWork1->punchTime;
 
                 }
+
 
                 $endWork = $endWork
                     ->where('punchType', 2)
                     ->where('punchDate', $date2)
+                    ->where('jjanID',$user->jjanID)
                     ->get();
 
                 // dd($endWork->all());
-                $endWorkArray[$jjanID][$date2] = 0;
+                $endWorkArray[$user->jjanID][$date2] = 0;
                 foreach ($endWork as $endWork1) {
-                    $endWorkArray[$jjanID][$date2] = $endWork1->punchTime;
+                    $endWorkArray[$user->jjanID][$date2] = $endWork1->punchTime;
                 }
 
                 $startMealBreak01 = $startMealBreak01
                     ->where('punchType', 3)
                     ->where('punchTypePairNo', 1)
                     ->where('punchDate', $date2)
+                    ->where('jjanID',$user->jjanID)
                     ->get();
 
                 // dd($startMealBreak01->all() );
 
+                $startMealBreak01Array[$user->jjanID][$date2] = 0;
                 foreach ($startMealBreak01 as $startMealBreak1) {
-                    $startMealBreak01Array[$jjanID][$date2] = $startMealBreak1->punchTime;
+                    $startMealBreak01Array[$user->jjanID][$date2] = $startMealBreak1->punchTime;
                 }
 
                 $endMealBreak01 = $endMealBreak01
                     ->where('punchType', 4)
                     ->where('punchTypePairNo', 1)
                     ->where('punchDate', $date2)
+                    ->where('jjanID',$user->jjanID)
                     ->get();
 
                 //dd($endMealBreak01->all());
 
+                $endMealBreak01Array[$user->jjanID][$date2] = 0;
                 foreach ($endMealBreak01 as $endMealBreak1) {
-                    $endMealBreak01Array[$jjanID][$date2] = $endMealBreak1->punchTime;
+                    $endMealBreak01Array[$user->jjanID][$date2] = $endMealBreak1->punchTime;
                 }
 
                 $startMealBreak02 = $startMealBreak02->where('punchType', 3)
                     ->where('punchTypePairNo', 2)
                     ->where('punchDate', $date2)
+                    ->where('jjanID',$user->jjanID)
                     ->get();
 
                 // dd($startMealBreak02->all());
-                $startMealBreak02Array[$jjanID][$date] = 0;
 
+                $startMealBreak02Array[$user->jjanID][$date] = 0;
                 foreach ($startMealBreak02 as $startMealBreak1) {
-                    $startMealBreak02Array[$jjanID][$date] = $startMealBreak1->punchTime;
+                    $startMealBreak02Array[$user->jjanID][$date] = $startMealBreak1->punchTime;
                 }
 
                 $endMealBreak02 = $endMealBreak02->where('punchType', 4)
                     ->where('punchTypePairNo', 2)
                     ->where('punchDate', $date2)
+                    ->where('jjanID',$user->jjanID)
                     ->get();
 
-                $endMealBreak02Array[$jjanID][$date] = 0;
+                $endMealBreak02Array[$user->jjanID][$date] = 0;
                 foreach ($endMealBreak02 as $endMealBreak1) {
-                    $endMealBreak02Array[$jjanID][$date] = $endMealBreak1->punchTime;
+                    $endMealBreak02Array[$user->jjanID][$date] = $endMealBreak1->punchTime;
                 }
 
-                if ($startWorkArray[$jjanID][$date2] == 1 and $endWorkArray[$jjanID][$date2] == 1) {
-                    $workingHours = Carbon::parse($startWorkArray[$jjanID][$date2])->diffInMinutes(Carbon::parse($endWorkArray[$jjanID][$date2]));
+              //  dd($startWorkArray[$user->jjanID][$date2],$endWorkArray[$user->jjanID][$date2]);
 
-                    $mealBreakHours01 = Carbon::parse($startMealBreak01Array[$jjanID][$date2])->diffInMinutes(Carbon::parse($endMealBreak01Array[$jjanID][$date2]));
 
-                    $mealBreakHours02 = Carbon::parse($startMealBreak02Array[$jjanID][$date2])->diffInMinutes(Carbon::parse($endMealBreak02Array[$jjanID][$date2]));
+
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                if ($startWorkArray[$user->jjanID][$date2] !== 0 and $endWorkArray[$user->jjanID][$date2] !== 0) {
+                    $workingHours = Carbon::parse($startWorkArray[$user->jjanID][$date2])->diffInMinutes(Carbon::parse($endWorkArray[$user->jjanID][$date2]));
+
+                    if ($startMealBreak01Array[$user->jjanID][$date2] === 0 or $endMealBreak01Array[$user->jjanID][$date2] === 0)
+                    {$mealBreakHours01 = 0;}else {
+                        $mealBreakHours01 = Carbon::parse($startMealBreak01Array[$user->jjanID][$date2])->diffInMinutes(Carbon::parse($endMealBreak01Array[$user->jjanID][$date2]));
+                    }
+
+                    if ($startMealBreak02Array[$user->jjanID][$date2] === 0 or $endMealBreak02Array[$user->jjanID][$date2] === 0)
+                    {
+                        $mealBreakHours02 = 0;
+                    }else {
+                        $mealBreakHours02 = Carbon::parse($startMealBreak02Array[$user->jjanID][$date2])->diffInMinutes(Carbon::parse($endMealBreak02Array[$user->jjanID][$date2]));
+                    }
+                    dd($mealBreakHours02);
                 }
 
 
-                $totalWorkingHours = round(($workingHours - $mealBreakHours01 - $mealBreakHours02) / 60, 2);
+                $totalWorkingHours[$date2] = round(($workingHours - $mealBreakHours01 - $mealBreakHours02) / 60, 2);
 
-                $workingHourArray['workingHours'] = $workingHours;
-
-                //  dd($workingHourArray);
 
 
             }
+            dd($totalWorkingHours);
+            $workingHourArray[$user->jjanID] = array_sum($totalWorkingHours);
+
         }
 
-
+//dd($workingHourArray);
 
         // Please choose
 
 
         return view('hours.hourMain')
             ->with(compact(
-                    'list'
+                    'users'
                     , 'currentUrl'
                     , 'getSearchPeriod'
                     , 'getMemberName'

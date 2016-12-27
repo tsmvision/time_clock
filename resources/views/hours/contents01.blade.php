@@ -15,14 +15,14 @@
     </thead>
     <?php $count = 1 ?>
     <tbody>
-    @foreach($list as $list1)
+    @foreach($users as $user)
         <tr>
             <td> {{$count++}} </td>
             <td> @if ($getSearchPeriod == null) Today @else {{$getSearchPeriod}} @endif</td>
-            <td> {{$list1->jjanID}} </td>
-            <td> {{$list1->firstNm}} </td>
-            <td> {{$list1->lastNm}} </td>
-            <td> {{$totalWorkingHours}} hours </td>
+            <td> {{$user->jjanID}} </td>
+            <td> {{$user->firstNm}} </td>
+            <td> {{$user->lastNm}} </td>
+            <td> {{ $workingHourArray[$user->jjanID] }} hours </td>
 
         </tr>
     @endforeach
