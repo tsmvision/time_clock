@@ -192,7 +192,7 @@ class HourController extends Controller
 
                 // dd($startMealBreak02->all());
 
-                $startMealBreak02Array[$user->jjanID][$date] = 0;
+                $startMealBreak02Array[$user->jjanID][$date2] = 0;
                 foreach ($startMealBreak02 as $startMealBreak1) {
                     $startMealBreak02Array[$user->jjanID][$date] = $startMealBreak1->punchTime;
                 }
@@ -203,9 +203,9 @@ class HourController extends Controller
                     ->where('jjanID',$user->jjanID)
                     ->get();
 
-                $endMealBreak02Array[$user->jjanID][$date] = 0;
+                $endMealBreak02Array[$user->jjanID][$date2] = 0;
                 foreach ($endMealBreak02 as $endMealBreak1) {
-                    $endMealBreak02Array[$user->jjanID][$date] = $endMealBreak1->punchTime;
+                    $endMealBreak02Array[$user->jjanID][$date2] = $endMealBreak1->punchTime;
                 }
 
               //  dd($startWorkArray[$user->jjanID][$date2],$endWorkArray[$user->jjanID][$date2]);
@@ -228,13 +228,9 @@ class HourController extends Controller
                     }else {
                         $mealBreakHours02 = Carbon::parse($startMealBreak02Array[$user->jjanID][$date2])->diffInMinutes(Carbon::parse($endMealBreak02Array[$user->jjanID][$date2]));
                     }
-                    dd($mealBreakHours02);
                 }
 
-
                 $totalWorkingHours[$date2] = round(($workingHours - $mealBreakHours01 - $mealBreakHours02) / 60, 2);
-
-
 
             }
             dd($totalWorkingHours);
