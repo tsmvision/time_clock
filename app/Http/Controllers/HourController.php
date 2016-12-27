@@ -26,13 +26,6 @@ class HourController extends Controller
         $getSearchPeriod = $request->input('getSearchPeriod');
         $getMemberName = $request->input('getMemberName');
 
-        $day = Carbon::now()->format('d');
-        $month = Carbon::now()->format('m');
-        $year = Carbon::now()->format('Y');
-        $lastMonth = Carbon::now()->subMonth()->format('m');
-
-        $startingDate = 0;
-        $endingDate = 0;
 
         $users = DB::table('users')
             ->select(
@@ -42,15 +35,13 @@ class HourController extends Controller
             )
             ->get();
 
-        // today calculation
 
         $startingDate = 0;
         $endingDate = 0;
 
-        $jjanID = 'namjoong';
 
         // change the search period depending on the value of search menu interface.
-        $getSearchPeriod = 'today';
+       $getSearchPeriod = 'thisMonth';
 
         if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
 
@@ -105,6 +96,7 @@ class HourController extends Controller
         $dateRangeArray = $dateRangeArray->getDatesFromRange($startingDate, $endingDate);
 
         $workingHourArray = [];
+        $totalWorkingHours = [];
 
         // looping from $startingDate through $endingDate.
 
@@ -214,6 +206,7 @@ class HourController extends Controller
 
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
                 if ($startWorkArray[$user->jjanID][$date2] !== 0 and $endWorkArray[$user->jjanID][$date2] !== 0) {
                     $workingHours = Carbon::parse($startWorkArray[$user->jjanID][$date2])->diffInMinutes(Carbon::parse($endWorkArray[$user->jjanID][$date2]));
 
@@ -228,13 +221,21 @@ class HourController extends Controller
                     }else {
                         $mealBreakHours02 = Carbon::parse($startMealBreak02Array[$user->jjanID][$date2])->diffInMinutes(Carbon::parse($endMealBreak02Array[$user->jjanID][$date2]));
                     }
+
+                    $totalWorkingMinutes[$date2] = round(($workingHours - $mealBreakHours01 - $mealBreakHours02), 2);
+
+                } else {
+                    $totalWorkingHours[$date2] = 0;
                 }
-
-                $totalWorkingHours[$date2] = round(($workingHours - $mealBreakHours01 - $mealBreakHours02) / 60, 2);
-
             }
-            dd($totalWorkingHours);
-            $workingHourArray[$user->jjanID] = array_sum($totalWorkingHours);
+
+            // sum all the minutes for the jjanID in this period and convert minutes to hours.
+            $workingHourArray[$user->jjanID] = round(array_sum($totalWorkingMinutes)/60,2);
+
+          //  dd($startWorkArray, $endWorkArray);
+         //   dd($totalWorkingHours);
+
+       //     dd($workingHourArray);
 
         }
 
