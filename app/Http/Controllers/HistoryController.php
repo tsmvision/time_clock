@@ -31,43 +31,32 @@ class HistoryController extends Controller
         $request->flash();
         $currentUrl = $request->path();
 
-        $year = Carbon::now()->format('Y');
-        $month = Carbon::now()->format('m');
-        $day = Carbon::now()->format('d');
+        $today = Carbon::now()->format('Y-m-d');
+        $currentTime = Carbon::now()->format('h:i:s');
 
-        $numberOfPreviousStartWorkToday = PunchRecord::whereRaw("YEAR(punchTime) = $year")
-            ->whereRaw("MONTH(punchTime) = $month")
-            ->whereRaw("DAY(punchTime) = $day")
+        $numberOfPreviousStartWorkToday = PunchRecord::where('punchDate',$today)
             ->where('punchType', 1)
             ->where('jjanID', 'namjoong')
             ->select('id')
             ->get()
             ->count();
 
-        $numberOfPreviousEndWorkToday = PunchRecord::whereRaw("YEAR(punchTime) = $year")
-            ->whereRaw("MONTH(punchTime) = $month")
-            ->whereRaw("DAY(punchTime) = $day")
+        $numberOfPreviousEndWorkToday = PunchRecord::where('punchDate',$today)
             ->where('punchType', 2)
             ->where('jjanID', 'namjoong')
             ->select('id')
             ->get()
             ->count();
 
-        $numberOfPreviousStartMealBreakToday = PunchRecord::whereRaw("YEAR(punchTime) = $year")
-            ->whereRaw("MONTH(punchTime) = $month")
-            ->whereRaw("DAY(punchTime) = $day")
+        $numberOfPreviousStartMealBreakToday = PunchRecord::where('punchDate',$today)
             ->where('punchType', 3)
-            //->where('punchTypePairNo',2)
             ->where('jjanID', 'namjoong')
             ->select('id')
             ->get()
             ->count();
 
-        $numberOfPreviousEndMealBreakToday = PunchRecord::whereRaw("YEAR(punchTime) = $year")
-            ->whereRaw("MONTH(punchTime) = $month")
-            ->whereRaw("DAY(punchTime) = $day")
+        $numberOfPreviousEndMealBreakToday = PunchRecord::where('punchDate', $today)
             ->where('punchType', 4)
-            // ->where('punchTypePairNo', 2)
             ->where('jjanID', 'namjoong')
             ->select('id')
             ->get()
@@ -128,7 +117,8 @@ class HistoryController extends Controller
             }
         }
 
-            $user->punchTime = $this->dateTime;
+            $user->punchTime = $currentTime;
+            $user->punchDate = $today;
             $user->punchType = $punchType;
 
             $user->save();
@@ -139,8 +129,7 @@ class HistoryController extends Controller
 
         }
 
-        public
-        function display(Request $request)
+        public function display(Request $request)
         {
             $request->flash();
             $currentUrl = $request->path();
@@ -213,15 +202,13 @@ class HistoryController extends Controller
 
         }
 
-        public
-        function update($id)
+        public function update($id)
         {
 
         }
 
 
-        public
-        function delete($id)
+        public function delete($id)
         {
 
             $punchRecord = PunchRecord::find($id);

@@ -34,19 +34,6 @@ class HourController extends Controller
         $startingDate = 0;
         $endingDate = 0;
 
-        //    $list = DB::table('punchRecords as records ')
-        //        ->join('users', 'records.jjanID', '=', 'users.jjanID')
-        //        ->distinct()
-        //        ->select(
-        //            'records.id'
-        //            , 'records.jjanID'
-        //            , 'users.firstNm'
-        //            , 'users.lastNm'
-        //            , 'records.punchTime'
-        //            , 'records.punchType'
-        //            , 'records.punchTypePairNo'
-        //        );
-
         $list = DB::table('users')
             ->select(
                 'users.jjanID'
@@ -67,8 +54,8 @@ class HourController extends Controller
 
         if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
 
-            $startingDate = Carbon::now()->format('Y-m-d');
-            $endingDate = Carbon::now()->format('Y-m-d');
+            $startingDate = Carbon::now()->format('Ymd');
+            $endingDate = Carbon::now()->format('Ymd');
 
         } elseif ($getSearchPeriod === null || $getSearchPeriod === 'yesterday') {
 
@@ -99,19 +86,23 @@ class HourController extends Controller
         }
 
         $searchPeriod = DB::table('punchRecords as records')
-            ->join('users', 'records.jjanID', '=', 'users.jjanID')
-            ->distinct()
+         //   ->join('users', 'records.jjanID', '=', 'users.jjanID')
+         //   ->distinct()
             ->select(
-                DB::raw('DATE(punchTime) AS date')
-                , 'users.jjanID'
-                , 'users.firstNm'
-                , 'users.lastNm'
-                , 'records.punchType'
-                , 'records.punchTypePairNo'
+                 'records.jjanID'
+                ,'records.punchTime'
+                ,'records.punchDate'
+                ,'records.punchType'
+                ,'records.punchTypePairNo'
             )
-            ->whereRaw("DATE(punchTime) >= '$startingDate'")
-            ->whereRaw("DATE(punchTime) <= '$endingDate'"))
+         //   ->whereRaw("DATE_FORMAT(punchTime,'%Y%m%d') >= '$startingDate'")
+         //   ->whereRaw("DATE_FORMAT(punchTime,'%Y%m%d') <= '$endingDate'")
+          //  ->get()
         ;
+
+      //  dd($searchPeriod->get()->all());
+
+
 
         $workingHours = 0;
         $mealBreakHours01 = 0;
@@ -122,6 +113,8 @@ class HourController extends Controller
 
         $dateRangeArray = new GeneralPurpose;
         $dateRangeArray = $dateRangeArray->getDatesFromRange($startingDate, $endingDate);
+
+        $workingHourArray = [];
 
         // looping from $startingDate through $endingDate.
 
@@ -135,21 +128,27 @@ class HourController extends Controller
                 $endMealBreak02 = clone $searchPeriod;
 
 
-                $startWork = $startWork
+                $startWork = $searchPeriod
                     ->where('punchType', 1)
-                    ->whereRaw("DATE(records.punchTime) = '$date'")
-                    ->get();
+                    ->where("DATE_FORMAT(punchTime,'%Y%m%d') = $date")
+                    ->get()
+                    ;
+
+                //dd($startWork->all());
 
                 foreach ($startWork as $startWork1) {
-                    $workingHourArray[$index]['startWork'] = $startWork1->punchTime;
+                    $workingHourArray['startWork'] = Carbon::parse($startWork1->punchTime)->format('H:i:s');
 
                 }
 
 
-                $endWork = $endWork
-                    ->where('punchType', 2)
-                    ->whereRaw("DATE(records.punchTime) = '$date'")
-                    ->get();
+
+                $endWork = $searchPeriod
+                    ->whereRaw('punchType', 2)
+                    ->where('date','$date')
+                    ;
+
+                dd($endWork);
 
                 foreach ($endWork as $endWork1) {
                     $workingHourArray[$index]['endWorking'] = $endWork1->punchTime;
