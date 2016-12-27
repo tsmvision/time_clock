@@ -23,7 +23,7 @@
             <td> {{$history1->firstNm}} </td>
             <td> {{$history1->lastNm}} </td>
             <td> {{\Carbon\Carbon::parse($history1->punchTime)->format("h:i:s a")}} </td>
-            <td> {{\Carbon\Carbon::parse($history1->punchTime)->format('m/d/Y')}} </td>
+            <td> {{\Carbon\Carbon::parse($history1->punchDate)->format('m/d/Y')}} </td>
             <td> {{$punchType[$history1->punchType]}}</td>
             <td>
                 <a type='button' class="btn btn-lg btn-primary btn-sm" data-toggle="modal" data-target="#modify" role="button"> Modify</a>
