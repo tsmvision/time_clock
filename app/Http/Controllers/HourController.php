@@ -87,6 +87,8 @@ class HourController extends Controller
 
         //
         $punchRecords = DB::table('punchRecords as records')
+          //  ->join('users','records.jjanID','=','users.jjanID')
+            ->distinct()
             ->select(
                 'records.jjanID'
                 , 'records.punchTime'
@@ -98,11 +100,16 @@ class HourController extends Controller
        // dd($getJJANID);
 
         //set where Cluase with jjanID unless $getJJANID == '0'
-        if ($getJJANID !== null and $getJJANID !== '0')
-        {
-            $users = $users->where('jjanID', $getJJANID);
-            $punchRecords = $punchRecords->where('records.jjanID', $getJJANID);
-        }
+    //    if ($getJJANID !== null and $getJJANID !== '0')
+    //    {
+    //        $users = $users->where('records.jjanID', $getJJANID);
+    //        $punchRecords = $punchRecords->where('records.jjanID', $getJJANID);
+    //    }
+
+
+        // add searchByMemberName
+      //  $searchByMemberName = new GeneralPurpose;
+      //  $punchRecords = $searchByMemberName->searchByMemberName($punchRecords, $getMemberName);
 
      //   $sql = new GeneralPurpose;
 
@@ -169,9 +176,9 @@ class HourController extends Controller
 
                 // Query -  get punch time for startWork for single day($date)
                 $startWorkQuery = $startWorkQuery
-                    ->where('punchType', 1)
-                    ->where('punchDate', $date2)
-                    ->where('jjanID', $user->jjanID)
+                    ->where('records.punchType', 1)
+                    ->where('records.punchDate', $date2)
+                    ->where('records.jjanID', $user->jjanID)
                     ->get();
 
                 // get the punch time from the query above.
@@ -184,9 +191,9 @@ class HourController extends Controller
 
                 // Query - get the punch time for endWork for single day ($date)
                 $endWorkQuery = $endWorkQuery
-                    ->where('punchType', 2)
-                    ->where('punchDate', $date2)
-                    ->where('jjanID', $user->jjanID)
+                    ->where('records.punchType', 2)
+                    ->where('records.punchDate', $date2)
+                    ->where('records.jjanID', $user->jjanID)
                     ->get();
 
                 // get the punch time from the query above.
@@ -201,10 +208,10 @@ class HourController extends Controller
 
                 // Query - get the punch time for startMealBreak01 for single day ($date)
                 $startMealBreak01Query = $startMealBreak01Query
-                    ->where('punchType', 3)
-                    ->where('punchTypePairNo', 1)
-                    ->where('punchDate', $date2)
-                    ->where('jjanID', $user->jjanID)
+                    ->where('records.punchType', 3)
+                    ->where('records.punchTypePairNo', 1)
+                    ->where('records.punchDate', $date2)
+                    ->where('records.jjanID', $user->jjanID)
                     ->get();
 
                 // get the punch time for startMealBreak01 for single day ($date)
@@ -216,10 +223,10 @@ class HourController extends Controller
 
                 // Query - get the punch time for endMealBreak01 for single day ($date)
                 $endMealBreak01Query = $endMealBreak01Query
-                    ->where('punchType', 4)
-                    ->where('punchTypePairNo', 1)
-                    ->where('punchDate', $date2)
-                    ->where('jjanID', $user->jjanID)
+                    ->where('records.punchType', 4)
+                    ->where('records.punchTypePairNo', 1)
+                    ->where('records.punchDate', $date2)
+                    ->where('records.jjanID', $user->jjanID)
                     ->get();
 
 
@@ -230,9 +237,9 @@ class HourController extends Controller
 
                 // Query - get the punch time for startMealBreak02Query for single day ($date)
                 $startMealBreak02Query = $startMealBreak02Query->where('punchType', 3)
-                    ->where('punchTypePairNo', 2)
-                    ->where('punchDate', $date2)
-                    ->where('jjanID', $user->jjanID)
+                    ->where('records.punchTypePairNo', 2)
+                    ->where('records.punchDate', $date2)
+                    ->where('records.jjanID', $user->jjanID)
                     ->get();
 
                 // get the punch time for endMealBreak02 for single day ($date)
@@ -243,9 +250,9 @@ class HourController extends Controller
 
                 // Query - get the punch time for endMealBreak02Query for single day ($date)
                 $endMealBreak02Query = $endMealBreak02Query->where('punchType', 4)
-                    ->where('punchTypePairNo', 2)
-                    ->where('punchDate', $date2)
-                    ->where('jjanID', $user->jjanID)
+                    ->where('records.punchTypePairNo', 2)
+                    ->where('records.punchDate', $date2)
+                    ->where('records.jjanID', $user->jjanID)
                     ->get();
 
 
