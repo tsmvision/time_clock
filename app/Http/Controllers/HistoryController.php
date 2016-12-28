@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
 use App\PunchRecord;
-
+use App\GeneralPurpose\GeneralPurpose;
 class HistoryController extends Controller
 {
     public $today;
@@ -180,8 +180,8 @@ class HistoryController extends Controller
 
         if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
 
-            $startingDate = Carbon::now()->format('Ymd');
-            $endingDate = Carbon::now()->format('Ymd');
+            $startingDate = Carbon::now()->format('Y-m-d');
+            $endingDate = Carbon::now()->format('Y-m-d');
 
         } elseif ($getSearchPeriod === null || $getSearchPeriod === 'yesterday') {
 
@@ -211,10 +211,25 @@ class HistoryController extends Controller
 
         }
 
+       // dd($startingDate, $endingDate);
+
+            $history = $history
+                ->where('records.punchDate','>=',$startingDate)
+                ->where('records.punchDate','<=',$endingDate)
+                ;
+
 
         if ($getJJANID !== null and $getJJANID !== '0') {
-            $history = $history->where('users.jjanID', $getJJANID);
+            $history = $history
+                ->where('users.jjanID', $getJJANID)
+            ;
         }
+      //  $a = new GeneralPurpose;
+      //  $a = $a->getSql($history);
+
+      //  dd($a);
+
+
 
         $history = $history
             ->orderBy('records.punchDate', 'DESC')

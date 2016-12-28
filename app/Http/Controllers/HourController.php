@@ -37,8 +37,8 @@ class HourController extends Controller
 
         if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
 
-            $startingDate = Carbon::now()->format('Ymd');
-            $endingDate = Carbon::now()->format('Ymd');
+            $startingDate = Carbon::now()->format('Y-m-d');
+            $endingDate = Carbon::now()->format('Y-m-d');
 
         } elseif ($getSearchPeriod === null || $getSearchPeriod === 'yesterday') {
 
@@ -103,7 +103,11 @@ class HourController extends Controller
         if ($getJJANID !== null and $getJJANID !== '0')
         {
             $users = $users->where('records.jjanID', $getJJANID);
-            $punchRecords = $punchRecords->where('records.jjanID', $getJJANID);
+            $punchRecords = $punchRecords
+                ->where('records.jjanID', $getJJANID)
+                ->where('records.punchDate','>=',$startingDate)
+                ->where('records.punchDate','<=',$endingDate)
+            ;
         }
 
 
