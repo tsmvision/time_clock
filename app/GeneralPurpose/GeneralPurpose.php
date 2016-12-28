@@ -39,5 +39,26 @@ class GeneralPurpose
         return $dateArray;
     }
 
+    public function getSql($builder)
+    {
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+        // How to use
+        // In the controller, make new instance and use this function with query before using "->get()";
+        //$sql = new GeneralPurpose;
+        //$sql = $sql->getSql($memberList);
+        //dd($sql);
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //$builder = $this->getBuilder();
+        $sql = $builder->toSql();
+        foreach ($builder->getBindings() as $binding) {
+            $value = is_numeric($binding) ? $binding : "'" . $binding . "'";
+            $sql = preg_replace('/\?/', $value, $sql, 1);
+            $sql = preg_replace('/\r/', '', $sql);
+            $sql = preg_replace('/\n/', '', $sql);
+        }
+        return $sql;
+    }
+
 
 }

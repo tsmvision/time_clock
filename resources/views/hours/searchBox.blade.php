@@ -6,7 +6,9 @@
 
     <div class="form-group">
         <select class="form-control" id="getSearchPeriod" name="getSearchPeriod">
-            <option value="today" @if ($getSearchPeriod === null || $getSearchPeriod === 'today' ) selected @endif> Today</option>
+            <option value="today" @if ($getSearchPeriod === null || $getSearchPeriod === 'today' ) selected @endif>
+                Today
+            </option>
             <option value="yesterday" @if ($getSearchPeriod === 'yesterday' ) selected @endif> Yesterday</option>
             <option value="thisWeek" @if ($getSearchPeriod === 'thisWeek' ) selected @endif> This Week</option>
             <option value="lastWeek" @if ($getSearchPeriod === 'lastWeek' ) selected @endif> Last Week</option>
@@ -17,16 +19,19 @@
     </div>
 
     <div class="form-group">
-        <select class="form-control" id="getSearchJJANID" name="getSearchJJANID">
-            <option>JJAN ID - All</option>
-            <option>2</option>
+        <select class="form-control" id="getJJANID" name="getJJANID">
+            <option value="0" @if ($getJJANID === null || $getJJANID === '0' ) selected @endif>JJAN ID - All</option>
+            @foreach ($users2 as $user)
+                <option value={{$user->jjanID}} @if ($getJJANID === $user->jjanID) selected @endif>{{$user->jjanID}}</option>
+            @endforeach
         </select>
     </div>
 
     <div class="form-group">
         <div class="col-xs-16">
             <input type="text" class="form-control"
-                   placeholder=" Type Member's Name" value="@if(old('getMemberName')) {{ $getMemberName }} @endif" name="getMemberName">
+                   placeholder=" Type Member's Name" value="@if(old('getMemberName')) {{ $getMemberName }} @endif"
+                   name="getMemberName">
         </div>
     </div>
 

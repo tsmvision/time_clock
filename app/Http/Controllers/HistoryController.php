@@ -149,6 +149,15 @@ class HistoryController extends Controller
 
             $punchType = $this->punchType;
 
+            //for dropdown menu in the search box.
+            $users2 = DB::table('users')
+                ->select(
+                    'users.jjanID'
+                    , 'users.firstNm'
+                    , 'users.lastNm'
+                )
+                ->get();
+
             $history = DB::table('punchRecords as records ')
                 ->join('users', 'records.jjanID', '=', 'users.jjanID')
                 ->distinct()
@@ -203,7 +212,8 @@ class HistoryController extends Controller
 
             return view('history.historyMain')
                 ->with(compact(
-                        'history'
+                        'users2'
+                        ,'history'
                         , 'currentUrl'
                         , 'getSearchPeriod'
                         , 'getMemberName'

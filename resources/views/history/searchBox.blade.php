@@ -15,8 +15,10 @@
 
     <div class="form-group">
         <select class="form-control" id="getSearchJJANID" name="getSearchJJANID">
-            <option>JJAN ID - All</option>
-            <option>2</option>
+            <option value="0">JJAN ID - All</option>
+            @foreach ($users2 as $user)
+                <option value = {{$user->jjanID}}>{{$user->jjanID}}</option>
+            @endforeach
         </select>
     </div>
 
