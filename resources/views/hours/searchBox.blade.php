@@ -20,7 +20,7 @@
 
     <div class="form-group">
         <select class="form-control" id="getJJANID" name="getJJANID">
-            <option value="0" @if ($getJJANID === null || $getJJANID === '0' ) selected @endif>JJAN ID - All</option>
+            <option value='0' @if ($getJJANID === null || $getJJANID === '0' ) selected @endif>JJAN ID - All</option>
             @foreach ($users2 as $user)
                 <option value={{$user->jjanID}} @if ($getJJANID === $user->jjanID) selected @endif>{{$user->jjanID}}</option>
             @endforeach

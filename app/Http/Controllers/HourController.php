@@ -95,11 +95,11 @@ class HourController extends Controller
                 , 'records.punchTypePairNo'
             );
 
-     //   dd($getJJANID);
+       // dd($getJJANID);
 
-        //set where Cluase with jjanID unless $getJJANID == 0
-        if ($getJJANID == null)
-        {}else{
+        //set where Cluase with jjanID unless $getJJANID == '0'
+        if ($getJJANID !== null and $getJJANID !== '0')
+        {
             $users = $users->where('jjanID', $getJJANID);
             $punchRecords = $punchRecords->where('records.jjanID', $getJJANID);
         }

@@ -138,6 +138,7 @@ class HistoryController extends Controller
             $request->flash();
             $currentUrl = $request->path();
             $getSearchPeriod = $request->input('getSearchPeriod');
+            $getJJANID = $request->input('getJJANID');
             $getMemberName = $request->input('getMemberName');
 
 
@@ -193,6 +194,12 @@ class HistoryController extends Controller
 
             }
 
+
+            if ($getJJANID !== null and $getJJANID !== '0')
+            {
+                $history = $history->where('users.jjanID', $getJJANID);
+            }
+
             $history = $history
                 ->orderBy('records.punchDate', 'DESC')
                 ->orderBy('records.punchTime', 'DESC')
@@ -216,6 +223,7 @@ class HistoryController extends Controller
                         ,'history'
                         , 'currentUrl'
                         , 'getSearchPeriod'
+                        , 'getJJANID'
                         , 'getMemberName'
                         , 'punchType'
                     )
