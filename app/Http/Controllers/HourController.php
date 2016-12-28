@@ -100,20 +100,20 @@ class HourController extends Controller
        // dd($getJJANID);
 
         //set where Cluase with jjanID unless $getJJANID == '0'
-    //    if ($getJJANID !== null and $getJJANID !== '0')
-    //    {
-    //        $users = $users->where('records.jjanID', $getJJANID);
-    //        $punchRecords = $punchRecords->where('records.jjanID', $getJJANID);
-    //    }
+        if ($getJJANID !== null and $getJJANID !== '0')
+        {
+            $users = $users->where('records.jjanID', $getJJANID);
+            $punchRecords = $punchRecords->where('records.jjanID', $getJJANID);
+        }
 
 
         // add searchByMemberName
       //  $searchByMemberName = new GeneralPurpose;
       //  $punchRecords = $searchByMemberName->searchByMemberName($punchRecords, $getMemberName);
 
-     //   $sql = new GeneralPurpose;
+      // $sql = new GeneralPurpose;
 
-     //  dd($sql->getSql($punchRecords));
+      // dd($sql->getSql($punchRecords));
 
 
         // Define some arrays for working hour calculation

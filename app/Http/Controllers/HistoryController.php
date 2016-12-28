@@ -36,21 +36,21 @@ class HistoryController extends Controller
         $today = Carbon::now()->format('Y-m-d');
         $currentTime = $this->currentTime;
 
-        $numberOfPreviousStartWorkToday = PunchRecord::where('punchDate',$today)
+        $numberOfPreviousStartWorkToday = PunchRecord::where('punchDate', $today)
             ->where('punchType', 1)
             ->where('jjanID', 'namjoong')
             ->select('id')
             ->get()
             ->count();
 
-        $numberOfPreviousEndWorkToday = PunchRecord::where('punchDate',$today)
+        $numberOfPreviousEndWorkToday = PunchRecord::where('punchDate', $today)
             ->where('punchType', 2)
             ->where('jjanID', 'namjoong')
             ->select('id')
             ->get()
             ->count();
 
-        $numberOfPreviousStartMealBreakToday = PunchRecord::where('punchDate',$today)
+        $numberOfPreviousStartMealBreakToday = PunchRecord::where('punchDate', $today)
             ->where('punchType', 3)
             ->where('jjanID', 'namjoong')
             ->select('id')
@@ -84,7 +84,7 @@ class HistoryController extends Controller
 
             if ($numberOfPreviousStartWorkToday === 0) {
                 return redirect('clock')->with('message1', 'Start Work not registered yet');
-            }elseif ($numberOfPreviousEndWorkToday !== 0) {
+            } elseif ($numberOfPreviousEndWorkToday !== 0) {
                 return redirect('clock')->with('message1', 'Duplicated End Work');
             }
 
@@ -121,132 +121,144 @@ class HistoryController extends Controller
             }
         }
 
-            $user->punchTime = $currentTime;
-            $user->punchDate = $today;
-            $user->punchType = $punchType;
+        $user->punchTime = $currentTime;
+        $user->punchDate = $today;
+        $user->punchType = $punchType;
 
-            $user->save();
+        $user->save();
 
-            $request->session()->flash('alert-success', 'Punch is successfully completed.');
+        $request->session()->flash('alert-success', 'Punch is successfully completed.');
 
-            return redirect('clock')->with('message', 'Punch completed successfully!');
-
-        }
-
-        public function display(Request $request)
-        {
-            $request->flash();
-            $currentUrl = $request->path();
-            $getSearchPeriod = $request->input('getSearchPeriod');
-            $getJJANID = $request->input('getJJANID');
-            $getMemberName = $request->input('getMemberName');
-
-
-            $today = Carbon::now()->format('Y-m-d');
-
-            $month = Carbon::now()->format('m');
-            $year = Carbon::now()->format('Y');
-            $lastMonth = Carbon::now()->subMonth()->format('m');
-
-            $punchType = $this->punchType;
-
-            //for dropdown menu in the search box.
-            $users2 = DB::table('users')
-                ->select(
-                    'users.jjanID'
-                    , 'users.firstNm'
-                    , 'users.lastNm'
-                )
-                ->get();
-
-            $history = DB::table('punchRecords as records ')
-                ->join('users', 'records.jjanID', '=', 'users.jjanID')
-                ->distinct()
-                ->select(
-                    'records.id'
-                    , 'records.jjanID'
-                    , 'users.firstNm'
-                    , 'users.lastNm'
-                    , 'records.punchTime'
-                    , 'records.punchDate'
-                    , 'records.punchType'
-                );
-
-
-            // dd($history->get()->all());
-
-            if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
-                $history = $history
-                    ->where('punchDate',$today);
-
-
-            } elseif ($getSearchPeriod === 'thisMonth') {
-                $history = $history
-                    ->whereRaw("MONTH(records.punchTime) = $month")
-                    ->whereRaw("YEAR(records.punchTime) = $year");
-
-            } elseif ($getSearchPeriod === 'lastMonth') {
-                $history = $history
-                    ->whereRaw("MONTH(records.punchTime) = $lastMonth")
-                    ->whereRaw("YEAR(records.punchTime) = $year");
-
-            } elseif ($getSearchPeriod === 'customPeriod') {
-
-            }
-
-
-            if ($getJJANID !== null and $getJJANID !== '0')
-            {
-                $history = $history->where('users.jjanID', $getJJANID);
-            }
-
-            $history = $history
-                ->orderBy('records.punchDate', 'DESC')
-                ->orderBy('records.punchTime', 'DESC')
-                ->get()
-                ;
-              //  ->paginate(15);
-            //    ->toArray();
-
-            //dd($history);
-
-            if ($getSearchPeriod === null) {
-                $getSearchPeriod = 'today';
-            }
-
-          //  dd($history->get())
-
-
-            return view('history.historyMain')
-                ->with(compact(
-                        'users2'
-                        ,'history'
-                        , 'currentUrl'
-                        , 'getSearchPeriod'
-                        , 'getJJANID'
-                        , 'getMemberName'
-                        , 'punchType'
-                    )
-                );
-
-        }
-
-        public function update($id)
-        {
-
-        }
-
-
-        public function delete($id)
-        {
-
-            $punchRecord = PunchRecord::find($id);
-
-            $punchRecord->delete();
-
-
-            return redirect('/history')->with('message', 'deleted!');
-        }
-
+        return redirect('clock')->with('message', 'Punch completed successfully!');
 
     }
+
+    public function display(Request $request)
+    {
+        $request->flash();
+        $currentUrl = $request->path();
+        $getSearchPeriod = $request->input('getSearchPeriod');
+        $getJJANID = $request->input('getJJANID');
+        $getMemberName = $request->input('getMemberName');
+
+
+        $today = Carbon::now()->format('Y-m-d');
+
+        $month = Carbon::now()->format('m');
+        $year = Carbon::now()->format('Y');
+        $lastMonth = Carbon::now()->subMonth()->format('m');
+
+        $punchType = $this->punchType;
+
+        //for dropdown menu in the search box.
+        $users2 = DB::table('users')
+            ->select(
+                'users.jjanID'
+                , 'users.firstNm'
+                , 'users.lastNm'
+            )
+            ->get();
+
+        $history = DB::table('punchRecords as records ')
+            ->join('users', 'records.jjanID', '=', 'users.jjanID')
+            ->distinct()
+            ->select(
+                'records.id'
+                , 'records.jjanID'
+                , 'users.firstNm'
+                , 'users.lastNm'
+                , 'records.punchTime'
+                , 'records.punchDate'
+                , 'records.punchType'
+            );
+
+
+        // dd($history->get()->all());
+
+        if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
+
+            $startingDate = Carbon::now()->format('Ymd');
+            $endingDate = Carbon::now()->format('Ymd');
+
+        } elseif ($getSearchPeriod === null || $getSearchPeriod === 'yesterday') {
+
+            $startingDate = Carbon::now()->subDay()->format('Y-m-d');
+            $endingDate = Carbon::now()->subDay()->format('Y-m-d');
+
+        } elseif ($getSearchPeriod === 'thisWeek') {
+
+            $startingDate = Carbon::now()->startOfWeek()->format('Y-m-d');
+            $endingDate = Carbon::now()->format('Y-m-d');
+
+        } elseif ($getSearchPeriod === 'lastWeek') {
+
+            $startingDate = Carbon::now()->subWeek()->startOfWeek()->format('Y-m-d');
+            $endingDate = Carbon::now()->subWeek()->endOfWeek()->format('Y-m-d');
+
+        } elseif ($getSearchPeriod === 'thisMonth') {
+
+            $startingDate = Carbon::now()->firstOfMonth()->format('Y-m-d');
+            $endingDate = Carbon::now()->format('Y-m-d');
+
+        } elseif ($getSearchPeriod === 'lastMonth') {
+            $startingDate = Carbon::now()->subMonth()->firstOfMonth()->format('Y-m-d');
+            $endingDate = Carbon::now()->subMonth()->lastOfMonth()->format('Y-m-d');
+
+        } elseif ($getSearchPeriod === 'customPeriod') {
+
+        }
+
+
+        if ($getJJANID !== null and $getJJANID !== '0') {
+            $history = $history->where('users.jjanID', $getJJANID);
+        }
+
+        $history = $history
+            ->orderBy('records.punchDate', 'DESC')
+            ->orderBy('records.punchTime', 'DESC')
+            ->get();
+        //  ->paginate(15);
+        //    ->toArray();
+
+        //dd($history);
+
+        if ($getSearchPeriod === null) {
+            $getSearchPeriod = 'today';
+        }
+
+        //  dd($history->get())
+
+
+        return view('history.historyMain')
+            ->with(compact(
+                    'users2'
+                    , 'history'
+                    , 'currentUrl'
+                    , 'getSearchPeriod'
+                    , 'getJJANID'
+                    , 'getMemberName'
+                    , 'punchType'
+                )
+            );
+
+    }
+
+    public function update($id)
+    {
+
+    }
+
+
+    public function delete($id)
+    {
+
+        $punchRecord = PunchRecord::find($id);
+
+        $punchRecord->delete();
+
+
+        return redirect('/history')->with('message', 'deleted!');
+    }
+
+
+}
