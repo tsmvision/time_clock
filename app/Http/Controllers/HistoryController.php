@@ -148,6 +148,9 @@ class HistoryController extends Controller
         $year = Carbon::now()->format('Y');
         $lastMonth = Carbon::now()->subMonth()->format('m');
 
+        $startingDate = 0;
+        $endingDate = 0;
+
         $punchType = $this->punchType;
 
         //for dropdown menu in the search box.
