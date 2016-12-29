@@ -11,10 +11,10 @@
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('jjanID') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">JJAN ID</label>
+                            <label for="jjanID" class="col-md-4 control-label">JJAN ID</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="jjanID" value="{{ old('jjanID') }}" required autofocus>
+                                <input id="jjanID" type="text" class="form-control" name="jjanID" value="{{ old('jjanID') }}" required autofocus>
 
                                 @if ($errors->has('jjanID'))
                                     <span class="help-block">
@@ -24,31 +24,19 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('firstNm') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">First Name</label>
+                        <div class="form-group">
+                            <label for="firstNm" class="col-md-4 control-label">First Name</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="firstNm" value="{{ old('firstNm') }}" required autofocus>
-
-                                @if ($errors->has('firstNm'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('firstNm') }}</strong>
-                                    </span>
-                                @endif
+                                <input id="firstNm" type="text" class="form-control" name="firstNm" value="{{ old('firstNm') }}" required autofocus>
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('lastNm') ? ' has-error' : '' }}">
+                        <div class="form-group">
                             <label for="name" class="col-md-4 control-label">Last Name</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control" name="lastNm" value="{{ old('lastNm') }}" required autofocus>
-
-                                @if ($errors->has('lastNm'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('lastNm') }}</strong>
-                                    </span>
-                                @endif
                             </div>
                         </div>
 {{--
