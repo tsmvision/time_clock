@@ -75,8 +75,8 @@ class HourController extends Controller
                 'users.jjanID'
                 , 'users.firstNm'
                 , 'users.lastNm'
-            );
-        //  ->get();
+            )
+          ->get();
 
 
         //for dropdown menu in the search box.
@@ -148,7 +148,6 @@ class HourController extends Controller
         $dateRangeArray = $this->getDatesFromRange($startingDate, $endingDate);
 
         // looping users
-
 
         foreach ($users as $user) {
 
