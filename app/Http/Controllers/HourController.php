@@ -69,6 +69,7 @@ class HourController extends Controller
 
         }
 
+        // for displaying jjanID, firstNm, lastNm in the table in the view.
         $users = DB::table('users')
             ->select(
                 'users.jjanID'
