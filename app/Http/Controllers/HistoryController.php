@@ -9,6 +9,8 @@ use App\PunchRecord;
 use App\GeneralPurpose\GeneralPurpose;
 class HistoryController extends Controller
 {
+    use GeneralPurpose;
+
     public $today;
     public $dateTime;
     public $currentTime;
@@ -26,6 +28,42 @@ class HistoryController extends Controller
             , 3 => 'Start Meal Break'
             , 4 => 'End Meal Break'
         ];
+    }
+
+    public function searchByMemberName($memberList, $getMemberName)
+    {
+
+        ////////////////////////////////////////////////////////
+        // $memberList query using tbMbrMember ( aliased as 'member')
+        // $memberName is the member name ('first Name', 'last name', 'first and last Name', alias or chunmyung Name or etc)
+
+        // remove white space from the starting and ending of $getMemberName
+        $getMemberName = trim($getMemberName);
+
+        // the input Member name into two splits ( first Name and last Name )
+        $getMemberNameSplit = explode(' ', $getMemberName);
+        $getMemberNameSplit01 = trim($getMemberNameSplit[0]);
+
+        if ($getMemberNameSplit[0] == '') {
+
+        } elseif (isset($getMemberNameSplit[1])) {
+            // trim last name and store it.
+            $getMemberNameSplit02 = trim($getMemberNameSplit[1]);
+            $memberList = $memberList
+                ->where('firstNm', 'LIKE', '%' . $getMemberNameSplit01 . '%')
+                ->Where('lastNm', 'LIKE', '%' . $getMemberNameSplit02 . '%')
+            ;
+        } else {
+            // single word in the search box
+            $memberList = $memberList
+                ->where(function ($query) use ($getMemberNameSplit01) {
+                    $query->where('firstNm', 'LIKE', '%' . $getMemberNameSplit01 . '%')
+                        ->orWhere('lastNm', 'LIKE', '%' . $getMemberNameSplit01 . '%');
+                });
+
+        } // if there are two words
+
+        return $memberList;
     }
 
     public function punchNow(Request $request, $punchType)
@@ -224,6 +262,14 @@ class HistoryController extends Controller
                 ->where('users.jjanID', $getJJANID)
             ;
         }
+
+        $punchRecords = $this->searchByMemberName($history, $getMemberName);
+
+      //  $a = $this->getSql($punchRecords);
+
+      //  dd($a);
+
+
       //  $a = new GeneralPurpose;
       //  $a = $a->getSql($history);
 

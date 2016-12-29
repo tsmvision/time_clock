@@ -12,7 +12,7 @@ use DateTime;
 use DateInterval;
 use DatePeriod;
 
-class GeneralPurpose
+trait GeneralPurpose
 {
 
     public function getDatesFromRange($dateFrom, $dateTo)

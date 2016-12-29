@@ -51,23 +51,30 @@ class clockController extends Controller
 
     public function test()
     {
-        $test = DB::table('punchRecords as records')
-            ->distinct()
-            ->join('users', 'records.jjanID', '=', 'users.jjanID')
-            ->select(
-                'records.jjanID'
-                , 'users.firstNm'
-                , 'users.lastNm'
-                , 'records.punchTime'
-            )
-            ->get()
-            ->toArray();
+        // I think I found solution for combining several query results to single array.
+       $a = [];
+       $a[] = [ 'jjanID' => 'namjoong',
+                'firstNm' => 'Luke',
+                'lastNm' => 'Lee',
+                'counting' => 2];
+       $a[]= [ 'jjanID' => 'jane',
+                'firstNm' => 'Jane',
+                'lastNm' => 'Amanda',
+                'counting' => 0];
 
-        $test = DB::table('punchRecords as records')
-            ->select(DB::raw('CURTIME()'))
-            ->get()
-        ;
-        dd($test->all());
+       $a = collect($a)
+            ->where('jjanID','namjoong')
+           ->toArray();
+            ;
+
+        //$a['0'] += ['merong' => 'true'] ;
+        $a['0']['counting'] += 5;
+
+        $a = collect($a);
+       dd($a);
+     //  $a = $a->merge(['gender' => 'm']);
+
+       dd($a);
 
     }
 }

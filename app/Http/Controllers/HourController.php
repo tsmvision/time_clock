@@ -10,6 +10,7 @@ use App\PunchRecord;
 
 class HourController extends Controller
 {
+    use GeneralPurpose;
 
     public function __construct()
     {
@@ -73,8 +74,9 @@ class HourController extends Controller
                 'users.jjanID'
                 , 'users.firstNm'
                 , 'users.lastNm'
-            )
-            ->get();
+            );
+        //  ->get();
+
 
         //for dropdown menu in the search box.
         $users2 = DB::table('users')
@@ -87,8 +89,8 @@ class HourController extends Controller
 
         //
         $punchRecords = DB::table('punchRecords as records')
-          //  ->join('users','records.jjanID','=','users.jjanID')
-            ->distinct()
+            //  ->join('users','records.jjanID','=','users.jjanID')
+            //  ->distinct()
             ->select(
                 'records.jjanID'
                 , 'records.punchTime'
@@ -97,27 +99,29 @@ class HourController extends Controller
                 , 'records.punchTypePairNo'
             );
 
-       // dd($getJJANID);
+        // dd($getJJANID);
 
         //set where Cluase with jjanID unless $getJJANID == '0'
-        if ($getJJANID !== null and $getJJANID !== '0')
-        {
+        if ($getJJANID !== null and $getJJANID !== '0') {
             $users = $users->where('records.jjanID', $getJJANID);
             $punchRecords = $punchRecords
                 ->where('records.jjanID', $getJJANID)
-                ->where('records.punchDate','>=',$startingDate)
-                ->where('records.punchDate','<=',$endingDate)
-            ;
+                ->where('records.punchDate', '>=', $startingDate)
+                ->where('records.punchDate', '<=', $endingDate);
         }
+
+        //   $sql = new GeneralPurpose;
+        //   $sql = $sql->getSql($users);
+        //   dd($sql);
 
 
         // add searchByMemberName
-      //  $searchByMemberName = new GeneralPurpose;
-      //  $punchRecords = $searchByMemberName->searchByMemberName($punchRecords, $getMemberName);
+        //    $searchByMemberName = new GeneralPurpose;
+        //    $users = $searchByMemberName->searchByMemberName($users, $getMemberName);
 
-      // $sql = new GeneralPurpose;
+        // $sql = new GeneralPurpose;
 
-      // dd($sql->getSql($punchRecords));
+        // dd($sql->getSql($punchRecords));
 
 
         // Define some arrays for working hour calculation
@@ -139,12 +143,11 @@ class HourController extends Controller
 
         // get all the days from $startingDate to $endingDate
         // for example, if $startingDate = 2016-01-01, $endingDate = 2016-03-01, then create array as [2016-01-01, 2016-01-02 ... 2016-03-01].
-        $dateRangeArray = new GeneralPurpose;
-        $dateRangeArray = $dateRangeArray->getDatesFromRange($startingDate, $endingDate);
-
-
+        //  $dateRangeArray = new GeneralPurpose;
+        $dateRangeArray = $this->getDatesFromRange($startingDate, $endingDate);
 
         // looping users
+
 
         foreach ($users as $user) {
 
@@ -152,6 +155,8 @@ class HourController extends Controller
             $workingHourArray[$user->jjanID] = 0;
 
             // get the working minutes per date
+
+
             foreach ($dateRangeArray as $index => $date) {
 
 
@@ -175,7 +180,6 @@ class HourController extends Controller
                 $endMealBreak02Array[$user->jjanID][$date2] = 0;
 
                 $totalWorkingMinutes[$user->jjanID][$date2] = 0;
-
 
 
                 // Query -  get punch time for startWork for single day($date)
@@ -299,7 +303,7 @@ class HourController extends Controller
                     $totalWorkingMinutes[$user->jjanID][$date2] = round(($workingMinutes[$user->jjanID] - $mealBreakHours01[$user->jjanID] - $mealBreakHours02[$user->jjanID]), 2);
 
                     // sum all the minutes for the jjanID in this period and convert minutes to hours.
-                    $workingHourArray[$user->jjanID] += round($totalWorkingMinutes[$user->jjanID][$date2]/60, 2);
+                    $workingHourArray[$user->jjanID] += round($totalWorkingMinutes[$user->jjanID][$date2] / 60, 2);
 
                     // dd($workingHourArray[$user->jjanID]);
 
@@ -307,10 +311,13 @@ class HourController extends Controller
             }
         }
 
+
+
+
         return view('hours.hourMain')
             ->with(compact(
                     'users'
-                    ,'users2'
+                    , 'users2'
                     , 'currentUrl'
                     , 'getSearchPeriod'
                     , 'getJJANID'
