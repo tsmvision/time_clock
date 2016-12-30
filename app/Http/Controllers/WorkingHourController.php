@@ -80,17 +80,8 @@ class WorkingHourController extends Controller
                 , 'users.lastNm'
             )
             ->where('jjanID', $currentJJANID)
-            ->get();
+        ;
 
-
-        //for dropdown menu in the search box.
-        $users2 = DB::table('users')
-            ->select(
-                'users.jjanID'
-                , 'users.firstNm'
-                , 'users.lastNm'
-            )
-            ->get();
 
         //
         $punchRecords = DB::table('punchRecords as records')
@@ -110,10 +101,17 @@ class WorkingHourController extends Controller
 //        if ($getJJANID !== null and $getJJANID !== '0') {
 //            $users = $users->where('records.jjanID', $getJJANID);
             $punchRecords = $punchRecords
-                ->where('records.jjanID', $currentJJANID)
+
                 ->where('records.punchDate', '>=', $startingDate)
                 ->where('records.punchDate', '<=', $endingDate);
 //        }
+
+
+        if ($currentUrl === 'workingHours')
+        {
+            $punchRecords = $punchRecords->where('records.jjanID', $currentJJANID);
+
+        }
 
         //   $sql = new GeneralPurpose;
         //   $sql = $sql->getSql($users);
@@ -315,21 +313,34 @@ class WorkingHourController extends Controller
             }
         }
 
-
-
-
-        return view('workingHours.hourMain')
-            ->with(compact(
-                    'users'
-                //    , 'users2'
-                    , 'currentUrl'
-                    , 'getSearchPeriod'
-                    , 'getJJANID'
-                    , 'getMemberName'
-                    , 'workingHourArray'
-                    , 'totalWorkingHours'
-                )
-            );
+        if ($currentUrl === 'workingHours') {
+            return view('workingHours.hourMain')
+                ->with(compact(
+                        'users'
+                        //    , 'users2'
+                        , 'currentUrl'
+                        , 'getSearchPeriod'
+                        , 'getJJANID'
+                        , 'getMemberName'
+                        , 'workingHourArray'
+                        , 'totalWorkingHours'
+                    )
+                );
+        }elseif ($currentUrl === 'admin/workingHours')
+        {
+            return view('admin.workingHours.hourMain')
+                ->with(compact(
+                        'users'
+                        , 'users2'
+                        , 'currentUrl'
+                        , 'getSearchPeriod'
+                        , 'getJJANID'
+                        , 'getMemberName'
+                        , 'workingHourArray'
+                        , 'totalWorkingHours'
+                    )
+                );
+        }
     }
 
 
