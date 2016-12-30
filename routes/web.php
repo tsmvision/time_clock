@@ -11,11 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
-//Auth::routes();
+Auth::routes();
 
 // Authentication Routes...
 
@@ -39,26 +39,28 @@ Route::group(['middleware' => ['web']], function() {
 });
 */
 
-Route::get('/login','Auth\LoginController@showLoginForm');
+//Route::get('/login','Auth\LoginController@showLoginForm');
 
 
-Route::get('/home', 'HomeController@index');
+//Route::get('/home', 'HomeController@index')->middleware('auth');
+Route::get('/', 'ClockController@clock')->middleware('auth');
+Route::get('/clock', 'ClockController@clock')->middleware('auth');
 
-Route::get('/clock', 'ClockController@clock');
+Route::get('/history', 'HistoryController@display')->middleware('auth');
+Route::post('/history', 'HistoryController@display')->middleware('auth');
 
-Route::get('/history', 'HistoryController@display');
-Route::post('/history', 'HistoryController@display');
+Route::post('/history/modify', 'HistoryController@modify')->middleware('auth');
 
-Route::post('/history/modify', 'HistoryController@modify');
+Route::get('/history/delete/{id}', 'HistoryController@delete')->middleware('auth');
+Route::post('/history/delete/{id}', 'HistoryController@delete')->middleware('auth');
 
-Route::get('/history/delete/{id}', 'HistoryController@delete');
-Route::post('/history/delete/{id}', 'HistoryController@delete');
+Route::get('/hours', 'HourController@display')->middleware('auth');
+Route::post('/hours', 'HourController@display')->middleware('auth');
 
-Route::get('/hours', 'HourController@display');
-Route::post('/hours', 'HourController@display');
+Route::get('/checkIfInOut', 'ClockController@checkIfInOut')->middleware('auth');
 
-Route::get('/checkIfInOut', 'ClockController@checkIfInOut');
-
-Route::get('/punchNow/{punchType}', 'HistoryController@punchNow');
+Route::get('/punchNow/{punchType}', 'HistoryController@punchNow')->middleware('auth');
 
 Route::get('/test', 'testController@test');
+
+Route::get('/logout', 'Auth\LogoutController@logout');

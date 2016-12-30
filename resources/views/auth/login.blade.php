@@ -1,6 +1,16 @@
-@extends('layouts.app')
+@extends('layouts.master')
 
-@section('content')
+@section('message')
+    @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+    @endif
+@endsection
+
+
+
+@section('contents01')
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
