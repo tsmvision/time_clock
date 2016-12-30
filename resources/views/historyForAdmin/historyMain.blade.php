@@ -5,15 +5,15 @@
 @endsection
 
 @section('message')
-    @include('hours.message')
+    @include('history.message')
 @endsection
 
 @section('searchBox')
-    @include('hours.searchBox')
+    @include('history.searchBox')
 @endsection
 
 @section('contents01')
-    @include('hours.contents01')
+    @include('history.contents01')
 @endsection
 
-{{--@include('hours.modal')--}}
+@include('history.modal')

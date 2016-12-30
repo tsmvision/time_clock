@@ -46,19 +46,19 @@ Route::group(['middleware' => ['web']], function() {
 Route::get('/', 'ClockController@clock')->middleware('auth');
 Route::get('/clock', 'ClockController@clock')->middleware('auth');
 
-Route::get('/history', 'HistoryController@display')->middleware('auth');
-Route::post('/history', 'HistoryController@display')->middleware('auth');
+Route::get('/history', 'HistoryController@showList')->middleware('auth');
+Route::post('/history', 'HistoryController@showList')->middleware('auth');
 
 Route::post('/history/modify', 'HistoryController@modify')->middleware('auth');
 
 Route::get('/history/delete/{id}', 'HistoryController@delete')->middleware('auth');
 Route::post('/history/delete/{id}', 'HistoryController@delete')->middleware('auth');
 
-Route::get('/Hours', 'HourController@display')->middleware('auth');
-Route::post('/hours', 'HourController@display')->middleware('auth');
+Route::get('/workingHours', 'WorkingHourController@showList')->middleware('auth');
+Route::post('/workingHours', 'WorkingHourController@showList')->middleware('auth');
 
-Route::get('/historyForAdmin', 'HourController@displayForAdmin')->middleware('auth');
-Route::post('/historyForAdmin', 'HourController@displayForAdmin')->middleware('auth');
+Route::get('/historyForAdmin', 'WorkingHourController@showList')->middleware('auth');
+Route::post('/historyForAdmin', 'WorkingHourController@showList')->middleware('auth');
 
 Route::get('/historyForAdmin/delete/{id}', 'HistoryController@delete')->middleware('auth');
 Route::post('/historyForAdmin/delete/{id}', 'HistoryController@delete')->middleware('auth');

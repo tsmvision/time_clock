@@ -138,7 +138,7 @@ class HistoryController extends Controller
 
     }
 
-    public function display(Request $request)
+    public function showList(Request $request)
     {
         $request->flash();
         $currentUrl = $request->path();
@@ -169,10 +169,12 @@ class HistoryController extends Controller
      //       )
      //       ->get();
 
+
+
         $history = DB::table('punchRecords as records ')
             ->join('users', 'records.jjanID', '=', 'users.jjanID')
             ->distinct()
-            ->where('records.jjanID',$currentUser)
+          //  ->where('records.jjanID',$currentUser)
             ->select(
                 'records.id'
                 , 'records.jjanID'
@@ -224,8 +226,31 @@ class HistoryController extends Controller
             $history = $history
                 ->where('records.punchDate','>=',$startingDate)
                 ->where('records.punchDate','<=',$endingDate)
+                ->orderBy('records.punchDate', 'DESC')
+                ->orderBy('records.punchTime', 'DESC')
                 ;
 
+        if ($currentUrl === 'history')
+        {
+            $history = $history
+                ->where('records.jjanID',$currentUser)
+                ->get();
+
+            return view('history.historyMain')
+                ->with(compact(
+                    //  'users2'
+                        'history'
+                        , 'currentUrl'
+                        , 'getSearchPeriod'
+                        , 'getJJANID'
+                        , 'getMemberName'
+                        , 'punchType'
+                    )
+                );
+
+
+        }
+        // for historyForAdmin
 
         if ($getJJANID !== null and $getJJANID !== '0') {
             $history = $history
@@ -233,40 +258,20 @@ class HistoryController extends Controller
             ;
         }
 
-      //  $punchRecords = $this->searchByMemberName($history, $getMemberName);
+       $punchRecords = $this->searchByMemberName($history, $getMemberName);
 
       //  $a = $this->getSql($punchRecords);
 
       //  dd($a);
 
 
-      //  $a = new GeneralPurpose;
-      //  $a = $a->getSql($history);
 
-      //  dd($a);
-
-
-
-        $history = $history
-            ->orderBy('records.punchDate', 'DESC')
-            ->orderBy('records.punchTime', 'DESC')
-            ->get();
-        //  ->paginate(15);
-        //    ->toArray();
-
-        //dd($history);
-
-        if ($getSearchPeriod === null) {
-            $getSearchPeriod = 'today';
-        }
 
         //  dd($history->get())
-
-
-        return view('history.historyMain')
+        return view('historyForAdmin.historyMain')
             ->with(compact(
-                  //  'users2'
-                     'history'
+                  'users2'
+                    ,'history'
                     , 'currentUrl'
                     , 'getSearchPeriod'
                     , 'getJJANID'
@@ -274,6 +279,8 @@ class HistoryController extends Controller
                     , 'punchType'
                 )
             );
+
+
 
     }
 

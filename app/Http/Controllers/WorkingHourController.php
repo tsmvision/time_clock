@@ -9,7 +9,7 @@ use DB;
 use App\PunchRecord;
 use Illuminate\Support\Facades\Auth;
 
-class HourController extends Controller
+class WorkingHourController extends Controller
 {
     use GeneralPurpose;
 
@@ -18,7 +18,7 @@ class HourController extends Controller
 
     }
 
-    public function display(Request $request)
+    public function showList(Request $request)
     {
         $request->flash();
         $currentUrl = $request->path();
@@ -155,7 +155,7 @@ class HourController extends Controller
 
         foreach ($users as $user) {
 
-            // initiate working hours per user
+            // initiate working workingHours per user
             $workingHourArray[$user->jjanID] = 0;
 
             // get the working minutes per date
@@ -306,7 +306,7 @@ class HourController extends Controller
 
                     $totalWorkingMinutes[$user->jjanID][$date2] = round(($workingMinutes[$user->jjanID] - $mealBreakHours01[$user->jjanID] - $mealBreakHours02[$user->jjanID]), 2);
 
-                    // sum all the minutes for the jjanID in this period and convert minutes to hours.
+                    // sum all the minutes for the jjanID in this period and convert minutes to workingHours.
                     $workingHourArray[$user->jjanID] += round($totalWorkingMinutes[$user->jjanID][$date2] / 60, 2);
 
                     // dd($workingHourArray[$user->jjanID]);
@@ -318,7 +318,7 @@ class HourController extends Controller
 
 
 
-        return view('hours.hourMain')
+        return view('workingHours.hourMain')
             ->with(compact(
                     'users'
                 //    , 'users2'
@@ -469,7 +469,7 @@ class HourController extends Controller
 
         foreach ($users as $user) {
 
-            // initiate working hours per user
+            // initiate working workingHours per user
             $workingHourArray[$user->jjanID] = 0;
 
             // get the working minutes per date
@@ -620,7 +620,7 @@ class HourController extends Controller
 
                     $totalWorkingMinutes[$user->jjanID][$date2] = round(($workingMinutes[$user->jjanID] - $mealBreakHours01[$user->jjanID] - $mealBreakHours02[$user->jjanID]), 2);
 
-                    // sum all the minutes for the jjanID in this period and convert minutes to hours.
+                    // sum all the minutes for the jjanID in this period and convert minutes to workingHours.
                     $workingHourArray[$user->jjanID] += round($totalWorkingMinutes[$user->jjanID][$date2] / 60, 2);
 
                     // dd($workingHourArray[$user->jjanID]);
@@ -632,7 +632,7 @@ class HourController extends Controller
 
 
 
-        return view('hours.hourMain')
+        return view('workingHours.hourMain')
             ->with(compact(
                     'users'
                     , 'users2'
