@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use DateTime;
 use DateInterval;
 use DatePeriod;
+use Illuminate\Support\Facades\Auth;
 
 trait GeneralPurpose
 {
@@ -95,6 +96,7 @@ trait GeneralPurpose
 
         return $memberList;
     }
+
 
 
 }

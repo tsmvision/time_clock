@@ -35,15 +35,15 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    @if (Route::has('login'))
-                        <li> <a href="{{ url('/login') }}">Login</a> </li>
-                        <li> <a href="{{ url('/register') }}">Register</a> </li>
-                    @endif
+                    <li> <a href="#">Luke Lee</a> </li>
+                        <li> <a href="{{ url('/logout') }}">Logout</a> </li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
     </nav>
     @yield('mainTabs')
+
+    @yield('subTabs')
 
     @yield('message')
 
