@@ -160,16 +160,6 @@ class HistoryController extends Controller
 
         $punchType = $this->punchType;
 
-        //for dropdown menu in the search box.
-     //   $users2 = DB::table('users')
-     //       ->select(
-     //           'users.jjanID'
-     //           , 'users.firstNm'
-     //           , 'users.lastNm'
-     //       )
-     //       ->get();
-
-
 
         $history = DB::table('punchRecords as records ')
             ->join('users', 'records.jjanID', '=', 'users.jjanID')
@@ -230,6 +220,7 @@ class HistoryController extends Controller
                 ->orderBy('records.punchTime', 'DESC')
                 ;
 
+        // history for general users
         if ($currentUrl === 'history')
         {
             $history = $history
@@ -250,7 +241,17 @@ class HistoryController extends Controller
 
 
         }
-        // for historyForAdmin
+
+        // for history for admin
+
+        //for dropdown menu in the search box.
+           $users2 = DB::table('users')
+               ->select(
+                   'users.jjanID'
+                   , 'users.firstNm'
+                   , 'users.lastNm'
+               )
+               ->get();
 
         if ($getJJANID !== null and $getJJANID !== '0') {
             $history = $history
@@ -258,17 +259,15 @@ class HistoryController extends Controller
             ;
         }
 
-       $punchRecords = $this->searchByMemberName($history, $getMemberName);
-
-      //  $a = $this->getSql($punchRecords);
-
-      //  dd($a);
+        // search by name
+       $history = $this->searchByMemberName($history, $getMemberName)
+                        ->get();
 
 
+       // dd($punchRecords->all());
 
 
-        //  dd($history->get())
-        return view('historyForAdmin.historyMain')
+        return view('admin.history.historyMain')
             ->with(compact(
                   'users2'
                     ,'history'
