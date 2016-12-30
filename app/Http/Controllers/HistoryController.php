@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use DB;
 use App\PunchRecord;
 use App\GeneralPurpose\GeneralPurpose;
+use Illuminate\Support\Facades\Auth;
+
 class HistoryController extends Controller
 {
     use GeneralPurpose;
@@ -30,42 +32,6 @@ class HistoryController extends Controller
         ];
     }
 
-    public function searchByMemberName($memberList, $getMemberName)
-    {
-
-        ////////////////////////////////////////////////////////
-        // $memberList query using tbMbrMember ( aliased as 'member')
-        // $memberName is the member name ('first Name', 'last name', 'first and last Name', alias or chunmyung Name or etc)
-
-        // remove white space from the starting and ending of $getMemberName
-        $getMemberName = trim($getMemberName);
-
-        // the input Member name into two splits ( first Name and last Name )
-        $getMemberNameSplit = explode(' ', $getMemberName);
-        $getMemberNameSplit01 = trim($getMemberNameSplit[0]);
-
-        if ($getMemberNameSplit[0] == '') {
-
-        } elseif (isset($getMemberNameSplit[1])) {
-            // trim last name and store it.
-            $getMemberNameSplit02 = trim($getMemberNameSplit[1]);
-            $memberList = $memberList
-                ->where('firstNm', 'LIKE', '%' . $getMemberNameSplit01 . '%')
-                ->Where('lastNm', 'LIKE', '%' . $getMemberNameSplit02 . '%')
-            ;
-        } else {
-            // single word in the search box
-            $memberList = $memberList
-                ->where(function ($query) use ($getMemberNameSplit01) {
-                    $query->where('firstNm', 'LIKE', '%' . $getMemberNameSplit01 . '%')
-                        ->orWhere('lastNm', 'LIKE', '%' . $getMemberNameSplit01 . '%');
-                });
-
-        } // if there are two words
-
-        return $memberList;
-    }
-
     public function punchNow(Request $request, $punchType)
     {
         $request->flash();
@@ -73,31 +39,32 @@ class HistoryController extends Controller
 
         $today = Carbon::now()->format('Y-m-d');
         $currentTime = $this->currentTime;
+        $currentUser = Auth::user()->jjanID;
 
         $numberOfPreviousStartWorkToday = PunchRecord::where('punchDate', $today)
             ->where('punchType', 1)
-            ->where('jjanID', 'namjoong')
+            ->where('jjanID', $currentUser)
             ->select('id')
             ->get()
             ->count();
 
         $numberOfPreviousEndWorkToday = PunchRecord::where('punchDate', $today)
             ->where('punchType', 2)
-            ->where('jjanID', 'namjoong')
+            ->where('jjanID', $currentUser)
             ->select('id')
             ->get()
             ->count();
 
         $numberOfPreviousStartMealBreakToday = PunchRecord::where('punchDate', $today)
             ->where('punchType', 3)
-            ->where('jjanID', 'namjoong')
+            ->where('jjanID', $currentUser)
             ->select('id')
             ->get()
             ->count();
 
         $numberOfPreviousEndMealBreakToday = PunchRecord::where('punchDate', $today)
             ->where('punchType', 4)
-            ->where('jjanID', 'namjoong')
+            ->where('jjanID', $currentUser)
             ->select('id')
             ->get()
             ->count();
@@ -105,7 +72,7 @@ class HistoryController extends Controller
         // dd($numberOfPreviousStartWorkToday, $numberOfPreviousEndWorkToday, $numberOfPreviousStartMealBreakToday, $numberOfPreviousEndMealBreakToday);
 
         $user = new PunchRecord;
-        $user->jjanID = 'namjoong';
+        $user->jjanID = $currentUser;
 
         // when start work, insert 0 to punchTypePairNo
         if ($punchType === '1') {
@@ -186,23 +153,26 @@ class HistoryController extends Controller
         $year = Carbon::now()->format('Y');
         $lastMonth = Carbon::now()->subMonth()->format('m');
 
+        $currentUser = Auth::user()->jjanID;
+
         $startingDate = 0;
         $endingDate = 0;
 
         $punchType = $this->punchType;
 
         //for dropdown menu in the search box.
-        $users2 = DB::table('users')
-            ->select(
-                'users.jjanID'
-                , 'users.firstNm'
-                , 'users.lastNm'
-            )
-            ->get();
+     //   $users2 = DB::table('users')
+     //       ->select(
+     //           'users.jjanID'
+     //           , 'users.firstNm'
+     //           , 'users.lastNm'
+     //       )
+     //       ->get();
 
         $history = DB::table('punchRecords as records ')
             ->join('users', 'records.jjanID', '=', 'users.jjanID')
             ->distinct()
+            ->where('records.jjanID',$currentUser)
             ->select(
                 'records.id'
                 , 'records.jjanID'
@@ -263,7 +233,7 @@ class HistoryController extends Controller
             ;
         }
 
-        $punchRecords = $this->searchByMemberName($history, $getMemberName);
+      //  $punchRecords = $this->searchByMemberName($history, $getMemberName);
 
       //  $a = $this->getSql($punchRecords);
 
@@ -295,8 +265,8 @@ class HistoryController extends Controller
 
         return view('history.historyMain')
             ->with(compact(
-                    'users2'
-                    , 'history'
+                  //  'users2'
+                     'history'
                     , 'currentUrl'
                     , 'getSearchPeriod'
                     , 'getJJANID'

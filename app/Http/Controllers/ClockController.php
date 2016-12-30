@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
 use App\PunchRecord;
+use Illuminate\Support\Facades\Auth;
 
 class clockController extends Controller
 {
@@ -20,6 +21,7 @@ class clockController extends Controller
 
     public function clock(Request $request)
     {
+
 
         $currentUrl = $request->path();
         return view('clock.clockMain')

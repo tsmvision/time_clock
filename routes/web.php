@@ -54,8 +54,14 @@ Route::post('/history/modify', 'HistoryController@modify')->middleware('auth');
 Route::get('/history/delete/{id}', 'HistoryController@delete')->middleware('auth');
 Route::post('/history/delete/{id}', 'HistoryController@delete')->middleware('auth');
 
-Route::get('/hours', 'HourController@display')->middleware('auth');
+Route::get('/Hours', 'HourController@display')->middleware('auth');
 Route::post('/hours', 'HourController@display')->middleware('auth');
+
+Route::get('/historyForAdmin', 'HourController@displayForAdmin')->middleware('auth');
+Route::post('/historyForAdmin', 'HourController@displayForAdmin')->middleware('auth');
+
+Route::get('/historyForAdmin/delete/{id}', 'HistoryController@delete')->middleware('auth');
+Route::post('/historyForAdmin/delete/{id}', 'HistoryController@delete')->middleware('auth');
 
 Route::get('/checkIfInOut', 'ClockController@checkIfInOut')->middleware('auth');
 
