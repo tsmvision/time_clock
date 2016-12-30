@@ -1,6 +1,7 @@
 <?php
 
 namespace App\GeneralPurpose;
+
 /**
  * Created by PhpStorm.
  * User: luke
@@ -21,16 +22,15 @@ trait GeneralPurpose
         $dateFrom = Carbon::parse($dateFrom);
         $dateTo = Carbon::parse($dateTo);
 
-        $begin = new DateTime( $dateFrom );
-        $end = new DateTime( $dateTo );
+        $begin = new DateTime($dateFrom);
+        $end = new DateTime($dateTo);
 
         $interval = new DateInterval('P1D');
-        $dateRange = new DatePeriod($begin, $interval ,$end);
+        $dateRange = new DatePeriod($begin, $interval, $end);
 
         $dateArray = [];
 
-        foreach($dateRange as $date)
-        {
+        foreach ($dateRange as $date) {
             $dateArray[] = $date->format('Ymd');
         }
 
@@ -82,8 +82,7 @@ trait GeneralPurpose
             $getMemberNameSplit02 = trim($getMemberNameSplit[1]);
             $memberList = $memberList
                 ->where('firstNm', 'LIKE', '%' . $getMemberNameSplit01 . '%')
-                ->Where('lastNm', 'LIKE', '%' . $getMemberNameSplit02 . '%')
-            ;
+                ->Where('lastNm', 'LIKE', '%' . $getMemberNameSplit02 . '%');
         } else {
             // single word in the search box
             $memberList = $memberList
@@ -96,6 +95,50 @@ trait GeneralPurpose
 
         return $memberList;
     }
+
+    public function searchPeriod($getSearchPeriod, $startingDate = null, $endingDate = null)
+    {
+        if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
+
+            $startingDate = Carbon::now()->format('Y-m-d');
+            $endingDate = Carbon::now()->format('Y-m-d');
+
+        } elseif ($getSearchPeriod === 'yesterday') {
+
+            $startingDate = Carbon::now()->subDay()->format('Y-m-d');
+            $endingDate = Carbon::now()->subDay()->format('Y-m-d');
+
+        } elseif ($getSearchPeriod === 'thisWeek') {
+
+            $startingDate = Carbon::now()->startOfWeek()->format('Y-m-d');
+            $endingDate = Carbon::now()->format('Y-m-d');
+
+        } elseif ($getSearchPeriod === 'lastWeek') {
+
+            $startingDate = Carbon::now()->subWeek()->startOfWeek()->format('Y-m-d');
+            $endingDate = Carbon::now()->subWeek()->endOfWeek()->format('Y-m-d');
+
+        } elseif ($getSearchPeriod === 'thisMonth') {
+
+            $startingDate = Carbon::now()->firstOfMonth()->format('Y-m-d');
+            $endingDate = Carbon::now()->format('Y-m-d');
+
+        } elseif ($getSearchPeriod === 'lastMonth') {
+            $startingDate = Carbon::now()->subMonth()->firstOfMonth()->format('Y-m-d');
+            $endingDate = Carbon::now()->subMonth()->lastOfMonth()->format('Y-m-d');
+
+        } elseif ($getSearchPeriod === 'customPeriod') {
+
+        }
+
+        $result['startingDate'] = $startingDate;
+        $result['endingDate'] = $endingDate;
+
+
+        return $result;
+
+    }
+
 
 
 

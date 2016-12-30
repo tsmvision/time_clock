@@ -146,20 +146,12 @@ class HistoryController extends Controller
         $getJJANID = $request->input('getJJANID');
         $getMemberName = $request->input('getMemberName');
 
-
-        $today = Carbon::now()->format('Y-m-d');
-
-        $month = Carbon::now()->format('m');
-        $year = Carbon::now()->format('Y');
-        $lastMonth = Carbon::now()->subMonth()->format('m');
-
         $currentUser = Auth::user()->jjanID;
 
-        $startingDate = 0;
-        $endingDate = 0;
+        //$startingDate = 0;
+        //$endingDate = 0;
 
         $punchType = $this->punchType;
-
 
         $history = DB::table('punchRecords as records ')
             ->join('users', 'records.jjanID', '=', 'users.jjanID')
@@ -175,41 +167,10 @@ class HistoryController extends Controller
                 , 'records.punchType'
             );
 
+        $searchPeriod = $this->searchPeriod($getSearchPeriod);
 
-        // dd($history->get()->all());
-
-        if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
-
-            $startingDate = Carbon::now()->format('Y-m-d');
-            $endingDate = Carbon::now()->format('Y-m-d');
-
-        } elseif ($getSearchPeriod === null || $getSearchPeriod === 'yesterday') {
-
-            $startingDate = Carbon::now()->subDay()->format('Y-m-d');
-            $endingDate = Carbon::now()->subDay()->format('Y-m-d');
-
-        } elseif ($getSearchPeriod === 'thisWeek') {
-
-            $startingDate = Carbon::now()->startOfWeek()->format('Y-m-d');
-            $endingDate = Carbon::now()->format('Y-m-d');
-
-        } elseif ($getSearchPeriod === 'lastWeek') {
-
-            $startingDate = Carbon::now()->subWeek()->startOfWeek()->format('Y-m-d');
-            $endingDate = Carbon::now()->subWeek()->endOfWeek()->format('Y-m-d');
-
-        } elseif ($getSearchPeriod === 'thisMonth') {
-
-            $startingDate = Carbon::now()->firstOfMonth()->format('Y-m-d');
-            $endingDate = Carbon::now()->format('Y-m-d');
-
-        } elseif ($getSearchPeriod === 'lastMonth') {
-            $startingDate = Carbon::now()->subMonth()->firstOfMonth()->format('Y-m-d');
-            $endingDate = Carbon::now()->subMonth()->lastOfMonth()->format('Y-m-d');
-
-        } elseif ($getSearchPeriod === 'customPeriod') {
-
-        }
+        $startingDate = $searchPeriod['startingDate'];
+        $endingDate = $searchPeriod['endingDate'];
 
        // dd($startingDate, $endingDate);
 
@@ -262,9 +223,6 @@ class HistoryController extends Controller
         // search by name
        $history = $this->searchByMemberName($history, $getMemberName)
                         ->get();
-
-
-       // dd($punchRecords->all());
 
 
         return view('admin.history.historyMain')
