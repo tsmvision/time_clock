@@ -75,6 +75,7 @@ Route::post('/admin/workingHours/delete/{id}', 'HistoryController@delete')->midd
 
 Route::get('/punchNow/{punchType}', 'HistoryController@punchNow')->middleware('auth');
 
-Route::get('/test', 'testController@test');
+Route::get('/test', 'WorkingHourController@showListTest');
 
 Route::get('/logout', 'Auth\LogoutController@logout');
+
