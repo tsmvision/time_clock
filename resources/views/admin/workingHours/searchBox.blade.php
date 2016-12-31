@@ -1,6 +1,6 @@
 <p></p>
 <form class='form-inline' method="post" id="centerMembers" name="centermembers"
-      action='{{url('workingHours')}}'
+      action='{{url('admin/workingHours')}}'
       id="centerMembers" name="centerMembers" enctype="multipart/form-data">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 

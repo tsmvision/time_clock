@@ -39,6 +39,37 @@ class WorkingHourController extends Controller
         return $punchRecords;
     }
 
+    /*
+    public function insertValueToArray($query,$date,$jjanID)
+    {
+
+
+        // add the values to result if the value is not '0' from query
+        foreach ($query as $query1) {
+
+            if ($query1->startWork !== '0')
+                $result[$user->jjanID][$date]['startWork'] = $query1->startWork;
+
+            if ($query1->endWork !== '0')
+                $result[$user->jjanID][$date]['endWork'] = $query1->endWork;
+
+            if ($query1->startMealBreak01 !== '0')
+                $result[$user->jjanID][$date]['startMealBreak01'] = $query1->startMealBreak01;
+
+            if ($query1->endMealBreak01 !== '0')
+                $result[$user->jjanID][$date]['endMealBreak01'] = $query1->endMealBreak01;
+
+            if ($query1->startMealBreak02 !== '0')
+                $result[$user->jjanID][$date]['startMealBreak02'] = $query1->startMealBreak02;
+
+            if ($query1->endMealBreak02 !== '0')
+                $result[$user->jjanID][$date]['endMealBreak02'] = $query1->endMealBreak02;
+        }
+
+        return $result;
+    }
+    */
+
     public function diffInMinutes($startTime, $endTime)
     {
         return Carbon::parse($startTime)->diffInMinutes(Carbon::parse($endTime));
