@@ -54,30 +54,30 @@ class WorkingHourController extends Controller
         //set the $getSearchPeriod manually for testing purpose.
         //$getSearchPeriod = 'thisWeek';
 
-        $searchPeriod = $this->searchPeriod($getSearchPeriod);
-        $startingDate = $searchPeriod['startingDate'];
-        $endingDate = $searchPeriod['endingDate'];
+     //   $searchPeriod = $this->searchPeriod($getSearchPeriod);
+     //   $startingDate = $searchPeriod['startingDate'];
+     //   $endingDate = $searchPeriod['endingDate'];
 
 
         // for displaying jjanID, firstNm, lastNm in the table in the view.
-        $users = DB::table('users')
-            ->select(
-                'users.jjanID'
-                , 'users.firstNm'
-                , 'users.lastNm'
-            )
-            ->where('jjanID', $currentJJANID)
-            ->get();
+    //    $users = DB::table('users')
+    //        ->select(
+    //            'users.jjanID'
+    //            , 'users.firstNm'
+    //            , 'users.lastNm'
+    //        )
+    //        ->where('jjanID', $currentJJANID)
+    //        ->get();
 
         //set where Cluase with jjanID unless $getJJANID == '0'
 //        if ($getJJANID !== null and $getJJANID !== '0') {
 //            $users = $users->where('records.jjanID', $getJJANID);
 
-        if ($currentUrl === 'workingHours') {
-            $punchRecords = $this->punchRecords($startingDate,$endingDate)
-                ->where('records.jjanID', $currentJJANID)
-                ->get();
-        }
+    //    if ($currentUrl === 'workingHours') {
+    //        $punchRecords = $this->punchRecords($startingDate,$endingDate)
+    //            ->where('records.jjanID', $currentJJANID)
+    //            ->get();
+    //    }
 
         // add searchByMemberName
         //    $searchByMemberName = new GeneralPurpose;
