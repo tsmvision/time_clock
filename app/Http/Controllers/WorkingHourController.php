@@ -183,7 +183,7 @@ class WorkingHourController extends Controller
                     $result[$user->jjanID][$date]['totalWorkingMin'] =
                         $result[$user->jjanID][$date]['workingMin']
                         - $result[$user->jjanID][$date]['mealBreak01Min']
-                        - $result[$user->jjanID][$date]['mealBreak01Min'];
+                        - $result[$user->jjanID][$date]['mealBreak02Min'];
                 }
 
                 // reduce the array dimensions to use collection helpers.
