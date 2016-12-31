@@ -23,13 +23,12 @@
             <div class="form-group">
                 <a type='button' class="btn btn-lg btn-primary" data-toggle="modal" data-target="#startMeal"
                    role="button">
-                    Start
-                    Meal Break</a>
+                    Leave Office temporarily
+                    </a>
             </div>
             <div class="form-group">
                 <a type='button' class="btn btn-lg btn-danger" data-toggle="modal" data-target="#endMeal" role="button">
-                    End
-                    Meal Break</a>
+                    Back to Office</a>
             </div>
         </form>
 </div>
