@@ -4,6 +4,10 @@
     @include('mainTabs')
 @endsection
 
+@section('subTabs')
+    @include('admin.subTabs')
+@endsection
+
 @section('message')
     @include('workingHours.message')
 @endsection

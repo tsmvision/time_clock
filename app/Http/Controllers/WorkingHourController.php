@@ -92,6 +92,7 @@ class WorkingHourController extends Controller
         $endingDate = $searchPeriod['endingDate'];
 
 
+
         // for displaying jjanID, firstNm, lastNm in the table in the view.
         $users = DB::table('users')
             ->select(
