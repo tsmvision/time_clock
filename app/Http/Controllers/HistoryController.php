@@ -193,12 +193,20 @@ class HistoryController extends Controller
                 ->orderBy('records.punchTime', 'DESC')
                 ;
 
+
+
+
         // history for general users
         if ($currentUrl === 'history')
         {
             $history = $history
                 ->where('records.jjanID',$currentUser)
                 ->get();
+
+            foreach ($history as $history1) {
+                $punchTypeName[$history1->id] = $this->punchTypeName($history1->punchType);
+            }
+
 
             return view('history.historyMain')
                 ->with(compact(
@@ -236,6 +244,9 @@ class HistoryController extends Controller
        $history = $this->searchByMemberName($history, $getMemberName)
                         ->get();
 
+        foreach ($history as $history1) {
+            $punchTypeName[$history1->id] = $this->punchTypeName($history1->punchType);
+        }
 
         return view('admin.history.historyMain')
             ->with(compact(
@@ -246,6 +257,7 @@ class HistoryController extends Controller
                     , 'getJJANID'
                     , 'getMemberName'
                     , 'punchType'
+                    , 'punchTypeName'
                 )
             );
 
