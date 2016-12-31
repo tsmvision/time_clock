@@ -20,17 +20,18 @@
                         Last Name: {{$history1->lastNm}}
                     </div>
                     <div class="form-group">
-                        Punch Type: {{$history1->punchType}}
+                        Punch Type: {{$punchTypeName[$history1->id]}}
                     </div>
                     <div class="form-group">
                         Punched Date: {{\Carbon\Carbon::parse($history1->punchDate)->format('m/d/Y')}}
                     </div>
                     <div class="form-group">
-                        Punched Time: {{\Carbon\Carbon::parse($history1->punchTime)->format('h:i a')}}
+                        <label>Punched Time (24hr format):</label>
+                        <input placeholder="{{\Carbon\Carbon::parse($history1->punchTime)->format('H:i')}}">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" href="{{url('history/update')}}"
+                    <button type="button" class="btn btn-danger" href="{{url('history/update')}}/{{$history1->id}}"
                             name="updateID" id="updateID" value="{{$history1->id}}">Proceed to update
                     </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

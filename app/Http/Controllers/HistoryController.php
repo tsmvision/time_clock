@@ -217,6 +217,7 @@ class HistoryController extends Controller
                         , 'getJJANID'
                         , 'getMemberName'
                         , 'punchType'
+                        , 'punchTypeName'
                     )
                 );
 
