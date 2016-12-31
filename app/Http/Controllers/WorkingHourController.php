@@ -96,8 +96,6 @@ class WorkingHourController extends Controller
         //  $dateRangeArray = new GeneralPurpose;
 
         // test data
-        $startingDate = '20161201';
-        $endingDate = '20161231';
 
         $dateRangeArray = $this->getDatesFromRange($startingDate, $endingDate);
         $result = [];
@@ -199,6 +197,7 @@ class WorkingHourController extends Controller
             $totalWorkingHours[$user->jjanID] = round($result3->where('jjanID', $user->jjanID)->sum('totalWorkingMin') / 60, 2);
         }
 
+        // for workingHours for general user
         if ($currentUrl === 'workingHours') {
             return view('workingHours.hourMain')
                 ->with(compact(
@@ -211,7 +210,9 @@ class WorkingHourController extends Controller
                         , 'totalWorkingHours'
                     )
                 );
-        } elseif ($currentUrl === 'admin/workingHours') {
+        }
+        // for workingHours for admin.
+        elseif ($currentUrl === 'admin/workingHours') {
             return view('admin.workingHours.hourMain')
                 ->with(compact(
                         'users'
