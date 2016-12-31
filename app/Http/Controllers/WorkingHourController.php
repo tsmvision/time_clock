@@ -38,39 +38,10 @@ class WorkingHourController extends Controller
         //set the $getSearchPeriod manually for testing purpose.
         //$getSearchPeriod = 'thisWeek';
 
+        $searchPeriod = $this->searchPeriod($getSearchPeriod);
+        $startingDate = $searchPeriod['startingDate'];
+        $endingDate = $searchPeriod['endingDate'];
 
-        if ($getSearchPeriod === null || $getSearchPeriod === 'today') {
-
-            $startingDate = Carbon::now()->format('Y-m-d');
-            $endingDate = Carbon::now()->format('Y-m-d');
-
-        } elseif ($getSearchPeriod === null || $getSearchPeriod === 'yesterday') {
-
-            $startingDate = Carbon::now()->subDay()->format('Y-m-d');
-            $endingDate = Carbon::now()->subDay()->format('Y-m-d');
-
-        } elseif ($getSearchPeriod === 'thisWeek') {
-
-            $startingDate = Carbon::now()->startOfWeek()->format('Y-m-d');
-            $endingDate = Carbon::now()->format('Y-m-d');
-
-        } elseif ($getSearchPeriod === 'lastWeek') {
-
-            $startingDate = Carbon::now()->subWeek()->startOfWeek()->format('Y-m-d');
-            $endingDate = Carbon::now()->subWeek()->endOfWeek()->format('Y-m-d');
-
-        } elseif ($getSearchPeriod === 'thisMonth') {
-
-            $startingDate = Carbon::now()->firstOfMonth()->format('Y-m-d');
-            $endingDate = Carbon::now()->format('Y-m-d');
-
-        } elseif ($getSearchPeriod === 'lastMonth') {
-            $startingDate = Carbon::now()->subMonth()->firstOfMonth()->format('Y-m-d');
-            $endingDate = Carbon::now()->subMonth()->lastOfMonth()->format('Y-m-d');
-
-        } elseif ($getSearchPeriod === 'customPeriod') {
-
-        }
 
         // for displaying jjanID, firstNm, lastNm in the table in the view.
         $users = DB::table('users')
@@ -82,7 +53,6 @@ class WorkingHourController extends Controller
             ->where('jjanID', $currentJJANID)
         ;
 
-
         //
         $punchRecords = DB::table('punchRecords as records')
             //  ->join('users','records.jjanID','=','users.jjanID')
@@ -93,29 +63,19 @@ class WorkingHourController extends Controller
                 , 'records.punchDate'
                 , 'records.punchType'
                 , 'records.punchTypePairNo'
-            );
-
-        // dd($getJJANID);
+            )
+            ->where('records.punchDate', '>=', $startingDate)
+            ->where('records.punchDate', '<=', $endingDate);
 
         //set where Cluase with jjanID unless $getJJANID == '0'
 //        if ($getJJANID !== null and $getJJANID !== '0') {
 //            $users = $users->where('records.jjanID', $getJJANID);
-            $punchRecords = $punchRecords
-
-                ->where('records.punchDate', '>=', $startingDate)
-                ->where('records.punchDate', '<=', $endingDate);
-//        }
-
 
         if ($currentUrl === 'workingHours')
         {
             $punchRecords = $punchRecords->where('records.jjanID', $currentJJANID);
 
         }
-
-        //   $sql = new GeneralPurpose;
-        //   $sql = $sql->getSql($users);
-        //   dd($sql);
 
 
         // add searchByMemberName
@@ -142,6 +102,7 @@ class WorkingHourController extends Controller
         $startMealBreak02Array = [];
         $endMealBreak02Array = [];
 
+
         // get all the dates (Y-m-d) in between $startindDate through $endingDate (including startind Date and ending Date).
 
         // get all the days from $startingDate to $endingDate
@@ -150,6 +111,14 @@ class WorkingHourController extends Controller
         $dateRangeArray = $this->getDatesFromRange($startingDate, $endingDate);
 
         // looping users
+
+        $a = [];
+        foreach ($users as $user)
+        {
+            $a[] = $user->jjanID;
+        }
+
+        dd($a);
 
         foreach ($users as $user) {
 
@@ -317,7 +286,6 @@ class WorkingHourController extends Controller
             return view('workingHours.hourMain')
                 ->with(compact(
                         'users'
-                        //    , 'users2'
                         , 'currentUrl'
                         , 'getSearchPeriod'
                         , 'getJJANID'
