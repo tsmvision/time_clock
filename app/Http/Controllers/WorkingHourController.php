@@ -49,7 +49,6 @@ class WorkingHourController extends Controller
 
         $currentJJANID = AUTH::user()->jjanID;
 
-
         // change the search period using dropdown menu.
 
         //set the $getSearchPeriod manually for testing purpose.
@@ -59,8 +58,6 @@ class WorkingHourController extends Controller
         $startingDate = $searchPeriod['startingDate'];
         $endingDate = $searchPeriod['endingDate'];
 
-        $startingDate = '2016-12-01';
-        $endingDate = '2016-12-31';
 
         // for displaying jjanID, firstNm, lastNm in the table in the view.
         $users = DB::table('users')
@@ -111,76 +108,73 @@ class WorkingHourController extends Controller
                 $result[$user->jjanID][$date]= [
                     'jjanID' => $user->jjanID
                     , 'date' => $date
-                    , 'startWork' => 0
-                    , 'endWork' => 0
-                    , 'startMealBreak01' => 0
-                    , 'endMealBreak01' => 0
-                    , 'startMealBreak02' => 0
-                    , 'endMealBreak02' => 0
-                    , 'workMin' => 0
-                    , 'mealBreak01Min' => 0
-                    , 'mealBreak02Min' => 0
-                    , 'totalWorkingMin' => 0
-                    , 'totalWorkHour' => 0
+                    , 'startWork' => '0'
+                    , 'endWork' => '0'
+                    , 'startMealBreak01' => '0'
+                    , 'endMealBreak01' => '0'
+                    , 'startMealBreak02' => '0'
+                    , 'endMealBreak02' => '0'
+                    , 'workMin' => '0'
+                    , 'mealBreak01Min' => '0'
+                    , 'mealBreak02Min' => '0'
+                    , 'totalWorkingMin' => '0'
+                    , 'totalWorkHour' => '0'
                 ];
 
                 // Query -  get punch time for startWork for single day($date)
 
-                $date2 = '12-25-2016';
                 $query = $this->punchRecords($startingDate,$endingDate)
                     ->where('records.punchDate', $date2)
                     ->where('records.jjanID', $user->jjanID)
                     ->get();
 
-                dd($query->all());
-
-
-                //////////// += 쪽에 문제가 있음. 체크할 것.
+                ////////////
                 foreach( $query as $query1)
                 {
-                    if ($query1->startWork !== 0) $result[$user->jjanID][$date]['startWork'] = $query1->startWork;
-                    if ($query1->endWork !==0) $result[$user->jjanID][$date]['endWork'] = $query1->endWork;
-                    if ($query1->startMealBreak01 !==0)$result[$user->jjanID][$date]['startMealBreak01'] = $query1->startMealBreak01;
-                    if ($query1->endMealBreak01 !==0)$result[$user->jjanID][$date]['endMealBreak01'] = $query1->endMealBreak01;
-                    if ($query1->startMealBreak02 !==0)$result[$user->jjanID][$date]['startMealBreak02'] = $query1->startMealBreak02;
-                    if ($query1->endMealBreak01 !==0)$result[$user->jjanID][$date]['endMealBreak02'] = $query1->endMealBreak02;
+                    if ($query1->startWork !== '0') $result[$user->jjanID][$date]['startWork'] = $query1->startWork;
+                    if ($query1->endWork !== '0') $result[$user->jjanID][$date]['endWork'] = $query1->endWork;
+                    if ($query1->startMealBreak01 !== '0')$result[$user->jjanID][$date]['startMealBreak01'] = $query1->startMealBreak01;
+                    if ($query1->endMealBreak01 !== '0')$result[$user->jjanID][$date]['endMealBreak01'] = $query1->endMealBreak01;
+                    if ($query1->startMealBreak02 !== '0')$result[$user->jjanID][$date]['startMealBreak02'] = $query1->startMealBreak02;
+                    if ($query1->endMealBreak01 !== '0')$result[$user->jjanID][$date]['endMealBreak02'] = $query1->endMealBreak02;
                 }
-
 
 
                 // count as valid minutes only when StartWork and endWork, both of them punched.
 
-                /*
-                if ($result[$user->jjanID][$date]['startWork'] !== 0 and $result[$user->jjanID][$date]['endWork'] !== 0) {
-                    $workingMinutes[$user->jjanID][$date]['workMin'] = Carbon::parse($result[$user->jjanID][$date]['startWork'])
+
+
+                if ($result[$user->jjanID][$date]['startWork'] !== '0' and $result[$user->jjanID][$date]['endWork'] !== '0') {
+                    $result[$user->jjanID][$date]['workMin'] = Carbon::parse($result[$user->jjanID][$date]['startWork'])
                                                                         ->diffInMinutes(Carbon::parse($result[$user->jjanID][$date]['endWork']));
                 }
 
+
                 // if $startMealBreak01Array's value and $endMealBreak01Array's value exist then calculate otherwise set to 0.
-                if ($result[$user->jjanID][$date]['startMealBreak01'] !== 0 and $result[$user->jjanID][$date]['endMealBreak01'] !== 0) {
+                if ($result[$user->jjanID][$date]['startMealBreak01'] !== '0' and $result[$user->jjanID][$date]['endMealBreak01'] !== '0') {
                     $result[$user->jjanID][$date]['mealBreak01Min'] = Carbon::parse($result[$user->jjanID][$date]['startMealBreak01'])
                                                                         ->diffInMinutes(Carbon::parse($result[$user->jjanID][$date]['endMealBreak01']));
                 }
 
                 // if startMealBreak02 and endMealBreak02, both of them are not 0 then calculate the value, otherwise set to 0
-                if ($result[$user->jjanID][$date]['startMealBreak02'] !== 0 and $result[$user->jjanID][$date]['endMealBreak02'] !== 0) {
+                if ($result[$user->jjanID][$date]['startMealBreak02'] !== '0' and $result[$user->jjanID][$date]['endMealBreak02'] !== '0') {
                     $result[$user->jjanID][$date]['mealBreak02Min'] = Carbon::parse($result[$user->jjanID][$date]['startMealBreak02'])
                                                                         ->diffInMinutes(Carbon::parse($result[$user->jjanID][$date]['endMealBreak02']));
                 }
 
                 // if endWork - startWork != 0
-                if ($result[$user->jjanID][$date]['workMin'] !== 0)
+                if ($result[$user->jjanID][$date]['workMin'] !== '0')
                 {
                     $result[$user->jjanID][$date]['totalWorkingMin'] =
                         round(($result[$user->jjanID][$date] - $result[$user->jjanID][$date]['mealBreak01Min'] - $result[$user->jjanID][$date]['mealBreak01Min']), 2);
 
                 }
-*/
+
 
 
             }
 
-            dd($result);
+          //  dd($result);
             $result2 = collect($result)->where('jjanID',$user->jjanID);
 
 
@@ -188,6 +182,8 @@ class WorkingHourController extends Controller
 
             $totalWorkingHours[$user->jjanID] = ($result2->sum('workMin') - $result2->sum('mealBreakMin01') - $result2->sum('mealBreakMin02'));
         }
+
+        dd($result);
 
 
 
