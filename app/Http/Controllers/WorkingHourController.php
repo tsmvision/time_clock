@@ -18,7 +18,7 @@ class WorkingHourController extends Controller
 
     }
 
-    public function punchRecords($startingDate, $endingDate)
+    public function mainQuery($startingDate, $endingDate)
     {
         $punchRecords = DB::table('punchRecords as records')
             //  ->join('users','records.jjanID','=','users.jjanID')
@@ -115,12 +115,13 @@ class WorkingHourController extends Controller
 
         // create each days in between $startingDate and $endingDate
         $dateRangeArray = $this->getDatesFromRange($startingDate, $endingDate);
+        //
         $result = [];
+        //
         $result2 = [];
 
         // looping users
 
-        //  $i = 0;
         foreach ($users as $user) {
             $totalWorkingHours[$user->jjanID] = 0;
 
@@ -146,7 +147,7 @@ class WorkingHourController extends Controller
 
                 // Query -  get punch time for startWork for single day($date)
 
-                $query = $this->punchRecords($startingDate, $endingDate)
+                $query = $this->mainQuery($startingDate, $endingDate)
                     ->where('records.punchDate', $date2)
                     ->where('records.jjanID', $user->jjanID)
                     ->get();
