@@ -104,31 +104,16 @@ class WorkingHourController extends Controller
             ->get();
 
         //set where Cluase with jjanID unless $getJJANID == '0'
-//        if ($getJJANID !== null and $getJJANID !== '0') {
-//            $users = $users->where('records.jjanID', $getJJANID);
-
-        //    if ($currentUrl === 'workingHours') {
-        //        $punchRecords = $this->punchRecords($startingDate,$endingDate)
-        //            ->where('records.jjanID', $currentJJANID)
-        //            ->get();
-        //    }
+        if ($currentUrl == 'admin/workingHours') {
+            if ($getJJANID !== null and $getJJANID !== '0')
+                $users = $users->where('records.jjanID', $getJJANID);
+        }
 
         // add searchByMemberName
         //    $searchByMemberName = new GeneralPurpose;
-        //    $users = $searchByMemberName->searchByMemberName($users, $getMemberName);
+            $users = $this->searchByMemberName($users, $getMemberName);
 
-        // $sql = new GeneralPurpose;
-
-        // dd($sql->getSql($punchRecords));
-
-        // get all the dates (Y-m-d) in between $startindDate through $endingDate (including startind Date and ending Date).
-
-        // get all the days from $startingDate to $endingDate
-        // for example, if $startingDate = 2016-01-01, $endingDate = 2016-03-01, then create array as [2016-01-01, 2016-01-02 ... 2016-03-01].
-        //  $dateRangeArray = new GeneralPurpose;
-
-        // test data
-
+        // create each days in between $startingDate and $endingDate
         $dateRangeArray = $this->getDatesFromRange($startingDate, $endingDate);
         $result = [];
         $result2 = [];
