@@ -22,7 +22,7 @@
             <td> {{$user->jjanID}} </td>
             <td> {{$user->firstNm}} </td>
             <td> {{$user->lastNm}} </td>
-            <td> {{ $workingHourArray[$user->jjanID] }} hours </td>
+            <td> {{ $totalWorkingHours[$user->jjanID] }} hours </td>
 
         </tr>
     @endforeach

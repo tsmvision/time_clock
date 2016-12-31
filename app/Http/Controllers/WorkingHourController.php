@@ -31,7 +31,7 @@ class WorkingHourController extends Controller
                 ,DB::raw("(case when punchType=3 and punchTypePairNo =1 then punchTime end) as startMealBreak01")
                 ,DB::raw("(case when punchType=4 and punchTypePairNo =1 then punchTime end) as endMealBreak01")
                 ,DB::raw("(case when punchType=3 and punchTypePairNo =2 then punchTime end) as startMealBreak02")
-                ,DB::raw("(case when punchType=4 and punchTypePairNo =2 then punchTime end) as endMealBreak03")
+                ,DB::raw("(case when punchType=4 and punchTypePairNo =2 then punchTime end) as endMealBreak02")
             )
             ->where('records.punchDate', '>=', $startingDate)
             ->where('records.punchDate', '<=', $endingDate);
@@ -47,10 +47,6 @@ class WorkingHourController extends Controller
         $getJJANID = $request->input('getJJANID');
         $getMemberName = $request->input('getMemberName');
 
-        // initiate $startindDate and $endingDate
-        $startingDate = 0;
-        $endingDate = 0;
-
         $currentJJANID = AUTH::user()->jjanID;
 
 
@@ -63,6 +59,8 @@ class WorkingHourController extends Controller
         $startingDate = $searchPeriod['startingDate'];
         $endingDate = $searchPeriod['endingDate'];
 
+        $startingDate = '2016-12-01';
+        $endingDate = '2016-12-31';
 
         // for displaying jjanID, firstNm, lastNm in the table in the view.
         $users = DB::table('users')
@@ -74,9 +72,6 @@ class WorkingHourController extends Controller
             ->where('jjanID', $currentJJANID)
             ->get();
 
-
-
-
         //set where Cluase with jjanID unless $getJJANID == '0'
 //        if ($getJJANID !== null and $getJJANID !== '0') {
 //            $users = $users->where('records.jjanID', $getJJANID);
@@ -86,7 +81,6 @@ class WorkingHourController extends Controller
                 ->where('records.jjanID', $currentJJANID)
                 ->get();
         }
-
 
         // add searchByMemberName
         //    $searchByMemberName = new GeneralPurpose;
@@ -107,6 +101,7 @@ class WorkingHourController extends Controller
         // looping users
 
         foreach ($users as $user) {
+            $totalWorkingHours[$user->jjanID] = 0;
 
             foreach ($dateRangeArray as $index => $date) {
 
@@ -136,20 +131,21 @@ class WorkingHourController extends Controller
                     ->get();
 
 
+                //////////// += 쪽에 문제가 있음. 체크할 것.
                 foreach( $query as $query1)
                 {
-                    $result[$user->jjanID][$date]['startWork'] = $query1->startWork;
-                    $result[$user->jjanID][$date]['endWork'] = $query1->endWork;
-                    $result[$user->jjanID][$date]['startMealBreak01'] = $query1->startMealBreak01;
-                    $result[$user->jjanID][$date]['endMealBreak01'] = $query1->endMealBreak01;
-                    $result[$user->jjanID][$date]['startMealBreak02'] = $query1->startMealBreak02;
-                    $result[$user->jjanID][$date]['endMealBreak02'] = $query1->endMealBreak02;
+                    $result[$user->jjanID][$date]['startWork'] += $query1->startWork;
+                    $result[$user->jjanID][$date]['endWork'] += $query1->endWork;
+                    $result[$user->jjanID][$date]['startMealBreak01'] += $query1->startMealBreak01;
+                    $result[$user->jjanID][$date]['endMealBreak01'] += $query1->endMealBreak01;
+                    $result[$user->jjanID][$date]['startMealBreak02'] += $query1->startMealBreak02;
+                    $result[$user->jjanID][$date]['endMealBreak02'] += $query1->endMealBreak02;
                 }
 
                 // count as valid minutes only when StartWork and endWork, both of them punched.
 
-                if ($result[$user->jjanID][$date] !== 0 and $result[$user->jjanID][$date] !== 0) {
-                    $workingMinutes[$user->jjanID][$date]['workMin'] = Carbon::parse($result[$user->jjanID][$date2]['startWork'])
+                if ($result[$user->jjanID][$date]['startWork'] !== 0 and $result[$user->jjanID][$date]['endWork'] !== 0) {
+                    $workingMinutes[$user->jjanID][$date]['workMin'] = Carbon::parse($result[$user->jjanID][$date]['startWork'])
                                                                         ->diffInMinutes(Carbon::parse($result[$user->jjanID][$date]['endWork']));
                 }
 
@@ -172,10 +168,21 @@ class WorkingHourController extends Controller
                         round(($result[$user->jjanID][$date] - $result[$user->jjanID][$date]['mealBreak01Min'] - $result[$user->jjanID][$date]['mealBreak01Min']), 2);
 
                 }
+
+
+
             }
+
+            dd($result);
             $result2 = collect($result)->where('jjanID',$user->jjanID);
-            $totalWorkingHours[$user->jjanID] = $result2->sum('workMin') - $result2->sum('mealBreakMin01') - $result2->sum('mealBreakMin02');
+
+
+
+
+            $totalWorkingHours[$user->jjanID] = ($result2->sum('workMin') - $result2->sum('mealBreakMin01') - $result2->sum('mealBreakMin02'));
         }
+
+
 
 
 
