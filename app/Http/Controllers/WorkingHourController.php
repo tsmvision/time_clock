@@ -26,12 +26,12 @@ class WorkingHourController extends Controller
             ->select(
                 'jjanID'
                 ,'punchDate'
-                ,DB::raw("(case when punchType=1 THEN punchTime END) as startWork")
-                ,DB::raw("(case when punchType=2 then punchTime end) as endWork")
-                ,DB::raw("(case when punchType=3 and punchTypePairNo =1 then punchTime end) as startMealBreak01")
-                ,DB::raw("(case when punchType=4 and punchTypePairNo =1 then punchTime end) as endMealBreak01")
-                ,DB::raw("(case when punchType=3 and punchTypePairNo =2 then punchTime end) as startMealBreak02")
-                ,DB::raw("(case when punchType=4 and punchTypePairNo =2 then punchTime end) as endMealBreak02")
+                ,DB::raw("(CASE WHEN punchType=1 THEN punchTime ELSE 0 END) as startWork")
+                ,DB::raw("(CASE WHEN punchType=2 THEN punchTime ELSE 0 END) as endWork")
+                ,DB::raw("(CASE WHEN punchType=3 and punchTypePairNo =1 THEN punchTime ELSE 0 END) as startMealBreak01")
+                ,DB::raw("(CASE WHEN punchType=4 and punchTypePairNo =1 THEN punchTime ELSE 0 END) as endMealBreak01")
+                ,DB::raw("(CASE WHEN punchType=3 and punchTypePairNo =2 THEN punchTime ELSE 0 END) as startMealBreak02")
+                ,DB::raw("(CASE WHEN punchType=4 and punchTypePairNo =2 THEN punchTime ELSE 0 END) as endMealBreak02")
             )
             ->where('records.punchDate', '>=', $startingDate)
             ->where('records.punchDate', '<=', $endingDate);
@@ -134,12 +134,12 @@ class WorkingHourController extends Controller
                 //////////// += 쪽에 문제가 있음. 체크할 것.
                 foreach( $query as $query1)
                 {
-                    $result[$user->jjanID][$date]['startWork'] += $query1->startWork;
-                    $result[$user->jjanID][$date]['endWork'] += $query1->endWork;
-                    $result[$user->jjanID][$date]['startMealBreak01'] += $query1->startMealBreak01;
-                    $result[$user->jjanID][$date]['endMealBreak01'] += $query1->endMealBreak01;
-                    $result[$user->jjanID][$date]['startMealBreak02'] += $query1->startMealBreak02;
-                    $result[$user->jjanID][$date]['endMealBreak02'] += $query1->endMealBreak02;
+                    if ($query->startWork !== 0) $result[$user->jjanID][$date]['startWork'] = $query1->startWork;
+                    if ($query1->endWork !==0) $result[$user->jjanID][$date]['endWork'] = $query1->endWork;
+                    if ($query1->startMealBreak01 !==0)$result[$user->jjanID][$date]['startMealBreak01'] = $query1->startMealBreak01;
+                    if ($query1->endMealBreak01 !==0)$result[$user->jjanID][$date]['endMealBreak01'] = $query1->endMealBreak01;
+                    if ($query1->startMealBreak02 !==0)$result[$user->jjanID][$date]['startMealBreak02'] = $query1->startMealBreak02;
+                    if ($query1->endMealBreak01 !==0)$result[$user->jjanID][$date]['endMealBreak02'] = $query1->endMealBreak02;
                 }
 
                 // count as valid minutes only when StartWork and endWork, both of them punched.
