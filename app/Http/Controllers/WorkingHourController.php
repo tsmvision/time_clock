@@ -125,10 +125,14 @@ class WorkingHourController extends Controller
                 ];
 
                 // Query -  get punch time for startWork for single day($date)
+
+                $date2 = '12-25-2016';
                 $query = $this->punchRecords($startingDate,$endingDate)
                     ->where('records.punchDate', $date2)
                     ->where('records.jjanID', $user->jjanID)
                     ->get();
+
+                dd($query->all());
 
 
                 //////////// += 쪽에 문제가 있음. 체크할 것.
