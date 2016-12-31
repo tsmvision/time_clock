@@ -26,7 +26,7 @@ class WorkingHourController extends Controller
             ->select(
                 'jjanID'
                 ,'punchDate'
-                ,DB::raw("(CASE WHEN punchType=1 THEN punchTime ELSE 0 END) as startWork")
+                ,DB::raw("(CASE WHEN punchType=1 THEN punchTime ELSE 0 END) as startWork")  // 0 is character
                 ,DB::raw("(CASE WHEN punchType=2 THEN punchTime ELSE 0 END) as endWork")
                 ,DB::raw("(CASE WHEN punchType=3 and punchTypePairNo =1 THEN punchTime ELSE 0 END) as startMealBreak01")
                 ,DB::raw("(CASE WHEN punchType=4 and punchTypePairNo =1 THEN punchTime ELSE 0 END) as endMealBreak01")
@@ -108,67 +108,66 @@ class WorkingHourController extends Controller
                 $result[$user->jjanID][$date]= [
                     'jjanID' => $user->jjanID
                     , 'date' => $date
-                    , 'startWork' => '0'
-                    , 'endWork' => '0'
-                    , 'startMealBreak01' => '0'
-                    , 'endMealBreak01' => '0'
-                    , 'startMealBreak02' => '0'
-                    , 'endMealBreak02' => '0'
-                    , 'workMin' => '0'
-                    , 'mealBreak01Min' => '0'
-                    , 'mealBreak02Min' => '0'
-                    , 'totalWorkingMin' => '0'
-                    , 'totalWorkHour' => '0'
+                    , 'startWork' => 0
+                    , 'endWork' => 0
+                    , 'startMealBreak01' => 0
+                    , 'endMealBreak01' => 0
+                    , 'startMealBreak02' => 0
+                    , 'endMealBreak02' => 0
+                    , 'workMin' => 0
+                    , 'mealBreak01Min' => 0
+                    , 'mealBreak02Min' => 0
+                    , 'totalWorkingMin' => 0
+                    , 'totalWorkHour' => 0
                 ];
 
                 // Query -  get punch time for startWork for single day($date)
 
-                $query = $this->punchRecords($startingDate,$endingDate)
-                    ->where('records.punchDate', $date2)
-                    ->where('records.jjanID', $user->jjanID)
-                    ->get();
+            //    $query = $this->punchRecords($startingDate,$endingDate)
+            //        ->where('records.punchDate', $date2)
+            //        ->where('records.jjanID', $user->jjanID)
+            //        ->get();
 
-                ////////////
-                foreach( $query as $query1)
-                {
-                    if ($query1->startWork !== '0') $result[$user->jjanID][$date]['startWork'] = $query1->startWork;
-                    if ($query1->endWork !== '0') $result[$user->jjanID][$date]['endWork'] = $query1->endWork;
-                    if ($query1->startMealBreak01 !== '0')$result[$user->jjanID][$date]['startMealBreak01'] = $query1->startMealBreak01;
-                    if ($query1->endMealBreak01 !== '0')$result[$user->jjanID][$date]['endMealBreak01'] = $query1->endMealBreak01;
-                    if ($query1->startMealBreak02 !== '0')$result[$user->jjanID][$date]['startMealBreak02'] = $query1->startMealBreak02;
-                    if ($query1->endMealBreak01 !== '0')$result[$user->jjanID][$date]['endMealBreak02'] = $query1->endMealBreak02;
-                }
+            //    ////////////
+            //    foreach( $query as $query1)
+           //     {
+                //    if ($query1->startWork !== '0') {$result[$user->jjanID][$date]['startWork'] = $query1->startWork;}
+                //    if ($query1->endWork !== '0') $result[$user->jjanID][$date]['endWork'] = $query1->endWork;
+                //    if ($query1->startMealBreak01 !== '0')$result[$user->jjanID][$date]['startMealBreak01'] = $query1->startMealBreak01;
+                //    if ($query1->endMealBreak01 !== '0')$result[$user->jjanID][$date]['endMealBreak01'] = $query1->endMealBreak01;
+                //    if ($query1->startMealBreak02 !== '0')$result[$user->jjanID][$date]['startMealBreak02'] = $query1->startMealBreak02;
+                //    if ($query1->endMealBreak01 !== '0')$result[$user->jjanID][$date]['endMealBreak02'] = $query1->endMealBreak02;
+             //   }
 
 
                 // count as valid minutes only when StartWork and endWork, both of them punched.
 
 
 
-                if ($result[$user->jjanID][$date]['startWork'] !== '0' and $result[$user->jjanID][$date]['endWork'] !== '0') {
-                    $result[$user->jjanID][$date]['workMin'] = Carbon::parse($result[$user->jjanID][$date]['startWork'])
+        //        if ($result[$user->jjanID][$date]['startWork'] !== 0 and $result[$user->jjanID][$date]['endWork'] !== 0) {
+        //            $result[$user->jjanID][$date]['workMin'] = Carbon::parse($result[$user->jjanID][$date]['startWork'])
                                                                         ->diffInMinutes(Carbon::parse($result[$user->jjanID][$date]['endWork']));
-                }
-
+        //        }
 
                 // if $startMealBreak01Array's value and $endMealBreak01Array's value exist then calculate otherwise set to 0.
-                if ($result[$user->jjanID][$date]['startMealBreak01'] !== '0' and $result[$user->jjanID][$date]['endMealBreak01'] !== '0') {
-                    $result[$user->jjanID][$date]['mealBreak01Min'] = Carbon::parse($result[$user->jjanID][$date]['startMealBreak01'])
+        //        if ($result[$user->jjanID][$date]['startMealBreak01'] !== 0 and $result[$user->jjanID][$date]['endMealBreak01'] !== 0) {
+        //            $result[$user->jjanID][$date]['mealBreak01Min'] = Carbon::parse($result[$user->jjanID][$date]['startMealBreak01'])
                                                                         ->diffInMinutes(Carbon::parse($result[$user->jjanID][$date]['endMealBreak01']));
-                }
+        //        }
 
                 // if startMealBreak02 and endMealBreak02, both of them are not 0 then calculate the value, otherwise set to 0
-                if ($result[$user->jjanID][$date]['startMealBreak02'] !== '0' and $result[$user->jjanID][$date]['endMealBreak02'] !== '0') {
-                    $result[$user->jjanID][$date]['mealBreak02Min'] = Carbon::parse($result[$user->jjanID][$date]['startMealBreak02'])
+       //         if ($result[$user->jjanID][$date]['startMealBreak02'] !== '0' and $result[$user->jjanID][$date]['endMealBreak02'] !== '0') {
+       //             $result[$user->jjanID][$date]['mealBreak02Min'] = Carbon::parse($result[$user->jjanID][$date]['startMealBreak02'])
                                                                         ->diffInMinutes(Carbon::parse($result[$user->jjanID][$date]['endMealBreak02']));
-                }
+       //         }
 
                 // if endWork - startWork != 0
-                if ($result[$user->jjanID][$date]['workMin'] !== '0')
-                {
-                    $result[$user->jjanID][$date]['totalWorkingMin'] =
-                        round(($result[$user->jjanID][$date] - $result[$user->jjanID][$date]['mealBreak01Min'] - $result[$user->jjanID][$date]['mealBreak01Min']), 2);
+            //    if ($result[$user->jjanID][$date]['workMin'] !== '0' and )
+            //    {
+            //        $result[$user->jjanID][$date]['totalWorkingMin'] =
+            //            round(($result[$user->jjanID][$date] - $result[$user->jjanID][$date]['mealBreak01Min'] - $result[$user->jjanID][$date]['mealBreak01Min']), 2);
 
-                }
+            //    }
 
 
 
