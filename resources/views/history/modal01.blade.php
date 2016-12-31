@@ -7,16 +7,32 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Do you want to punch now?</h4>
+                    <h4 class="modal-title">Modify history</h4>
                 </div>
                 <div class="modal-body">
-                    <p>
-                        <button type="button" class="btn btn-danger" href="{{url('history/update')}}"
-                                name="updateID" id="updateID" value="{{$history1->id}}">Proceed to update
-                        </button>
-                    </p>
+                    <div class="form-group">
+                        JJAN ID: {{$history1->jjanID}}
+                    </div>
+                    <div class="form-group">
+                        First Name: {{$history1->firstNm}}
+                    </div>
+                    <div class="form-group">
+                        Last Name: {{$history1->lastNm}}
+                    </div>
+                    <div class="form-group">
+                        Punch Type: {{$history1->punchType}}
+                    </div>
+                    <div class="form-group">
+                        Punched Date: {{\Carbon\Carbon::parse($history1->punchDate)->format('m/d/Y')}}
+                    </div>
+                    <div class="form-group">
+                        Punched Time: {{\Carbon\Carbon::parse($history1->punchTime)->format('h:i a')}}
+                    </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" href="{{url('history/update')}}"
+                            name="updateID" id="updateID" value="{{$history1->id}}">Proceed to update
+                    </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </div>

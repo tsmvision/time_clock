@@ -16,4 +16,5 @@
     @include('history.contents01')
 @endsection
 
-@include('history.modal')
+@include('history.modal01')
+

@@ -22,7 +22,7 @@
             <div class="form-group">
                 <a type='button' class="btn btn-lg btn-primary" data-toggle="modal" data-target="#startMeal"
                    role="button">
-                    Leave Office temporarily
+                    Leave Office
                     </a>
             </div>
             <div class="form-group">

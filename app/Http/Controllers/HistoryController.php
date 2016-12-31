@@ -32,6 +32,18 @@ class HistoryController extends Controller
         ];
     }
 
+    public function punchTypeName($punchType)
+    {
+        $punchTypeName = '';
+
+        if ($punchType === 1) $punchTypeName = 'Starting Work';
+        elseif ($punchType === 2 ) $punchTypeName = 'Ending Work';
+        elseif ($punchType === 3 ) $punchTypeName = 'Leave Office';
+        elseif ($punchType === 4) $punchTypeName = 'Back to Office';
+
+        return $punchTypeName;
+    }
+
     public function punchNow(Request $request, $punchType)
     {
         $request->flash();
