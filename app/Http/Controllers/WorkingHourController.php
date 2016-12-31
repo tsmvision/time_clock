@@ -95,10 +95,11 @@ class WorkingHourController extends Controller
         $endingDate = '20161231';
 
         $dateRangeArray = $this->getDatesFromRange($startingDate, $endingDate);
-        $result = collect([]);
+        $result = [];
 
         // looping users
 
+      //  $i = 0;
         foreach ($users as $user) {
             $totalWorkingHours[$user->jjanID] = 0;
 
@@ -106,7 +107,7 @@ class WorkingHourController extends Controller
 
                 // convert date format from Ymd to Y-m-d to fit the MariaDB date format.
                 $date2 = Carbon::parse($date)->format('Y-m-d');
-/*
+
                 $result[$user->jjanID][$date]= [
                     'jjanID' => $user->jjanID
                     , 'date' => $date
@@ -122,22 +123,6 @@ class WorkingHourController extends Controller
                     , 'totalWorkingMin' => 0
                     , 'totalWorkHour' => 0
                 ];
-*/
-                $result->push([
-                    'jjanID' => $user->jjanID
-                    , 'date' => $date
-                    , 'startWork' => 0
-                    , 'endWork' => 0
-                    , 'startMealBreak01' => 0
-                    , 'endMealBreak01' => 0
-                    , 'startMealBreak02' => 0
-                    , 'endMealBreak02' => 0
-                    , 'workMin' => 0
-                    , 'mealBreak01Min' => 0
-                    , 'mealBreak02Min' => 0
-                    , 'totalWorkingMin' => 0
-                    , 'totalWorkHour' => 0
-                ]);
 
                 // Query -  get punch time for startWork for single day($date)
 
@@ -149,35 +134,24 @@ class WorkingHourController extends Controller
             // add the values to result if the value is not '0' from query
                 foreach( $query as $query1)
                 {
+
                     if ($query1->startWork !== '0')
-                        $result->where('jjanID',$user->jjanID)
-                            ->where('date',$date)
-                            ->put('startWork',$query1->startWork);
+                        $result[$user->jjanID][$date]['startWork'] = $query1->startWork;
 
                     if ($query1->endWork !== '0')
-                        $result->where('jjanID',$user->jjanID)
-                            ->where('date',$date)
-                            ->put('endWork',$query1->endWork);
+                        $result[$user->jjanID][$date]['endWork'] = $query1->endWork;
 
                     if ($query1->startMealBreak01 !== '0')
-                        $result->where('jjanID',$user->jjanID)
-                            ->where('date',$date)
-                            ->put('startMealBreak01',$query1->startMealBreak01);
+                        $result[$user->jjanID][$date]['startMealBreak']= $query1->startMealBreak01;
 
                     if ($query1->endMealBreak01 !== '0')
-                        $result->where('jjanID',$user->jjanID)
-                            ->where('date',$date)
-                            ->put('endMealBreak01',$query1->endMealBreak01);
+                        $result[$user->jjanID][$date]['endMealBreak01'] = $query1->endMealBreak01;
 
                     if ($query1->startMealBreak02 !== '0')
-                        $result->where('jjanID',$user->jjanID)
-                            ->where('date',$date)
-                            ->put('startMealBreak02',$query1->startMealBreak02);
+                        $result[$user->jjanID][$date]['startMealBreak02'] = $query1->startMealBreak02;
 
                     if ($query1->endMealBreak02 !== '0')
-                        $result->where('jjanID',$user->jjanID)
-                            ->where('date',$date)
-                            ->put('endtMealBreak02',$query1->endMealBreak02);
+                        $result[$user->jjanID][$date]['endMealBreak02'] = $query1->endMealBreak02;
                 }
 
                 // count as valid minutes only when StartWork and endWork, both of them punched.
@@ -215,12 +189,9 @@ class WorkingHourController extends Controller
 */
             }
 
+         //   $i++;
             dd($result);
-            $result2 = collect($result[$user->jjanID]);
-
-
-
-
+            //$result2 = collect($result[$user->jjanID]);
 
 
         //    $totalWorkingHours[$user->jjanID] = ($result2->sum('workMin') - $result2->sum('mealBreakMin01') - $result2->sum('mealBreakMin02'));
