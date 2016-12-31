@@ -134,7 +134,7 @@ class WorkingHourController extends Controller
                 //////////// += 쪽에 문제가 있음. 체크할 것.
                 foreach( $query as $query1)
                 {
-                    if ($query->startWork !== 0) $result[$user->jjanID][$date]['startWork'] = $query1->startWork;
+                    if ($query1->startWork !== 0) $result[$user->jjanID][$date]['startWork'] = $query1->startWork;
                     if ($query1->endWork !==0) $result[$user->jjanID][$date]['endWork'] = $query1->endWork;
                     if ($query1->startMealBreak01 !==0)$result[$user->jjanID][$date]['startMealBreak01'] = $query1->startMealBreak01;
                     if ($query1->endMealBreak01 !==0)$result[$user->jjanID][$date]['endMealBreak01'] = $query1->endMealBreak01;
@@ -142,8 +142,11 @@ class WorkingHourController extends Controller
                     if ($query1->endMealBreak01 !==0)$result[$user->jjanID][$date]['endMealBreak02'] = $query1->endMealBreak02;
                 }
 
+
+
                 // count as valid minutes only when StartWork and endWork, both of them punched.
 
+                /*
                 if ($result[$user->jjanID][$date]['startWork'] !== 0 and $result[$user->jjanID][$date]['endWork'] !== 0) {
                     $workingMinutes[$user->jjanID][$date]['workMin'] = Carbon::parse($result[$user->jjanID][$date]['startWork'])
                                                                         ->diffInMinutes(Carbon::parse($result[$user->jjanID][$date]['endWork']));
@@ -168,7 +171,7 @@ class WorkingHourController extends Controller
                         round(($result[$user->jjanID][$date] - $result[$user->jjanID][$date]['mealBreak01Min'] - $result[$user->jjanID][$date]['mealBreak01Min']), 2);
 
                 }
-
+*/
 
 
             }
