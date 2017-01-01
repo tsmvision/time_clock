@@ -254,6 +254,7 @@ class WorkingHourController extends Controller
         }
     }
 
+    /*
     public function showListTest(Request $request)
     {
         $request->flash();
@@ -854,6 +855,7 @@ class WorkingHourController extends Controller
                 )
             );
     }
+    */
 
     public
     function update($id)
