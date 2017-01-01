@@ -247,7 +247,7 @@ class WorkingHourController extends Controller
                         , 'getSearchPeriod'
                         , 'getJJANID'
                         , 'getMemberName'
-                        , 'workingHourArray'
+                        , 'result'
                         , 'totalWorkingHours'
                     )
                 );
