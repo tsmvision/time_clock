@@ -107,6 +107,14 @@ class WorkingHourController extends Controller
         if ($currentUrl == 'admin/workingHours') {
             if ($getJJANID !== null and $getJJANID !== '0')
                 $users = $users->where('records.jjanID', $getJJANID);
+
+            $users2 = DB::table('users')
+                ->select(
+                    'users.jjanID'
+                    , 'users.firstNm'
+                    , 'users.lastNm'
+                )
+                ->get();
         }
 
         // add searchByMemberName

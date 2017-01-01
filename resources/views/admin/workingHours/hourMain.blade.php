@@ -9,15 +9,15 @@
 @endsection
 
 @section('message')
-    @include('workingHours.message')
+    @include('admin.workingHours.message')
 @endsection
 
 @section('searchBox')
-    @include('workingHours.searchBox')
+    @include('admin.workingHours.searchBox')
 @endsection
 
 @section('contents01')
-    @include('workingHours.contents01')
+    @include('admin.workingHours.contents01')
 @endsection
 
 {{--@include('workingHours.modal')--}}
