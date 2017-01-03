@@ -8,6 +8,7 @@
         <th> JJAN ID</th>
         <th> Firstname</th>
         <th> Lastname</th>
+        <th></th>
 
     </tr>
     </thead>
@@ -19,6 +20,10 @@
             <td> {{$user->jjanID}} </td>
             <td> {{$user->firstNm}} </td>
             <td> {{$user->lastNm}} </td>
+            <td>
+                <a type='button' class="btn btn-lg btn-primary btn-sm" data-toggle="modal" data-target="#modify" role="button"> Modify</a>
+                <a type='button' class="btn btn-lg btn-danger btn-sm" data-toggle="modal" data-target="#delete" role="button"> Delete</a>
+            </td>
 
 
         </tr>

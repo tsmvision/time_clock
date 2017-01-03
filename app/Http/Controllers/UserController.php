@@ -27,6 +27,7 @@ class UserController extends Controller
         $getMemberName = $request->input('getMemberName');
 
         $currentUser = Auth::user()->jjanID;
+        $currentUserName = $this->currentUserName($currentUser);
 
         $users = DB::table('users')
             ->select(
@@ -52,6 +53,7 @@ class UserController extends Controller
                     'users'
                     , 'users2'
                     , 'currentUser'
+                    , 'currentUserName'
                     , 'currentUrl'
                     , 'getJJANID'
                     , 'getMemberName'

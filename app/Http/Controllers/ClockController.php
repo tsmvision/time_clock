@@ -11,6 +11,7 @@ use App\GeneralPurpose\GeneralPurpose;
 
 class clockController extends Controller
 {
+    use GeneralPurpose;
 
     public $dateTime;
     public $currentTime;
@@ -30,10 +31,13 @@ class clockController extends Controller
         $currentUrl = $request->path();
         $currentUser = AUTH::user()->jjanID;
 
+        $currentUserName = $this->currentUserName($currentUser);
+
         return view('clock.clockMain')
             ->with(
                 compact('currentUrl'
                         ,'currentUser'
+                        ,'currentUserName'
                         )
             );
     }

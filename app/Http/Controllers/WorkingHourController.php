@@ -83,7 +83,8 @@ class WorkingHourController extends Controller
         $getJJANID = $request->input('getJJANID');
         $getMemberName = $request->input('getMemberName');
 
-        $currentJJANID = AUTH::user()->jjanID;
+        $currentUser = AUTH::user()->jjanID;
+        $currentUserName = $this->currentUserName($currentUser);
 
         // change the search period using dropdown menu.
 
@@ -99,7 +100,7 @@ class WorkingHourController extends Controller
                 , 'users.firstNm'
                 , 'users.lastNm'
             )
-            ->where('jjanID', $currentJJANID)
+            ->where('jjanID', $currentUser)
             ->get();
 
         //set where Cluase with jjanID unless $getJJANID == '0'
@@ -223,10 +224,10 @@ class WorkingHourController extends Controller
         }
 
         // for workingHours for general user
-        if ($currentUrl === 'workingHours') {
             return view('workingHours.hourMain')
                 ->with(compact(
                         'users'
+                        , 'currentUserName'
                         , 'currentUrl'
                         , 'getSearchPeriod'
                         , 'getJJANID'
@@ -235,21 +236,7 @@ class WorkingHourController extends Controller
                         , 'totalWorkingHours'
                     )
                 );
-        } // for workingHours for admin.
-        elseif ($currentUrl === 'admin/workingHours') {
-            return view('admin.workingHours.hourMain')
-                ->with(compact(
-                        'users'
-                        , 'users2'
-                        , 'currentUrl'
-                        , 'getSearchPeriod'
-                        , 'getJJANID'
-                        , 'getMemberName'
-                        , 'result'
-                        , 'totalWorkingHours'
-                    )
-                );
-        }
+
     }
 
     public function adminShowList(Request $request)
@@ -260,7 +247,8 @@ class WorkingHourController extends Controller
         $getJJANID = $request->input('getJJANID');
         $getMemberName = $request->input('getMemberName');
 
-        $currentJJANID = AUTH::user()->jjanID;
+        $currentUser = AUTH::user()->jjanID;
+        $currentUserName = $this->currentUserName($currentUser);
 
         // change the search period using dropdown menu.
 
@@ -403,6 +391,7 @@ class WorkingHourController extends Controller
             ->with(compact(
                     'users'
                     , 'users2'
+                    , 'currentUserName'
                     , 'currentUrl'
                     , 'getSearchPeriod'
                     , 'getJJANID'

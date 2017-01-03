@@ -13,6 +13,8 @@ use DateTime;
 use DateInterval;
 use DatePeriod;
 use Illuminate\Support\Facades\Auth;
+use DB;
+
 
 trait GeneralPurpose
 {
@@ -137,6 +139,21 @@ trait GeneralPurpose
 
         return $result;
 
+    }
+
+    public function currentUserName($jjanID){
+        $user = DB::table('users')
+                ->where('jjanID',$jjanID)
+                ->select('firstNm','lastNm')
+                ->get()
+                ;
+
+        $userName = [];
+        foreach ($user as $user1) {
+            $userName['firstNm'] = $user1->firstNm;
+            $userName['lastNm'] = $user1->lastNm;
+        }
+        return $userName;
     }
 
 
