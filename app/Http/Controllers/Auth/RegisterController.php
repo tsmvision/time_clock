@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
-    //use GeneralPurpose;
+  //  use GeneralPurpose;
     /*
     |--------------------------------------------------------------------------
     | Register Controller

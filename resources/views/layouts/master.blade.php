@@ -35,7 +35,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li> <a href="#">{{$currentUserName['firstNm']}} {{$currentUserName['lastNm']}}</a> </li>
+                    <li> <a href="#">@yield('currentUserName')</a> </li>
                         <li> <a href="{{ url('/logout') }}">Logout</a> </li>
                 </ul>
             </div><!--/.nav-collapse -->
