@@ -1,5 +1,9 @@
 @extends('layouts.master')
 
+@section('currentUserName')
+    {{$currentUserName['firstNm']}} {{$currentUserName['lastNm']}}
+@endsection
+
 @section('mainTabs')
     @include('mainTabs')
 @endsection
