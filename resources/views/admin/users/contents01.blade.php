@@ -1,6 +1,6 @@
 <!-- Main component for a primary marketing message or call to action -->
 
-<h2>Working Hours</h2>
+<h3>Users</h3>
 <table class="table table-responsive table-striped">
     <thead>
     <tr>
