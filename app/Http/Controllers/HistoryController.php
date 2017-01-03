@@ -159,7 +159,7 @@ class HistoryController extends Controller
         $getMemberName = $request->input('getMemberName');
 
         $currentUser = Auth::user()->jjanID;
-        $currentUserType = $this->currentUserType($currentUser);
+        $currentUserInfo = $this->currentUserType($currentUser);
 
         //$startingDate = 0;
         //$endingDate = 0;
@@ -214,7 +214,7 @@ class HistoryController extends Controller
                     //  'users2'
                         'history'
                         , 'currentUrl'
-                        , 'currentUserType'
+                        , 'currentUserInfo'
                         , 'getSearchPeriod'
                         , 'getJJANID'
                         , 'getMemberName'
@@ -254,7 +254,7 @@ class HistoryController extends Controller
         return view('admin.history.historyMain')
             ->with(compact(
                   'users2'
-                    , 'currentUserType'
+                    , 'currentUserInfo'
                     ,'history'
                     , 'currentUrl'
                     , 'getSearchPeriod'
