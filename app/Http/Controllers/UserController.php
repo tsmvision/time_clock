@@ -38,7 +38,7 @@ class UserController extends Controller
             ->get();
 
         // for dropdown menu
-        $userss = DB::table('users')
+        $users2 = DB::table('users')
             ->select(
                 'users.jjanID'
                 , 'users.firstNm'

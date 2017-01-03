@@ -5,11 +5,9 @@
     <thead>
     <tr>
         <th>#</th>
-        <th> Period</th>
         <th> JJAN ID</th>
         <th> Firstname</th>
         <th> Lastname</th>
-        <th> Working Hours </th>
 
     </tr>
     </thead>
@@ -18,11 +16,10 @@
     @foreach($users as $user)
         <tr>
             <td> {{$count++}} </td>
-            <td> @if ($getSearchPeriod == null) Today @else {{$getSearchPeriod}} @endif</td>
             <td> {{$user->jjanID}} </td>
             <td> {{$user->firstNm}} </td>
             <td> {{$user->lastNm}} </td>
-            <td> {{$totalWorkingHours[$user->jjanID] }} hours </td>
+
 
         </tr>
     @endforeach
