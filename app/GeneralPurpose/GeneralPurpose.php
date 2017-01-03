@@ -141,20 +141,22 @@ trait GeneralPurpose
 
     }
 
-    public function currentUserName($jjanID){
+    public function currentUserInfo($jjanID){
         $user = DB::table('users')
                 ->where('jjanID',$jjanID)
-                ->select('firstNm','lastNm')
+                ->select('firstNm','lastNm','userType')
                 ->get()
                 ;
 
         $userName = [];
         foreach ($user as $user1) {
-            $userName['firstNm'] = $user1->firstNm;
-            $userName['lastNm'] = $user1->lastNm;
+            $userInfo['firstNm'] = $user1->firstNm;
+            $userInfo['lastNm'] = $user1->lastNm;
+            $userInfo['userType'] = $user1->userType;
         }
         return $userName;
     }
+
 
 
 
