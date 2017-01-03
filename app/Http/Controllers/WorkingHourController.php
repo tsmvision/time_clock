@@ -427,7 +427,6 @@ class WorkingHourController extends Controller
 
         $punchRecord->delete();
 
-
         return redirect('/history/list')->with('message', 'deleted!');
     }
 }
