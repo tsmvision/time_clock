@@ -6,9 +6,11 @@ use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
+//use App\GeneralPurpose\GeneralPurpose;
 
 class RegisterController extends Controller
 {
+    //use GeneralPurpose;
     /*
     |--------------------------------------------------------------------------
     | Register Controller
@@ -63,6 +65,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
         return User::create([
             'jjanID' => $data['jjanID'],
             'firstNm' => $data['firstNm'],
