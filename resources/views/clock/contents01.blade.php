@@ -5,7 +5,7 @@
 
     <h3>Please clock-in and out when you begin and end work; and when leave and return from meal times.</h3>
         <h5> Start Work and End Work is available once a day.</h5>
-        <h5> 'Meal Break' and 'Leave office' are Available 4 times a day for Lunch and Dinner.</h5>
+        <h5> ''Leave office' are Available up to 6 times a day.</h5>
         <p></p>
         <form class="form-inline">
             <div class="form-group">

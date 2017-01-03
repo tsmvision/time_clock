@@ -118,7 +118,7 @@ class HistoryController extends Controller
             elseif ($numberOfPreviousStartMealBreakToday !== $numberOfPreviousEndMealBreakToday) {
                 return redirect('clock')->with('message1', 'No End Meal registered yet');
 
-            } elseif ($numberOfPreviousStartMealBreakToday === 2) {
+            } elseif ($numberOfPreviousStartMealBreakToday === 6) {
                 return redirect('clock')->with('message1', 'No More Meal Break Registration available');
             }
 
