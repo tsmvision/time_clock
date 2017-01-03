@@ -148,13 +148,13 @@ trait GeneralPurpose
                 ->get()
                 ;
 
-        $userName = [];
+        $userInfo = [];
         foreach ($user as $user1) {
             $userInfo['firstNm'] = $user1->firstNm;
             $userInfo['lastNm'] = $user1->lastNm;
             $userInfo['userType'] = $user1->userType;
         }
-        return $userName;
+        return $userInfo;
     }
 
 

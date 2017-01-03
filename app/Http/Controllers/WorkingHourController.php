@@ -83,8 +83,8 @@ class WorkingHourController extends Controller
         $getJJANID = $request->input('getJJANID');
         $getMemberName = $request->input('getMemberName');
 
-        $currentUser = AUTH::user()->jjanID;
-        $currentUserName = $this->currentUserName($currentUser);
+        $currentUserJJANID = AUTH::user()->jjanID;
+        $currentUserInfo = $this->currentUserInfo($currentUserJJANID);
 
         // change the search period using dropdown menu.
 
@@ -100,7 +100,7 @@ class WorkingHourController extends Controller
                 , 'users.firstNm'
                 , 'users.lastNm'
             )
-            ->where('jjanID', $currentUser)
+            ->where('jjanID', $currentUserJJANID)
             ->get();
 
         //set where Cluase with jjanID unless $getJJANID == '0'
@@ -227,7 +227,7 @@ class WorkingHourController extends Controller
             return view('workingHours.hourMain')
                 ->with(compact(
                         'users'
-                        , 'currentUserName'
+                        , 'currentUserInfo'
                         , 'currentUrl'
                         , 'getSearchPeriod'
                         , 'getJJANID'
@@ -247,8 +247,8 @@ class WorkingHourController extends Controller
         $getJJANID = $request->input('getJJANID');
         $getMemberName = $request->input('getMemberName');
 
-        $currentUser = AUTH::user()->jjanID;
-        $currentUserName = $this->currentUserName($currentUser);
+        $currentUserJJANID = AUTH::user()->jjanID;
+        $currentUserInfo = $this->currentUserInfo($currentUserJJANID);
 
         // change the search period using dropdown menu.
 
@@ -391,7 +391,7 @@ class WorkingHourController extends Controller
             ->with(compact(
                     'users'
                     , 'users2'
-                    , 'currentUserName'
+                    , 'currentUserInfo'
                     , 'currentUrl'
                     , 'getSearchPeriod'
                     , 'getJJANID'

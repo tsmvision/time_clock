@@ -158,8 +158,8 @@ class HistoryController extends Controller
         $getJJANID = $request->input('getJJANID');
         $getMemberName = $request->input('getMemberName');
 
-        $currentUser = Auth::user()->jjanID;
-        $currentUserInfo = $this->currentUserType($currentUser);
+        $currentUserJJANID = Auth::user()->jjanID;
+        $currentUserInfo = $this->currentUserInfo($currentUserJJANID);
 
         //$startingDate = 0;
         //$endingDate = 0;
@@ -201,7 +201,7 @@ class HistoryController extends Controller
         if ($currentUrl === 'history')
         {
             $history = $history
-                ->where('records.jjanID',$currentUser)
+                ->where('records.jjanID',$currentUserJJANID)
                 ->get();
 
             foreach ($history as $history1) {
