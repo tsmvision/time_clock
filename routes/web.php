@@ -57,8 +57,8 @@ Route::post('/history/delete/{id}', 'HistoryController@delete')->middleware('aut
 Route::get('/workingHours', 'WorkingHourController@showList')->middleware('auth');
 Route::post('/workingHours', 'WorkingHourController@showList')->middleware('auth');
 
-Route::get('/admin', 'HistoryController@showList')->middleware('auth');
-Route::post('/admin', 'HistoryController@showList')->middleware('auth');
+Route::get('/admin', 'HistoryController@adminShowList')->middleware('auth');
+Route::post('/admin', 'HistoryController@adminShowList')->middleware('auth');
 
 Route::get('/admin/history', 'HistoryController@showList')->middleware('auth');
 Route::post('/admin/history', 'HistoryController@showList')->middleware('auth');
