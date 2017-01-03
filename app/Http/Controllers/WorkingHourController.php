@@ -413,9 +413,7 @@ class WorkingHourController extends Controller
             );
     }
 
-
-    public
-    function update($id)
+    public function update($id)
     {
 
     }
@@ -432,6 +430,4 @@ class WorkingHourController extends Controller
 
         return redirect('/history/list')->with('message', 'deleted!');
     }
-
-
 }
