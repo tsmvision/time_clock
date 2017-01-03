@@ -276,12 +276,10 @@ class WorkingHourController extends Controller
                 , 'users.firstNm'
                 , 'users.lastNm'
             )
-            ->where('jjanID', $currentJJANID)
+         //   ->where('jjanID', $currentJJANID)
             ->get();
 
         //set where Cluase with jjanID unless $getJJANID == '0'
-
-        dd($getJJANID);
 
         if ($getJJANID !== null and $getJJANID !== '0')
             $users = $users->where('records.jjanID', $getJJANID);
