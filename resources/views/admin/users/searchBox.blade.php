@@ -5,20 +5,6 @@
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
     <div class="form-group">
-        <select class="form-control" id="getSearchPeriod" name="getSearchPeriod">
-            <option value="today" @if ($getSearchPeriod === null || $getSearchPeriod === 'today' ) selected @endif>
-                Today
-            </option>
-            <option value="yesterday" @if ($getSearchPeriod === 'yesterday' ) selected @endif> Yesterday</option>
-            <option value="thisWeek" @if ($getSearchPeriod === 'thisWeek' ) selected @endif> This Week</option>
-            <option value="lastWeek" @if ($getSearchPeriod === 'lastWeek' ) selected @endif> Last Week</option>
-            <option value="thisMonth" @if ($getSearchPeriod === 'thisMonth' ) selected @endif> This Month</option>
-            <option value="lastMonth" @if ($getSearchPeriod === 'lastMonth' ) selected @endif> Last Month</option>
-            <option value="customPeriod"> Custom Period</option>
-        </select>
-    </div>
-
-    <div class="form-group">
         <select class="form-control" id="getJJANID" name="getJJANID">
             <option value='0' @if ($getJJANID === null || $getJJANID === '0' ) selected @endif>JJAN ID - All</option>
             @foreach ($users2 as $user)

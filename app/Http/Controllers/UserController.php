@@ -9,7 +9,7 @@ use App\PunchRecord;
 use App\GeneralPurpose\GeneralPurpose;
 use Illuminate\Support\Facades\Auth;
 
-class HistoryController extends Controller
+class UserController extends Controller
 {
     use GeneralPurpose;
 
@@ -37,12 +37,22 @@ class HistoryController extends Controller
             )
             ->get();
 
-        return view('admin.userMain')
+        // for dropdown menu
+        $userss = DB::table('users')
+            ->select(
+                'users.jjanID'
+                , 'users.firstNm'
+                , 'users.firstNm'
+                , 'users.lastNm'
+            )
+            ->get();
+
+        return view('admin.users.userMain')
             ->with(compact(
                     'users'
+                    , 'users2'
                     , 'currentUser'
                     , 'currentUrl'
-                    , 'getSearchPeriod'
                     , 'getJJANID'
                     , 'getMemberName'
                 )
