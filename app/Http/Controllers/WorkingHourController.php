@@ -418,9 +418,7 @@ class WorkingHourController extends Controller
 
     }
 
-
-    public
-    function delete($id)
+    public function delete($id)
     {
 
         $punchRecord = PunchRecord::find($id);
