@@ -60,14 +60,14 @@ Route::post('/workingHours', 'WorkingHourController@showList')->middleware('auth
 Route::get('/admin', 'HistoryController@adminShowList')->middleware('auth');
 Route::post('/admin', 'HistoryController@adminShowList')->middleware('auth');
 
-Route::get('/admin/history', 'HistoryController@showList')->middleware('auth');
-Route::post('/admin/history', 'HistoryController@showList')->middleware('auth');
+Route::get('/admin/history', 'HistoryController@adminShowList')->middleware('auth');
+Route::post('/admin/history', 'HistoryController@adminShowList')->middleware('auth');
 
 Route::get('/admin/history/delete/{id}', 'HistoryController@delete')->middleware('auth');
 Route::post('/admin/history/delete/{id}', 'HistoryController@delete')->middleware('auth');
 
-Route::get('/admin/workingHours', 'WorkingHourController@showList')->middleware('auth');
-Route::post('/admin/workingHours', 'WorkingHourController@showList')->middleware('auth');
+Route::get('/admin/workingHours', 'WorkingHourController@adminShowList')->middleware('auth');
+Route::post('/admin/workingHours', 'WorkingHourController@adminShowList')->middleware('auth');
 
 Route::get('/admin/workingHours/delete/{id}', 'HistoryController@delete')->middleware('auth');
 Route::post('/admin/workingHours/delete/{id}', 'HistoryController@delete')->middleware('auth');
