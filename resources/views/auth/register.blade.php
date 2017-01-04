@@ -80,7 +80,7 @@
                             <label for="name" class="col-md-4 control-label">User Type</label>
 
                             <div class="col-md-6">
-                                <select class="form-control" id="getUserType" name="getUserType">
+                                <select class="form-control" id="userType" name="userType">
                                     <option value='user'>General User</option>
                                     <option value='admin'>Administrator</option>
                                 </select>
