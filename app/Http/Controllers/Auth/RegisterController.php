@@ -54,6 +54,7 @@ class RegisterController extends Controller
             'firstNm' => 'required|max:255',
             'lastNm' => 'required|max:255',
             'password' => 'required|min:6|confirmed',
+            'userType' => 'required',
         ]);
     }
 
@@ -71,6 +72,7 @@ class RegisterController extends Controller
             'firstNm' => $data['firstNm'],
             'lastNm' => $data['lastNm'],
             'password' => bcrypt($data['password']),
+            'userType' => $data['userType']
         ]);
     }
 

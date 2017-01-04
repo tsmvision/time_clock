@@ -1,12 +1,20 @@
 <!-- Main component for a primary marketing message or call to action -->
 
-<h2>History</h2>
+<form>
+    <div class="form-group">
+    <h2>History</h2>
+    </div>
+    <div class="form-group">
+        <a type='button' class="btn btn-primary" data-toggle="modal" data-target="#manualPunch" role="button">Punch Manually</a>
+    </div>
+</form>
+
 <table class="table table-responsive table-striped">
     <thead>
     <tr>
         <th>#</th>
         <th> Date</th>
-        <th> Time </th>
+        <th> Time</th>
         <th> JJAN ID</th>
         <th> Firstname</th>
         <th> Lastname</th>
@@ -26,8 +34,8 @@
             <td> {{$history1->lastNm}} </td>
             <td> {{$punchType[$history1->punchType]}}</td>
             <td>
-                <a type='button' class="btn btn-lg btn-primary btn-sm" data-toggle="modal" data-target="#modify{{$history1->id}}" role="button"> Modify</a>
-                <a type='button' class="btn btn-lg btn-danger btn-sm" data-toggle="modal" data-target="#delete{{$history1->id}}" role="button"> Delete</a>
+                <a type='button' class="btn btn-lg btn-danger btn-sm" data-toggle="modal"
+                   data-target="#delete{{$history1->id}}" role="button"> Delete</a>
             </td>
         </tr>
         @include('admin.history.modal')

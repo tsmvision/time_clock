@@ -26,8 +26,7 @@
             <td> {{\Carbon\Carbon::parse($history1->punchDate)->format('m/d/Y')}} </td>
             <td> {{$punchType[$history1->punchType]}}</td>
             <td>
-                <a type='button' class="btn btn-lg btn-primary btn-sm" data-toggle="modal" data-target="#modify" role="button"> Modify</a>
-                <a type='button' class="btn btn-lg btn-danger btn-sm" data-toggle="modal" data-target="#delete" role="button"> Delete</a>
+                <a type='button' class="btn btn-lg btn-danger btn-sm" data-toggle="modal" data-target="#delete{{$history1->id}}" role="button"> Delete</a>
             </td>
         </tr>
     @endforeach
