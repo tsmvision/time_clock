@@ -5,11 +5,11 @@
     <thead>
     <tr>
         <th>#</th>
+        <th> Date</th>
+        <th> Time </th>
         <th> JJAN ID</th>
         <th> Firstname</th>
         <th> Lastname</th>
-        <th> Time </th>
-        <th> Date</th>
         <th> Punch Type</th>
         <th></th>
     </tr>
@@ -19,17 +19,18 @@
     @foreach($history as $history1)
         <tr>
             <td> {{$count++}} </td>
+            <td> {{\Carbon\Carbon::parse($history1->punchDate)->format('m/d/Y')}} </td>
+            <td> {{\Carbon\Carbon::parse($history1->punchTime)->format("h:i a")}} </td>
             <td> {{$history1->jjanID}} </td>
             <td> {{$history1->firstNm}} </td>
             <td> {{$history1->lastNm}} </td>
-            <td> {{\Carbon\Carbon::parse($history1->punchTime)->format("h:i a")}} </td>
-            <td> {{\Carbon\Carbon::parse($history1->punchDate)->format('m/d/Y')}} </td>
             <td> {{$punchType[$history1->punchType]}}</td>
             <td>
-                <a type='button' class="btn btn-lg btn-primary btn-sm" data-toggle="modal" data-target="#modify" role="button"> Modify</a>
-                <a type='button' class="btn btn-lg btn-danger btn-sm" data-toggle="modal" data-target="#delete" role="button"> Delete</a>
+                <a type='button' class="btn btn-lg btn-primary btn-sm" data-toggle="modal" data-target="#modify{{$history1->id}}" role="button"> Modify</a>
+                <a type='button' class="btn btn-lg btn-danger btn-sm" data-toggle="modal" data-target="#delete{{$history1->id}}" role="button"> Delete</a>
             </td>
         </tr>
+        @include('admin.history.modal')
     @endforeach
 
     </tbody>

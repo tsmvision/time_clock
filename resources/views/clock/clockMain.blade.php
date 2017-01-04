@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('currentUserName')
-    {{$currentUserType['firstNm']}} {{$currentUserType['lastNm']}}
+    {{$currentUserInfo['firstNm']}} {{$currentUserInfo['lastNm']}}
 @endsection
 
 @section('mainTabs')

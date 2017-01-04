@@ -31,13 +31,13 @@ class clockController extends Controller
         $currentUrl = $request->path();
         $currentUserJJANID = AUTH::user()->jjanID;
 
-        $currentUserType = $this->currentUserInfo($currentUserJJANID);
+        $currentUserInfo = $this->currentUserInfo($currentUserJJANID);
 
         return view('clock.clockMain')
             ->with(
                 compact('currentUrl'
                         ,'currentUserJJANID'
-                        ,'currentUserType'
+                        ,'currentUserInfo'
                         )
             );
     }

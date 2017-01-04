@@ -1,6 +1,6 @@
 <!-- Modal -->
 @foreach($history as $history1)
-    <div id="modify" class="modal fade" role="dialog">
+    <div id="modify{{$history1->id}}" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <div id="delete" class="modal fade" role="dialog">
+    <div id="delete{{$history1->id}}" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
