@@ -58,7 +58,9 @@
 
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form method="POST" action="{{url('history/update/')}}{{$history->id}}">
+                        {{ csrf_field() }}
+
                         <div class="form-group">
                             <label for="sel1">Punch Type: </label>
                             {{$punchType[$history1->punchType]}}
@@ -70,7 +72,7 @@
                         </div>
                         <div class="form-group">
                             <label for="usr">Time(24hr type - hh:mm )</label>
-                            <input type="text" class="form-control" id="time" placeholder="{{\Carbon\Carbon::parse($history1->punchTime)->format('H:m')}}">
+                            <input type="text" class="form-control" id="punchTime" name="punchTime" placeholder="{{\Carbon\Carbon::parse($history1->punchTime)->format('H:m')}}">
                         </div>
                     </form>
                     <p>
