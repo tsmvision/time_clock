@@ -34,6 +34,8 @@
             <td> {{$history1->lastNm}} </td>
             <td> {{$punchType[$history1->punchType]}}</td>
             <td>
+                <a type='button' class="btn btn-lg btn-primary btn-sm" data-toggle="modal"
+                   data-target="#edit{{$history1->id}}" role="button"> Edit</a>
                 <a type='button' class="btn btn-lg btn-danger btn-sm" data-toggle="modal"
                    data-target="#delete{{$history1->id}}" role="button"> Delete</a>
             </td>
