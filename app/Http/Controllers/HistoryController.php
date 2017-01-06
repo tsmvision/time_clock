@@ -159,12 +159,15 @@ class HistoryController extends Controller
         $currentTime = $this->currentTime;
         $currentUser = Auth::user()->jjanID;
 
-        $numberOfPreviousStartWorkToday = PunchRecord::where('punchDate', $today)
+        $numberOfPunchToday = PunchRecord::where('punchDate', $today)
             ->where('punchType', 1)
             ->where('jjanID', $currentUser)
             ->select('id')
             ->get()
             ->count();
+
+        dd($numberOfPunchToday);
+        /*
 
         $numberOfPreviousEndWorkToday = PunchRecord::where('punchDate', $today)
             ->where('punchType', 2)
@@ -250,8 +253,9 @@ class HistoryController extends Controller
 
         $user->save();
 
-        $request->session()->flash('alert-success', 'Punch is successfully completed.');
 
+        $request->session()->flash('alert-success', 'Punch is successfully completed.');
+*/
         return redirect('clock')->with('message', 'Punch completed successfully!');
 
     }
@@ -414,15 +418,32 @@ class HistoryController extends Controller
         //  $currentUrl = $request->path();
 
         $id = $request->input('getID');
-
+        $currentUserJJANID = Auth::user()->jjanID;
         $date = $request->input('getDate');
+        $time = $request->input('getTime');
+        $punchType = $request->input('punchType');
+        $punchTypePairNo = 0;
 
-        dd($date);
+        if ($punchType === '3' or $punchType === '4') {
+            return redirect('/history')->with('message', 'I am sorry, but currently in development!');
+        }
+
+        dd($punchTypePairNo);
 
 
+        $date = Carbon::parse($date)->format('Y-m-d');
+        $time = Carbon::parse($time)->format('H:i:s');
 
-        $punchTime = $request->input('punchTime');
-        $punchTime = Carbon::parse($punchTime)->format('H:i:s');
+        $punchRecords = new PunchRecord;
+        $punchRecords->jjanID = $currentUserJJANID;
+        $punchRecords->punchDate = $date;
+        $punchRecords->punchTime = $time;
+        $punchRecords->punchType = $punchType;
+        $punchRecords->punchTypePairNo = $punchTypePairNo = 0;
+
+        $punchRecords->save();
+
+        return redirect('/history')->with('message', 'Created!');
 
     }
 

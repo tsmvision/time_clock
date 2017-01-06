@@ -14,10 +14,9 @@
 
                 </div>
                 <div class="modal-body">
-                    <form>
                         <div class="form-group">
                             <label for="sel1">Punch Type</label>
-                            <select class="form-control" id="punchType">
+                            <select class="form-control" id="punchType" name="punchType">
                                 <option value="1">Start Working</option>
                                 <option value="2">End Working</option>
                                 <option value="3">Leave Office</option>
@@ -26,21 +25,20 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="usr">Date: (mm/dd/YYYY)</label>
+                            <label>Date: (mm/dd/YYYY)</label>
                             <input type="text" class="form-control" id="getDate" name="getDate">
                         </div>
                         <div class="form-group">
-                            <label for="usr">Time(24hr type - hh:mm )</label>
-                            <input type="text" class="form-control" id="time">
+                            <label>Time(24hr type - hh:mm )</label>
+                            <input type="text" class="form-control" id="getTime" name="getTime">
                         </div>
-                    </form>
                     <p>
 
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="btn btn-danger" href="#">Yes,
-                        Save & Close</a>
+                    <button type="submit" class="btn btn-danger" href="#">Yes,
+                        Save & Close</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
