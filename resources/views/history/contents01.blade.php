@@ -35,7 +35,6 @@
                    data-target="#delete{{$history1['id']}}" role="button"> Delete</a>
             </td>
         </tr>
-        @include('admin.history.modal')
     @endforeach
 
     </tbody>

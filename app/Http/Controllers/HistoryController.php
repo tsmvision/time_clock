@@ -407,10 +407,10 @@ class HistoryController extends Controller
 
         $punchRecord = PunchRecord::find($id);
 
-        $punchRecord->punchTime();
+        $punchRecord->delete();
 
 
-        return redirect('/history03')->with('message', 'deleted!');
+        return redirect('/history')->with('message', 'deleted!');
     }
 
     public function add(Request $request)
