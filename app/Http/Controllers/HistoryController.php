@@ -432,7 +432,10 @@ class HistoryController extends Controller
             )
             ->orderBy('punchDate')
             ->orderBy('punchTime')
-            ->get();
+            ->get()
+            ;
+
+        //dd($startingDate, $endingDate);
 
         $historyArray = [];
 
@@ -455,14 +458,9 @@ class HistoryController extends Controller
             $date = $history1->punchDate;
         }
 
-        // history for general users
+        $history = collect($historyArray);
 
-        foreach ($history as $history1) {
-            $punchTypeName[$history1->id] = $this->punchTypeName($history1->punchType);
-        }
-
-
-        return view('history.historyMain')
+        return view('history02.historyMain')
             ->with(compact(
                 //  'users2'
                     'history'
@@ -471,8 +469,6 @@ class HistoryController extends Controller
                     , 'getSearchPeriod'
                     , 'getJJANID'
                     , 'getMemberName'
-                    , 'punchType'
-                    , 'punchTypeName'
                 )
             );
 
