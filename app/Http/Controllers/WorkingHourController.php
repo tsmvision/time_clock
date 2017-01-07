@@ -111,9 +111,6 @@ class WorkingHourController extends Controller
                             ->get()
                             ;
 
-        dd($punchRecords->all());
-
-
         // create each days in between $startingDate and $endingDate
         $dateRangeArray = $this->getDatesFromRange($startingDate, $endingDate);
         //
@@ -124,54 +121,63 @@ class WorkingHourController extends Controller
 
         $dailyOrderNo = 0;
         $currentDate = 0;
+        $i = 0;
 
         foreach ($dateRangeArray as $index => $date) {
 
             $date2 = Carbon::parse($date)->format('Y-m-d');
 
-        //    $minTimePerDay = $punchRecords
-        //        ->where('punchDate', $date2)
-        //        ->min('punchTime');
-        //    $maxTimePerDay = $punchRecords
-        //        ->where('punchDate', $date2)
-        //        ->max('punchTime');
+            // finding begin time
+            $minTimePerDay = $punchRecords
+                ->where('punchDate', $date2)
+                ->min('punchTime');
 
-        //    if ($minTimePerDay === null) $minTimePerDay=0;
-        //    if ($maxTimePerDay === null) $maxTimePerDay=0;
+            // finding ending time
+            $maxTimePerDay = $punchRecords
+                ->where('punchDate', $date2)
+                ->max('punchTime');
 
-            $i = 1;
+            if ($minTimePerDay === null) $minTimePerDay = 0;
+            if ($maxTimePerDay === null) $maxTimePerDay = 0;
 
             $result[] = [
                 'jjanID' => $currentUserJJANID
                 , 'date' => $date
                 , 'date2' => $date2
-                , '01' => 0
-                , '02' => 0
-                , '03' => 0
-                , '04' => 0
-                , '05' => 0
-                , '06' => 0
-                , '07' => 0
-                , '08' => 0
-                , '09' => 0
+                , 'beginTime' => $minTimePerDay
+                , 'endTime' => $maxTimePerDay
+                , '1' => 0
+                , '2' => 0
+                , '3' => 0
+                , '4' => 0
+                , '5' => 0
+                , '6' => 0
+                , '7' => 0
+                , '8' => 0
+                , '9' => 0
                 , '10' => 0
                 , '11' => 0
                 , '12' => 0
                 , '13' => 0
                 , '14' => 0
-                , '15' => 0
-                , '16' => 0
-                , 'dailyOrderNo' => $i
+                , 'dailyOrderNo' => 1
             ];
 
-
-
-            foreach ($punchRecords as $punchRecords1) {
-
-            }
         }
 
-        dd($result);
+            foreach ($punchRecords as $punchRecords1) {
+                foreach( $result as $result1)
+                {
+                    if ($punchRecords1->punchDate === $result1['date2'] and$punchRecords1->jjanID === $result1['jjanID'])
+                    {
+                        $result1[''] =$punchRecords1->punchTime;
+                    }
+                }
+
+            }
+
+
+
 
             /*
 
