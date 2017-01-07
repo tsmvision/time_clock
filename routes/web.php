@@ -49,8 +49,6 @@ Route::get('/clock', 'ClockController@clock')->middleware('auth');
 Route::get('/history', 'HistoryController@showList')->middleware('auth');
 Route::post('/history', 'HistoryController@showList')->middleware('auth');
 
-Route::get('/history02', 'HistoryController@showList02')->middleware('auth');
-Route::post('/history02', 'HistoryController@showList02')->middleware('auth');
 
 Route::get('/history/add', 'HistoryController@add')->middleware('auth');
 Route::post('/history/add', 'HistoryController@add')->middleware('auth');

@@ -1,28 +1,24 @@
 @extends('layouts.master')
 
-{{--
 @section('currentUserName')
     {{$currentUserInfo['firstNm']}} {{$currentUserInfo['lastNm']}}
 @endsection
---}}
 
 @section('mainTabs')
     @include('mainTabs')
 @endsection
 
 @section('message')
-    @include('history02.message')
+    @include('history03.message')
 @endsection
 
 @section('searchBox')
-    @include('history02.searchBox')
+    @include('history03.searchBox')
 @endsection
---}}
 
 @section('contents01')
-    @include('history02.contents01')
+    @include('history03.contents01')
 @endsection
 
-{{--
-@include('history.modal')
---}}
+@include('history03.modal')
+

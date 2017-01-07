@@ -107,7 +107,7 @@ class HistoryController extends Controller
 
             $user->punchTypePairNo = 0;
 
-            // when 'start meal break', if not existing meal history then insert 2 else 3. ???
+            // when 'start meal break', if not existing meal history03 then insert 2 else 3. ???
         } elseif ($punchType === '3') {
 
             if ($numberOfPreviousStartWorkToday === 0) {
@@ -239,7 +239,7 @@ class HistoryController extends Controller
 
             $user->punchTypePairNo = 0;
 
-            // when 'start meal break', if not existing meal history then insert 2 else 3. ???
+            // when 'start meal break', if not existing meal history03 then insert 2 else 3. ???
         } elseif ($punchType === '3') {
 
             if ($numberOfPreviousStartWorkToday === 0) {
@@ -283,7 +283,7 @@ class HistoryController extends Controller
 
     }
 
-    public function showList(Request $request)
+    public function showList03(Request $request)
     {
         $request->flash();
         $currentUrl = $request->path();
@@ -327,8 +327,8 @@ class HistoryController extends Controller
             ->orderBy('records.punchTime', 'DESC');
 
 
-        // history for general users
-        if ($currentUrl === 'history') {
+        // history03 for general users
+        if ($currentUrl === 'history03') {
             $history = $history
                 ->where('records.jjanID', $currentUserJJANID)
                 ->get();
@@ -338,7 +338,7 @@ class HistoryController extends Controller
             }
 
 
-            return view('history.historyMain')
+            return view('history03.historyMain')
                 ->with(compact(
                     //  'users2'
                         'history'
@@ -355,7 +355,7 @@ class HistoryController extends Controller
 
         }
 
-        // for history for admin
+        // for history03 for admin
 
         //for dropdown menu in the search box.
         $users2 = DB::table('users')
@@ -379,7 +379,7 @@ class HistoryController extends Controller
             $punchTypeName[$history1->id] = $this->punchTypeName($history1->punchType);
         }
 
-        return view('admin.history.historyMain')
+        return view('admin.history03.historyMain')
             ->with(compact(
                     'users2'
                     , 'currentUserInfo'
@@ -396,7 +396,7 @@ class HistoryController extends Controller
 
     }
 
-    public function showList02(Request $request)
+    public function showList(Request $request)
     {
         $request->flash();
         $currentUrl = $request->path();
@@ -460,7 +460,7 @@ class HistoryController extends Controller
 
         $history = collect($historyArray);
 
-        return view('history02.historyMain')
+        return view('history.historyMain')
             ->with(compact(
                 //  'users2'
                     'history'
@@ -486,7 +486,7 @@ class HistoryController extends Controller
         $punchTime = Carbon::parse($punchTime)->format('H:i:s');
 
         if ($punchTime === null or $punchTime === '') {
-            return redirect('/history')->with('message', 'No Changes!');
+            return redirect('/history03')->with('message', 'No Changes!');
         }
 
         $punchRecords = PunchRecord::find($id);
@@ -494,7 +494,7 @@ class HistoryController extends Controller
         $punchRecords->punchTime = Carbon::parse($punchTime)->format('H:i:s');
         $punchRecords->save();
 
-        return redirect('/history')->with('message', 'Updated!');
+        return redirect('/history03')->with('message', 'Updated!');
     }
 
 
@@ -506,7 +506,7 @@ class HistoryController extends Controller
         $punchRecord->punchTime();
 
 
-        return redirect('/history')->with('message', 'deleted!');
+        return redirect('/history03')->with('message', 'deleted!');
     }
 
     public function add(Request $request)
@@ -522,7 +522,7 @@ class HistoryController extends Controller
         $punchTypePairNo = 0;
 
         if ($punchType === '3' or $punchType === '4') {
-            return redirect('/history')->with('message', 'I am sorry, but currently in development!');
+            return redirect('/history03')->with('message', 'I am sorry, but currently in development!');
         }
 
         dd($punchTypePairNo);
@@ -540,7 +540,7 @@ class HistoryController extends Controller
 
         $punchRecords->save();
 
-        return redirect('/history')->with('message', 'Created!');
+        return redirect('/history03')->with('message', 'Created!');
 
     }
 

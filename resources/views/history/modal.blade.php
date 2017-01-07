@@ -1,6 +1,6 @@
 <!-- Modal -->
 
-<form method="POST" action="{{url('history/add')}}">
+<form method="POST" action="{{url('history03')}}">
     {{ csrf_field() }}
 
     <div id="manualPunch" class="modal fade" role="dialog">
@@ -148,7 +148,7 @@
                 </div>
                 <div class="modal-footer">
                     <a type="button" class="btn btn-danger"
-                       href="{{url('history/delete')}}/{{$history1->id}}">Yes,
+                       href="{{url('history03')}}/{{$history1->id}}">Yes,
                         Proceed to delete this</a>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>

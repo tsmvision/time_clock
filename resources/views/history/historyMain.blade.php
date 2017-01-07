@@ -1,8 +1,10 @@
 @extends('layouts.master')
 
+{{--
 @section('currentUserName')
     {{$currentUserInfo['firstNm']}} {{$currentUserInfo['lastNm']}}
 @endsection
+--}}
 
 @section('mainTabs')
     @include('mainTabs')
@@ -20,5 +22,6 @@
     @include('history.contents01')
 @endsection
 
-@include('history.modal')
-
+{{--
+@include('history03.modal')
+--}}
