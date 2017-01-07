@@ -106,8 +106,13 @@ class WorkingHourController extends Controller
                                 ,'record.punchTime'
                                 )
                             ->groupBy('record.jjanID','record.punchDate','record.punchTime')
+                            ->orderBy('record.punchDate')
+                            ->orderBy('record.punchTime')
                             ->get()
                             ;
+
+        dd($punchRecords->all());
+
 
         // create each days in between $startingDate and $endingDate
         $dateRangeArray = $this->getDatesFromRange($startingDate, $endingDate);
@@ -124,35 +129,44 @@ class WorkingHourController extends Controller
 
             $date2 = Carbon::parse($date)->format('Y-m-d');
 
-            $minTimePerDay = $punchRecords
-                ->where('punchDate', $date2)
-                ->min('punchDate');
-            $maxTimePerDay = $punchRecords
-                ->where('punchDate', $date2)
-                ->max('punchDate');
+        //    $minTimePerDay = $punchRecords
+        //        ->where('punchDate', $date2)
+        //        ->min('punchTime');
+        //    $maxTimePerDay = $punchRecords
+        //        ->where('punchDate', $date2)
+        //        ->max('punchTime');
 
-            if ($minTimePerDay === null) $minTimePerDay=0;
-            if ($maxTimePerDay === null) $maxTimePerDay=0;
+        //    if ($minTimePerDay === null) $minTimePerDay=0;
+        //    if ($maxTimePerDay === null) $maxTimePerDay=0;
+
+            $i = 1;
 
             $result[] = [
                 'jjanID' => $currentUserJJANID
                 , 'date' => $date
                 , 'date2' => $date2
-                , 'beginWork' => $minTimePerDay
-                , 'endWork' => $maxTimePerDay
-                , 'startrBreak' => 0
-                , 'endBreak' => 0
-                , 'workingMinutes' => 0
-                , 'totalWorkingMin' => 0
-                , 'dailyOrderNo' => 1
+                , '01' => 0
+                , '02' => 0
+                , '03' => 0
+                , '04' => 0
+                , '05' => 0
+                , '06' => 0
+                , '07' => 0
+                , '08' => 0
+                , '09' => 0
+                , '10' => 0
+                , '11' => 0
+                , '12' => 0
+                , '13' => 0
+                , '14' => 0
+                , '15' => 0
+                , '16' => 0
+                , 'dailyOrderNo' => $i
             ];
 
-            $i = 1;
+
 
             foreach ($punchRecords as $punchRecords1) {
-
-
-
 
             }
         }
