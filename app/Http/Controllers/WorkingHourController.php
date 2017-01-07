@@ -97,7 +97,6 @@ class WorkingHourController extends Controller
 
         $punchRecords = DB::table('punchRecords as record')
                             ->join('users','record.jjanID','=','users.jjanID')
-                           // ->distinct()
                             ->where('record.jjanID',$currentUserJJANID)
                             ->where('record.punchDate','>=', $startingDate)
                             ->where('record.punchDate','<=', $endingDate)
@@ -116,26 +115,31 @@ class WorkingHourController extends Controller
         $result = [];
         //
 
-        dd($punchRecords->where('punchDate',$punchRecords)
-                ->min('punchTime'));
-
         // looping users
 
         $dailyOrderNo = 0;
         $currentDate = 0;
 
         foreach ($dateRangeArray as $index => $date) {
+
             $date2 = Carbon::parse($date)->format('Y-m-d');
 
+            $minTimePerDay = $punchRecords
+                ->where('punchDate', $date2)
+                ->min('punchDate');
+            $maxTimePerDay = $punchRecords
+                ->where('punchDate', $date2)
+                ->max('punchDate');
+
+            if ($minTimePerDay === null) $minTimePerDay=0;
+            if ($maxTimePerDay === null) $maxTimePerDay=0;
 
             $result[] = [
                 'jjanID' => $currentUserJJANID
                 , 'date' => $date
                 , 'date2' => $date2
-                , 'beginWork' => $punchRecords->where('punchDate',$date2)
-                                    ->where('punchDate',$punchRecords
-                                    ->min('punchTime'))
-                , 'endWork' => $punchRecords->where('punchDate',$date2)->where('punchDate',$punchRecords->max('punchTime'))
+                , 'beginWork' => $minTimePerDay
+                , 'endWork' => $maxTimePerDay
                 , 'startrBreak' => 0
                 , 'endBreak' => 0
                 , 'workingMinutes' => 0
@@ -143,10 +147,26 @@ class WorkingHourController extends Controller
                 , 'dailyOrderNo' => 1
             ];
 
+            $i = 1;
+
+            foreach ($punchRecords as $punchRecords1) {
+
+
+
+
+            }
         }
 
         dd($result);
 
+            /*
+
+
+
+        }
+
+        dd($result);
+*/
 
 /*
             if ($dailyOrderNo === 0 and $date === $currentDate)
