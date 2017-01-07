@@ -86,7 +86,8 @@ Route::post('/admin/workingHours/delete/{id}', 'HistoryController@delete')->midd
 Route::get('/admin/users', 'UserController@showList')->middleware('auth');
 Route::post('/admin/users', 'UserController@showList')->middleware('auth');
 
-Route::get('/punchNow/{punchType}', 'HistoryController@punchNow')->middleware('auth');
+Route::get('/punchNow', 'HistoryController@punchNow')->middleware('auth');
+Route::post('/punchNow', 'HistoryController@punchNow')->middleware('auth');
 
 Route::get('/punchNow02', 'HistoryController@punchNow02')->middleware('auth');
 Route::post('/punchNow02', 'HistoryController@punchNow02')->middleware('auth');
