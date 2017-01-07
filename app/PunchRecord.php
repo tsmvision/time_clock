@@ -17,7 +17,7 @@ class PunchRecord extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'jjanID', 'clockTime'
+        'jjanID', 'punchDate', 'punchTime'
     ];
 
     /**

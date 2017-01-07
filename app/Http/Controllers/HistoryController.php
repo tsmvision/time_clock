@@ -20,16 +20,7 @@ class HistoryController extends Controller
 
     public function __construct()
     {
-        $this->today = $today = Carbon::now()->format('Y-m-d');
-        $this->dateTime = Carbon::now()->format('Y-m-d H:i:s');
-        $this->currentTime = Carbon::now()->format('H:m:s');
-        $this->punchType = [
-            0 => 'N/A'
-            , 1 => 'Start Work'
-            , 2 => 'End Work'
-            , 3 => 'Start Meal Break'
-            , 4 => 'End Meal Break'
-        ];
+
     }
 
     public function punchTypeName($punchType)
@@ -50,7 +41,9 @@ class HistoryController extends Controller
         $currentUrl = $request->path();
 
         $today = Carbon::now()->format('Y-m-d');
-        $currentTime = $this->currentTime;
+
+        $currentTime = Carbon::now()->format('H:i:s');
+
         $currentUser = Auth::user()->jjanID;
 
         $user = new PunchRecord;
@@ -430,14 +423,27 @@ class HistoryController extends Controller
         $date = $request->input('getDate');
         $time = $request->input('getTime');
 
+        $today = Carbon::now()->format('Ymd');
+        $date2 = Carbon::parse($date)->format('Ymd');
+
         $date = Carbon::parse($date)->format('Y-m-d');
         $time = Carbon::parse($time)->format('H:i:s');
+
+        if ($date2 > $today)
+            return redirect('/history')->with('message', 'You are not allowed to punch date & time in advance');
+
 
         $punchRecords = new PunchRecord;
         $punchRecords->jjanID = $currentUserJJANID;
         $punchRecords->punchDate = $date;
         $punchRecords->punchTime = $time;
-        $punchRecords->save();
+        $saved = $punchRecords->save();
+
+        if (!$saved)
+        {
+            return 'Not Saved';
+        }
+
 
         return redirect('/history')->with('message', 'Created!');
 

@@ -1,6 +1,6 @@
 <!-- Modal -->
 
-<form method="POST" action="{{url('history')}}">
+<form method="POST" action="{{url('history/add')}}">
     {{ csrf_field() }}
 
     <div id="manualPunch" class="modal fade" role="dialog">
@@ -27,7 +27,7 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger" href="#">Yes,
+                    <button type="submit" class="btn btn-danger">Yes,
                         Save & Close</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
