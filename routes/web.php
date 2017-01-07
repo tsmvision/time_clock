@@ -49,6 +49,9 @@ Route::get('/clock', 'ClockController@clock')->middleware('auth');
 Route::get('/history', 'HistoryController@showList')->middleware('auth');
 Route::post('/history', 'HistoryController@showList')->middleware('auth');
 
+Route::get('/history02', 'HistoryController@showList02')->middleware('auth');
+Route::post('/history02', 'HistoryController@showList02')->middleware('auth');
+
 Route::get('/history/add', 'HistoryController@add')->middleware('auth');
 Route::post('/history/add', 'HistoryController@add')->middleware('auth');
 
@@ -87,7 +90,8 @@ Route::post('/admin/users', 'UserController@showList')->middleware('auth');
 
 Route::get('/punchNow/{punchType}', 'HistoryController@punchNow')->middleware('auth');
 
-Route::post('/punchNow2', 'HistoryController@punchNow')->middleware('auth');
+Route::get('/punchNow02', 'HistoryController@punchNow02')->middleware('auth');
+Route::post('/punchNow02', 'HistoryController@punchNow02')->middleware('auth');
 
 Route::get('/test', 'WorkingHourController@showListTest');
 

@@ -37,8 +37,8 @@ class HistoryController extends Controller
         $punchTypeName = '';
 
         if ($punchType === 1) $punchTypeName = 'Starting Work';
-        elseif ($punchType === 2 ) $punchTypeName = 'Ending Work';
-        elseif ($punchType === 3 ) $punchTypeName = 'Leave Office';
+        elseif ($punchType === 2) $punchTypeName = 'Ending Work';
+        elseif ($punchType === 3) $punchTypeName = 'Leave Office';
         elseif ($punchType === 4) $punchTypeName = 'Back to Office';
 
         return $punchTypeName;
@@ -150,23 +150,46 @@ class HistoryController extends Controller
 
     }
 
-    public function punchNow2(Request $request, $punchType)
+    public function punchNow02(Request $request)
     {
-        $request->flash();
-        $currentUrl = $request->path();
+
+        // $request->flash();
+        // $currentUrl = $request->path();
 
         $today = Carbon::now()->format('Y-m-d');
         $currentTime = $this->currentTime;
         $currentUser = Auth::user()->jjanID;
 
+        $punchHistory = PunchRecord::where('punchDate', $today)
+            ->where('jjanID', $currentUser)
+            ->select('id', 'jjanID', 'punchDate', 'punchTime')
+            ->orderBy('punchTime')
+            ->get();
+
         $numberOfPunchToday = PunchRecord::where('punchDate', $today)
-            ->where('punchType', 1)
             ->where('jjanID', $currentUser)
             ->select('id')
             ->get()
             ->count();
 
-        dd($numberOfPunchToday);
+        $punchHistory2 = [];
+
+        $i = 1;
+        foreach ($punchHistory as $punchHistory1) {
+            $punchHistory2[] = [
+                'id' => $punchHistory1->id
+                , 'jjanID' => $punchHistory1->jjanID
+                , 'punchDate' => $punchHistory1->punchDate
+                , 'punchTime' => $punchHistory1->punchTime
+                , 'order' => $i++
+            ];
+
+        }
+
+        if ($numberOfPunchToday <= 2) {
+            return 'incomplete today';
+        }
+
         /*
 
         $numberOfPreviousEndWorkToday = PunchRecord::where('punchDate', $today)
@@ -279,7 +302,7 @@ class HistoryController extends Controller
         $history = DB::table('punchRecords as records ')
             ->join('users', 'records.jjanID', '=', 'users.jjanID')
             ->distinct()
-          //  ->where('records.jjanID',$currentUser)
+            //  ->where('records.jjanID',$currentUser)
             ->select(
                 'records.id'
                 , 'records.jjanID'
@@ -295,23 +318,19 @@ class HistoryController extends Controller
         $startingDate = $searchPeriod['startingDate'];
         $endingDate = $searchPeriod['endingDate'];
 
-       // dd($startingDate, $endingDate);
+        // dd($startingDate, $endingDate);
 
-            $history = $history
-                ->where('records.punchDate','>=',$startingDate)
-                ->where('records.punchDate','<=',$endingDate)
-                ->orderBy('records.punchDate', 'DESC')
-                ->orderBy('records.punchTime', 'DESC')
-                ;
-
-
+        $history = $history
+            ->where('records.punchDate', '>=', $startingDate)
+            ->where('records.punchDate', '<=', $endingDate)
+            ->orderBy('records.punchDate', 'DESC')
+            ->orderBy('records.punchTime', 'DESC');
 
 
         // history for general users
-        if ($currentUrl === 'history')
-        {
+        if ($currentUrl === 'history') {
             $history = $history
-                ->where('records.jjanID',$currentUserJJANID)
+                ->where('records.jjanID', $currentUserJJANID)
                 ->get();
 
             foreach ($history as $history1) {
@@ -339,23 +358,22 @@ class HistoryController extends Controller
         // for history for admin
 
         //for dropdown menu in the search box.
-           $users2 = DB::table('users')
-               ->select(
-                   'users.jjanID'
-                   , 'users.firstNm'
-                   , 'users.lastNm'
-               )
-               ->get();
+        $users2 = DB::table('users')
+            ->select(
+                'users.jjanID'
+                , 'users.firstNm'
+                , 'users.lastNm'
+            )
+            ->get();
 
         if ($getJJANID !== null and $getJJANID !== '0') {
             $history = $history
-                ->where('users.jjanID', $getJJANID)
-            ;
+                ->where('users.jjanID', $getJJANID);
         }
 
         // search by name
-       $history = $this->searchByMemberName($history, $getMemberName)
-                        ->get();
+        $history = $this->searchByMemberName($history, $getMemberName)
+            ->get();
 
         foreach ($history as $history1) {
             $punchTypeName[$history1->id] = $this->punchTypeName($history1->punchType);
@@ -363,9 +381,9 @@ class HistoryController extends Controller
 
         return view('admin.history.historyMain')
             ->with(compact(
-                  'users2'
+                    'users2'
                     , 'currentUserInfo'
-                    ,'history'
+                    , 'history'
                     , 'currentUrl'
                     , 'getSearchPeriod'
                     , 'getJJANID'
@@ -376,20 +394,102 @@ class HistoryController extends Controller
             );
 
 
+    }
+
+    public function showList02(Request $request)
+    {
+        $request->flash();
+        $currentUrl = $request->path();
+        $getSearchPeriod = $request->input('getSearchPeriod');
+        $getJJANID = $request->input('getJJANID');
+        $getMemberName = $request->input('getMemberName');
+
+        $currentUserJJANID = Auth::user()->jjanID;
+        $currentUserInfo = $this->currentUserInfo($currentUserJJANID);
+
+        //$startingDate = 0;
+        //$endingDate = 0;
+
+        $searchPeriod = $this->searchPeriod($getSearchPeriod);
+
+        $startingDate = $searchPeriod['startingDate'];
+        $endingDate = $searchPeriod['endingDate'];
+
+        $history = DB::table('punchRecords as records ')
+            ->join('users', 'records.jjanID', '=', 'users.jjanID')
+            ->distinct()
+            ->where('records.jjanID', $currentUserJJANID)
+            ->where('records.punchDate', '>=', $startingDate)
+            ->where('records.punchDate', '<=', $endingDate)
+            ->select(
+                'records.id'
+                , 'records.jjanID'
+                , 'users.firstNm'
+                , 'users.lastNm'
+                , 'records.punchTime'
+                , 'records.punchDate'
+                , 'records.punchType'
+            )
+            ->orderBy('punchDate')
+            ->orderBy('punchTime')
+            ->get();
+
+        $historyArray = [];
+
+        $i = 1;
+        $date = 0;
+        foreach ($history as $history1) {
+            if ($date === 0 or $date !== $history1->punchDate)
+                $i = 1;
+
+            $historyArray[] = [
+                'id' => $history1->id
+                , 'jjanID' => $history1->jjanID
+                , 'firstNm' => $history1->firstNm
+                , 'lastNm' => $history1->lastNm
+                , 'punchDate' => $history1->punchDate
+                , 'punchTime' => $history1->punchTime
+                , 'dailyOrder' => $i++
+            ];
+
+            $date = $history1->punchDate;
+        }
+
+        // history for general users
+
+        foreach ($history as $history1) {
+            $punchTypeName[$history1->id] = $this->punchTypeName($history1->punchType);
+        }
+
+
+        return view('history.historyMain')
+            ->with(compact(
+                //  'users2'
+                    'history'
+                    , 'currentUrl'
+                    , 'currentUserInfo'
+                    , 'getSearchPeriod'
+                    , 'getJJANID'
+                    , 'getMemberName'
+                    , 'punchType'
+                    , 'punchTypeName'
+                )
+            );
 
     }
+
 
     public function update(Request $request)
     {
         $request->flash();
-      //  $currentUrl = $request->path();
+        //  $currentUrl = $request->path();
 
         $id = $request->input('getID');
 
         $punchTime = $request->input('punchTime');
         $punchTime = Carbon::parse($punchTime)->format('H:i:s');
 
-        if ($punchTime === null or $punchTime === ''){
+        if ($punchTime === null or $punchTime === '') {
             return redirect('/history')->with('message', 'No Changes!');
         }
 
@@ -413,7 +513,8 @@ class HistoryController extends Controller
         return redirect('/history')->with('message', 'deleted!');
     }
 
-    public function add(Request $request){
+    public function add(Request $request)
+    {
         $request->flash();
         //  $currentUrl = $request->path();
 
