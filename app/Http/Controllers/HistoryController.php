@@ -390,7 +390,7 @@ class HistoryController extends Controller
         $punchTime = Carbon::parse($punchTime)->format('H:i:s');
 
         if ($punchTime === null or $punchTime === '') {
-            return redirect('/history03')->with('message', 'No Changes!');
+            return redirect('/history')->with('message', 'No Changes!');
         }
 
         $punchRecords = PunchRecord::find($id);
@@ -398,7 +398,7 @@ class HistoryController extends Controller
         $punchRecords->punchTime = Carbon::parse($punchTime)->format('H:i:s');
         $punchRecords->save();
 
-        return redirect('/history03')->with('message', 'Updated!');
+        return redirect('/history')->with('message', 'Updated!');
     }
 
 
