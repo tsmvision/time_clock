@@ -46,7 +46,6 @@ class HistoryController extends Controller
 
     public function punchNow(Request $request)
     {
-
         $request->flash();
         $currentUrl = $request->path();
 
@@ -56,7 +55,6 @@ class HistoryController extends Controller
 
         $user = new PunchRecord;
         $user->jjanID = $currentUser;
-
         $user->punchTime = $currentTime;
         $user->punchDate = $today;
         $user->save();
