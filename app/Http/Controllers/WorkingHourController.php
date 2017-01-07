@@ -122,8 +122,9 @@ class WorkingHourController extends Controller
         $currentDate = 0;
         $i = 0;
         $breakPunchTime = [];
-        $workingMinutes = 0;
-        $breakMinutes = 0;
+       // $workingMinutes = 0;
+       // $breakMinutes = 0;
+       // $count = 0;
 
         foreach ($punchRecords as $punchRecords1) {
             $breakPunchTime[$punchRecords1->punchDate][] = $punchRecords1->punchTime;
@@ -135,6 +136,7 @@ class WorkingHourController extends Controller
             $date2 = Carbon::parse($date)->format('Y-m-d');
             $workingMinutes = 0;
             $breakMinutes = 0;
+            $count = 0;
 
             // finding begin time
             $minTimePerDay = $punchRecords
@@ -149,35 +151,69 @@ class WorkingHourController extends Controller
             if ($minTimePerDay === null) $minTimePerDay = 0;
             if ($maxTimePerDay === null) $maxTimePerDay = 0;
 
-            if ($minTimePerDay === 0 or $maxTimePerDay === 0)
+            if ($minTimePerDay === 0 or $maxTimePerDay === 0) {
                 $workingMinutes = 0;
-            else
+            }
+            else {
                 $workingMinutes = $this->diffInMinutes($maxTimePerDay, $minTimePerDay);
+            }
 
-            if (isset($breakPunchTime[$date2])){
+            if (isset($breakPunchTime[$date2]))
                 $count = collect($breakPunchTime[$date2])->count();
 
-                if ($count === null) $count = 0;
+            if ($count === null) $count = 0;
 
-                if ( $count !== 0 and $count %2 !== 0) $breakMinutes = 0;
-               // else if ($count ){}
-            };
+            if ($count !== 0 and $count % 2 !== 0) $breakMinutes = 0;
 
-            $result[$date] = [
+            if ($count === 2) {
+                $breakMinutes = 0;
+            } elseif ($count === 4) {
+                $breakMinutes = $this->diffInMinutes($breakPunchTime[$date2][2], $breakPunchTime[$date2][1]);
+
+            } elseif ($count === 6) {
+                $workingMinutes = $this->diffInMinutes($breakPunchTime[$date2][4], $breakPunchTime[$date2][3])
+                    + $this->diffInMinutes($breakPunchTime[$date2][2], $breakPunchTime[$date2][1]);
+            } elseif ($count === 8) {
+                $breakMinutes = $this->diffInMinutes($breakPunchTime[$date2][6], $breakPunchTime[$date2][5])
+                    + $this->diffInMinutes($breakPunchTime[$date2][4], $breakPunchTime[$date2][3])
+                    + $this->diffInMinutes($breakPunchTime[$date2][2], $breakPunchTime[$date2][1]);
+            } elseif ($count === 10) {
+                $breakMinutes = $this->diffInMinutes($breakPunchTime[$date2][8], $breakPunchTime[$date2][7])
+                    + $this->diffInMinutes($breakPunchTime[$date2][6], $breakPunchTime[$date2][5])
+                    + $this->diffInMinutes($breakPunchTime[$date2][4], $breakPunchTime[$date2][3])
+                    + $this->diffInMinutes($breakPunchTime[$date2][2], $breakPunchTime[$date2][1]);
+
+            } elseif ($count === 12) {
+                $breakMinutes = $this->diffInMinutes($breakPunchTime[$date2][10], $breakPunchTime[$date2][9])
+                    + $this->diffInMinutes($breakPunchTime[$date2][8], $breakPunchTime[$date2][7])
+                    + $this->diffInMinutes($breakPunchTime[$date2][6], $breakPunchTime[$date2][5])
+                    + $this->diffInMinutes($breakPunchTime[$date2][4], $breakPunchTime[$date2][3])
+                    + $this->diffInMinutes($breakPunchTime[$date2][2], $breakPunchTime[$date2][1]);
+
+            } elseif ($count === 14) {
+                $breakMinutes = $this->diffInMinutes($breakPunchTime[$date2][12], $breakPunchTime[$date2][11])
+                    + $this->diffInMinutes($breakPunchTime[$date2][10], $breakPunchTime[$date2][9])
+                    + $this->diffInMinutes($breakPunchTime[$date2][8], $breakPunchTime[$date2][7])
+                    + $this->diffInMinutes($breakPunchTime[$date2][6], $breakPunchTime[$date2][5])
+                    + $this->diffInMinutes($breakPunchTime[$date2][4], $breakPunchTime[$date2][3])
+                    + $this->diffInMinutes($breakPunchTime[$date2][2], $breakPunchTime[$date2][1]);
+            }
+
+            $result[] = [
                 'jjanID' => $currentUserJJANID
                 , 'date' => $date
                 , 'date2' => $date2
                 , 'beginTime' => $minTimePerDay
                 , 'endTime' => $maxTimePerDay
                 , 'dailyOrderNo' => 1
-                , 'workingMininutes'=> $workingMinutes
+                , 'workingMininutes' => $workingMinutes
                 , 'breakMinutes' => $breakMinutes
+                , 'totalMinutes' => $workingMinutes - $breakMinutes
             ];
 
         }
 
-
-
+        dd($result);
 
 
         /*
