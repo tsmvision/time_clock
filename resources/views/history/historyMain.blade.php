@@ -22,6 +22,5 @@
     @include('history.contents01')
 @endsection
 
-{{--
-@include('history03.modal')
---}}
+@include('history.modal')
+

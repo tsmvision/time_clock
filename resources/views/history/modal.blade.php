@@ -1,6 +1,6 @@
 <!-- Modal -->
 
-<form method="POST" action="{{url('history03')}}">
+<form method="POST" action="{{url('history')}}">
     {{ csrf_field() }}
 
     <div id="manualPunch" class="modal fade" role="dialog">
@@ -14,16 +14,6 @@
 
                 </div>
                 <div class="modal-body">
-                        <div class="form-group">
-                            <label for="sel1">Punch Type</label>
-                            <select class="form-control" id="punchType" name="punchType">
-                                <option value="1">Start Working</option>
-                                <option value="2">End Working</option>
-                                <option value="3">Leave Office</option>
-                                <option value="4">Back to Office</option>
-                            </select>
-                        </div>
-
                         <div class="form-group">
                             <label>Date: (mm/dd/YYYY)</label>
                             <input type="text" class="form-control" id="getDate" name="getDate">
@@ -47,6 +37,7 @@
     </div>
 
 </form>
+{{--
 
 @foreach($history as $history1)
     <form method="POST" action="{{url('history/update')}}">
@@ -66,9 +57,6 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="sel1">Punch Type: </label>
-                            {{$punchType[$history1->punchType]}}
-                        </div>
 
                         <div class="form-group">
                             <label for="usr">Date:</label>
@@ -111,7 +99,8 @@
                     <h4 class="modal-title">Do you want to delete this now?</h4>
 
                 </div>
-                <div class="modal-body">
+                <div class="m
+odal-body">
                     <p>
                     <h4>{{\Carbon\Carbon::parse($history1->punchTime)->format("h:i:s a")}}
                         {{\Carbon\Carbon::parse($history1->punchTime)->format('m/d/Y')}}</h4>
@@ -143,7 +132,7 @@
                 <div class="modal-body">
                     <p>
                     <h4>{{\Carbon\Carbon::parse($history1->punchTime)->format("h:i:s a")}}
-                        {{\Carbon\Carbon::parse($history1->punchTime)->format('m/d/Y')}}</h4>
+                        {{\Carbon\Carbon::parse($history1->punchDate)->format('m/d/Y')}}</h4>
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -157,3 +146,5 @@
         </div>
     </div>
 @endforeach
+
+--}}

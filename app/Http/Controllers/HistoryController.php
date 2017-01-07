@@ -342,7 +342,6 @@ class HistoryController extends Controller
                 , 'users.lastNm'
                 , 'records.punchTime'
                 , 'records.punchDate'
-                , 'records.punchType'
             )
             ->orderBy('punchDate')
             ->orderBy('punchTime')
@@ -432,15 +431,6 @@ class HistoryController extends Controller
         $currentUserJJANID = Auth::user()->jjanID;
         $date = $request->input('getDate');
         $time = $request->input('getTime');
-        $punchType = $request->input('punchType');
-        $punchTypePairNo = 0;
-
-        if ($punchType === '3' or $punchType === '4') {
-            return redirect('/history03')->with('message', 'I am sorry, but currently in development!');
-        }
-
-        dd($punchTypePairNo);
-
 
         $date = Carbon::parse($date)->format('Y-m-d');
         $time = Carbon::parse($time)->format('H:i:s');
@@ -449,12 +439,9 @@ class HistoryController extends Controller
         $punchRecords->jjanID = $currentUserJJANID;
         $punchRecords->punchDate = $date;
         $punchRecords->punchTime = $time;
-        $punchRecords->punchType = $punchType;
-        $punchRecords->punchTypePairNo = $punchTypePairNo = 0;
-
         $punchRecords->save();
 
-        return redirect('/history03')->with('message', 'Created!');
+        return redirect('/history')->with('message', 'Created!');
 
     }
 
