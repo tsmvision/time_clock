@@ -444,7 +444,7 @@ class HistoryController extends Controller
             $date = $history1->punchDate;
         }
 
-        $history = collect($historyArray)->sortBy('punchDate');
+        $history = collect($historyArray);
 
         return view('admin.history.historyMain')
             ->with(compact(

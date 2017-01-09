@@ -14,7 +14,8 @@
     <tr>
         <th>#</th>
         <th> Date</th>
-        <th> Daily Order</th>
+        <th> JJAN ID</th>
+        <th> Name</th>
         <th> In / Out</th>
         <th> Time</th>
         <th></th>
@@ -26,8 +27,10 @@
         <tr>
             <td> {{$count++}} </td>
             <td> {{\Carbon\Carbon::parse($history1['punchDate'])->format('m/d/Y')}} </td>
-            <td> {{$history1['dailyOrder']}}</td>
-            <td> @if ($history1['dailyOrder'] %2 == 1) In @else Out @endif</td>
+            <td> {{$history1['jjanID']}}</td>
+            <td> {{$history1['firstNm']}} {{$history1['lastNm']}}</td>
+
+           <td> @if ($history1['dailyOrder'] %2 == 1) In @else Out @endif</td>
 
             <td> {{\Carbon\Carbon::parse($history1['punchTime'])->format("h:i a")}} </td>
             <td>
