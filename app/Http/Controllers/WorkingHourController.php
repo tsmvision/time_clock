@@ -210,11 +210,11 @@ class WorkingHourController extends Controller
                 , 'endTime' => $maxTimePerDay
                 , 'dailyOrderNo' => 1
                 , 'workingMinutes' => $workingMinutes
-                , 'workingHours' => round($workingMinutes,2)
+                , 'workingHours' => round($workingMinutes/60,2)
                 , 'breakMinutes' => $breakMinutes
-                , 'breakHours' => round($breakMinutes,2)
+                , 'breakHours' => round($breakMinutes/60,2)
                 , 'totalMinutes' => $totalMinutes
-                , 'totalHours' => round($totalMinutes,2)
+                , 'totalHours' => round($totalMinutes/60,2)
             ];
 
         }

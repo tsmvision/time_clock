@@ -21,8 +21,8 @@
             <td> @if ($getSearchPeriod == null) Today @else {{$getSearchPeriod}} @endif</td>
             <td> {{$result1['jjanID']}} </td>
             <td> {{$result1['workingHours']}} </td>
-            <td> {{--$result1['breakMinutes']--}} </td>
-            <td> {{-- $result['totalMinutes'] --}} </td>
+            <td> {{$result1['breakHours']}} </td>
+            <td> {{ $result['totalHours'] }} </td>
 
         </tr>
     @endforeach
