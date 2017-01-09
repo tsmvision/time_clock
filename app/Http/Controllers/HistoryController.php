@@ -390,13 +390,13 @@ class HistoryController extends Controller
         $currentUserJJANID = Auth::user()->jjanID;
         $currentUserInfo = $this->currentUserInfo($currentUserJJANID);
 
-        $startingDate = '2016-12-01';
-        $endingDate = '2016-01-07';
-
         $searchPeriod = $this->searchPeriod($getSearchPeriod);
 
         $startingDate = $searchPeriod['startingDate'];
         $endingDate = $searchPeriod['endingDate'];
+
+        $startingDate = '2016-12-01';
+        $endingDate = '2017-01-07';
 
         $users= DB::table('users')
                     ->select('jjanID','firstNm','lastNm')
@@ -406,7 +406,6 @@ class HistoryController extends Controller
         $history = DB::table('punchRecords as records ')
             ->join('users', 'records.jjanID', '=', 'users.jjanID')
             ->distinct()
-           // ->where('records.jjanID', $currentUserJJANID)
             ->where('records.punchDate', '>=', $startingDate)
             ->where('records.punchDate', '<=', $endingDate)
             ->select(
@@ -446,9 +445,6 @@ class HistoryController extends Controller
         }
 
         $history = collect($historyArray)->sortBy('punchDate');
-
-
-        dd($history->all());
 
         return view('admin.history.historyMain')
             ->with(compact(
