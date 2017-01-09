@@ -90,9 +90,6 @@ class WorkingHourController extends Controller
         $startingDate = $searchPeriod['startingDate'];
         $endingDate = $searchPeriod['endingDate'];
 
-        $startingDate = '2017-01-07';
-        $endingDate = '2017-01-07';
-
         // for displaying jjanID, firstNm, lastNm in the table in the view.
 
         $punchRecords = DB::table('punchRecords as record')
@@ -122,9 +119,9 @@ class WorkingHourController extends Controller
         $currentDate = 0;
         $i = 0;
         $breakPunchTime = [];
-       // $workingMinutes = 0;
-       // $breakMinutes = 0;
-       // $count = 0;
+        // $workingMinutes = 0;
+        // $breakMinutes = 0;
+        // $count = 0;
 
         foreach ($punchRecords as $punchRecords1) {
             $breakPunchTime[$punchRecords1->punchDate][] = $punchRecords1->punchTime;
@@ -153,8 +150,7 @@ class WorkingHourController extends Controller
 
             if ($minTimePerDay === 0 or $maxTimePerDay === 0) {
                 $workingMinutes = 0;
-            }
-            else {
+            } else {
                 $workingMinutes = $this->diffInMinutes($maxTimePerDay, $minTimePerDay);
             }
 
@@ -210,14 +206,19 @@ class WorkingHourController extends Controller
                 , 'endTime' => $maxTimePerDay
                 , 'dailyOrderNo' => 1
                 , 'workingMinutes' => $workingMinutes
-                , 'workingHours' => round($workingMinutes/60,2)
                 , 'breakMinutes' => $breakMinutes
-                , 'breakHours' => round($breakMinutes/60,2)
                 , 'totalMinutes' => $totalMinutes
-                , 'totalHours' => round($totalMinutes/60,2)
             ];
 
         }
+
+        $workingHours = collect($result)->sum('workingMinutes');
+        $totalBreakHours = collect($result)->sum('breakMinutes');
+        $totalWorkingHours = $workingHours - $totalBreakHours;
+
+        $totalBreakHours = round($totalBreakHours / 60, 2);
+        $workingHours = round($workingHours / 60, 2);
+        $totalWorkingHours = round($totalWorkingHours / 60, 2);
 
 // for workingHours for general user
         return view('workingHours.hourMain')
@@ -228,7 +229,9 @@ class WorkingHourController extends Controller
                     , 'getSearchPeriod'
                     , 'getJJANID'
                     , 'getMemberName'
-                    , 'result'
+                    , 'workingHours'
+                    , 'totalBreakHours'
+                    , 'totalWorkingHours'
                 )
             );
 
