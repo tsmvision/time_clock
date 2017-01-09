@@ -7,22 +7,22 @@
         <th>#</th>
         <th> Period</th>
         <th> JJAN ID</th>
-        <th> Firstname</th>
-        <th> Lastname</th>
-        <th> Working Hours </th>
+        <th> Working Minutes</th>
+        <th> breakMinutes</th>
+        <th> totalMinutes </th>
 
     </tr>
     </thead>
     <?php $count = 1 ?>
     <tbody>
-    @foreach($result as $result)
+    @foreach($result as $result1)
         <tr>
             <td> {{$count++}} </td>
             <td> @if ($getSearchPeriod == null) Today @else {{$getSearchPeriod}} @endif</td>
             <td> {{$result1['jjanID']}} </td>
-            <td> {{$result1['workingMinutes']}} </td>
-            <td> {{$result1['breakMinutes']}} </td>
-            <td> {{ $result['totalMinutes'] }} hours </td>
+            <td> {{$result1['workingHours']}} </td>
+            <td> {{--$result1['breakMinutes']--}} </td>
+            <td> {{-- $result['totalMinutes'] --}} </td>
 
         </tr>
     @endforeach

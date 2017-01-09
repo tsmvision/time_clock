@@ -12,9 +12,11 @@
     @include('workingHours.message')
 @endsection
 
+{{--
 @section('searchBox')
     @include('workingHours.searchBox')
 @endsection
+--}}
 
 @section('contents01')
     @include('workingHours.contents01')

@@ -200,6 +200,8 @@ class WorkingHourController extends Controller
                     + $this->diffInMinutes($breakPunchTime[$date2][2], $breakPunchTime[$date2][1]);
             }
 
+            $totalMinutes = $workingMinutes - $breakMinutes;
+
             $result[] = [
                 'jjanID' => $currentUserJJANID
                 , 'date' => $date
@@ -207,9 +209,12 @@ class WorkingHourController extends Controller
                 , 'beginTime' => $minTimePerDay
                 , 'endTime' => $maxTimePerDay
                 , 'dailyOrderNo' => 1
-                , 'workingMininutes' => $workingMinutes
+                , 'workingMinutes' => $workingMinutes
+                , 'workingHours' => round($workingMinutes,2)
                 , 'breakMinutes' => $breakMinutes
-                , 'totalMinutes' => $workingMinutes - $breakMinutes
+                , 'breakHours' => round($breakMinutes,2)
+                , 'totalMinutes' => $totalMinutes
+                , 'totalHours' => round($totalMinutes,2)
             ];
 
         }
