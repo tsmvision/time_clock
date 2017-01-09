@@ -24,6 +24,4 @@
     @include('admin.history.contents01')
 @endsection
 
-{{--
 @include('admin.history.modal')
---}}

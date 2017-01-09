@@ -42,7 +42,7 @@
 
 
 @foreach($history as $history1)
-    <div id="delete{{$history1->id}}" class="modal fade" role="dialog">
+    <div id="delete{{$history1['id']}}" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -54,12 +54,12 @@
                 </div>
                 <div class="modal-body">
                     <p>
-                    <h4>{{\Carbon\Carbon::parse($history1->punchTime)->format("h:i:s a")}}
-                        {{\Carbon\Carbon::parse($history1->punchTime)->format('m/d/Y')}}</h4>
+                    <h4>{{\Carbon\Carbon::parse($history1['punchTime'])->format("h:i:s a")}}
+                        {{\Carbon\Carbon::parse($history1['punchTime'])->format('m/d/Y')}}</h4>
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="btn btn-danger" href="{{url('history/delete')}}/{{$history1->id}}">Yes,
+                    <a type="button" class="btn btn-danger" href="{{url('history/delete')}}/{{$history1['id']}}">Yes,
                         Proceed to delete this</a>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
