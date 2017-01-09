@@ -232,6 +232,8 @@ class WorkingHourController extends Controller
                     , 'workingHours'
                     , 'totalBreakHours'
                     , 'totalWorkingHours'
+                    , 'startingDate'
+                    , 'endingDate'
                 )
             );
 

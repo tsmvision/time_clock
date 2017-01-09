@@ -65,8 +65,8 @@ Route::post('/workingHours', 'WorkingHourController@showList')->middleware('auth
 Route::get('/admin', 'HistoryController@showList')->middleware('auth');
 Route::post('/admin', 'HistoryController@showList')->middleware('auth');
 
-Route::get('/admin/history', 'HistoryController@showList')->middleware('auth');
-Route::post('/admin/history', 'HistoryController@showList')->middleware('auth');
+Route::get('/admin/history', 'HistoryController@showListForAdmin')->middleware('auth');
+Route::post('/admin/history', 'HistoryController@showListForAdmin')->middleware('auth');
 
 Route::get('/admin/history/add', 'HistoryController@add')->middleware('auth');
 Route::post('/admin/history/add', 'HistoryController@add')->middleware('auth');

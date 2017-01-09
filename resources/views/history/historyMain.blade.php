@@ -1,10 +1,8 @@
 @extends('layouts.master')
 
-{{--
 @section('currentUserName')
     {{$currentUserInfo['firstNm']}} {{$currentUserInfo['lastNm']}}
 @endsection
---}}
 
 @section('mainTabs')
     @include('mainTabs')

@@ -378,6 +378,84 @@ class HistoryController extends Controller
 
     }
 
+    public function showListForAdmin(Request $request)
+    {
+        $request->flash();
+        $currentUrl = $request->path();
+        $getSearchPeriod = $request->input('getSearchPeriod');
+        $getJJANID = $request->input('getJJANID');
+        $getMemberName = $request->input('getMemberName');
+
+        $currentUserJJANID = Auth::user()->jjanID;
+        $currentUserInfo = $this->currentUserInfo($currentUserJJANID);
+
+        //$startingDate = 0;
+        //$endingDate = 0;
+
+        $searchPeriod = $this->searchPeriod($getSearchPeriod);
+
+        $startingDate = $searchPeriod['startingDate'];
+        $endingDate = $searchPeriod['endingDate'];
+
+        $history = DB::table('punchRecords as records ')
+            ->join('users', 'records.jjanID', '=', 'users.jjanID')
+            ->distinct()
+            ->where('records.jjanID', $currentUserJJANID)
+            ->where('records.punchDate', '>=', $startingDate)
+            ->where('records.punchDate', '<=', $endingDate)
+            ->select(
+                'records.id'
+                , 'records.jjanID'
+                , 'users.firstNm'
+                , 'users.lastNm'
+                , 'records.punchTime'
+                , 'records.punchDate'
+            )
+            ->orderBy('punchDate')
+            ->orderBy('punchTime')
+            ->get()
+        ;
+
+        //dd($startingDate, $endingDate);
+
+        $historyArray = [];
+
+        $i = 1;
+        $date = 0;
+        foreach ($history as $history1) {
+            if ($date === 0 or $date !== $history1->punchDate)
+                $i = 1;
+
+            $historyArray[] = [
+                'id' => $history1->id
+                , 'jjanID' => $history1->jjanID
+                , 'firstNm' => $history1->firstNm
+                , 'lastNm' => $history1->lastNm
+                , 'punchDate' => $history1->punchDate
+                , 'punchTime' => $history1->punchTime
+                , 'dailyOrder' => $i++
+            ];
+
+            $date = $history1->punchDate;
+        }
+
+        $history = collect($historyArray);
+
+        return view('admin.history.historyMain')
+            ->with(compact(
+                //  'users2'
+                    'history'
+                    , 'currentUrl'
+                    , 'currentUserInfo'
+                    , 'getSearchPeriod'
+                    , 'getJJANID'
+                    , 'getMemberName'
+                )
+            );
+
+    }
+
+
 
     public function update(Request $request)
     {

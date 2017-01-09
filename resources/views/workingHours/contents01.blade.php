@@ -5,8 +5,9 @@
     <thead>
     <tr>
         <th>#</th>
-        <th> Period</th>
-        <th> JJAN ID</th>
+        <th> From</th>
+        <th> To </th>
+       {{-- <th> JJAN ID</th> --}}
         <th> Hours in Work</th>
         <th> Hours in Break</th>
         <th> Total Hours in Work </th>
@@ -17,8 +18,9 @@
     <tbody>
         <tr>
             <td> {{$count++}} </td>
-            <td> @if ($getSearchPeriod == null) Today @else {{$getSearchPeriod}} @endif</td>
-            <td> {{$currentUserInfo['jjanID']}} </td>
+            <td> {{\Carbon\Carbon::parse($startingDate)->format('m/d/Y')}}</td>
+            <td>{{\Carbon\Carbon::parse($endingDate)->format('m/d/Y')}}</td>
+        {{--    <td> {{$currentUserInfo['jjanID']}} </td> --}}
             <td> {{$workingHours}} </td>
             <td> {{$totalBreakHours}} </td>
             <td> {{$totalWorkingHours}} </td>
