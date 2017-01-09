@@ -45,7 +45,6 @@
 
         <input type="hidden" id="getID" name="getID" value="{{$history1['id']}}">
         <div id="edit{{$history1['id']}}" class="modal fade" role="dialog">
-            {{$id = $history1['id']}}
 
             <div class="modal-dialog">
 
