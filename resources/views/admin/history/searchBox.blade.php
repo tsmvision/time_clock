@@ -1,6 +1,6 @@
 <p></p>
 <form class='form-inline' method="post" id="centerMembers" name="centermembers"
-      action='{{url('history03')}}'
+      action='{{url('admin/history')}}'
       id="centerMembers" name="centerMembers" enctype="multipart/form-data">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
@@ -21,7 +21,7 @@
     <div class="form-group">
         <select class="form-control" id="getJJANID" name="getJJANID">
             <option value='0' @if ($getJJANID === null || $getJJANID === '0' ) selected @endif>JJAN ID - All</option>
-            @foreach ($users2 as $user)
+            @foreach ($users as $user)
                 <option value={{$user->jjanID}} @if ($getJJANID === $user->jjanID) selected @endif>{{$user->jjanID}}</option>
             @endforeach
         </select>

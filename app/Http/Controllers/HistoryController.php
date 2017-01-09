@@ -380,6 +380,7 @@ class HistoryController extends Controller
 
     public function showListForAdmin(Request $request)
     {
+
         $request->flash();
         $currentUrl = $request->path();
         $getSearchPeriod = $request->input('getSearchPeriod');
@@ -389,18 +390,23 @@ class HistoryController extends Controller
         $currentUserJJANID = Auth::user()->jjanID;
         $currentUserInfo = $this->currentUserInfo($currentUserJJANID);
 
-        //$startingDate = 0;
-        //$endingDate = 0;
+        $startingDate = '2016-12-01';
+        $endingDate = '2016-01-07';
 
         $searchPeriod = $this->searchPeriod($getSearchPeriod);
 
         $startingDate = $searchPeriod['startingDate'];
         $endingDate = $searchPeriod['endingDate'];
 
+        $users= DB::table('users')
+                    ->select('jjanID','firstNm','lastNm')
+                    ->get()
+                    ;
+
         $history = DB::table('punchRecords as records ')
             ->join('users', 'records.jjanID', '=', 'users.jjanID')
             ->distinct()
-            ->where('records.jjanID', $currentUserJJANID)
+           // ->where('records.jjanID', $currentUserJJANID)
             ->where('records.punchDate', '>=', $startingDate)
             ->where('records.punchDate', '<=', $endingDate)
             ->select(
@@ -439,12 +445,15 @@ class HistoryController extends Controller
             $date = $history1->punchDate;
         }
 
-        $history = collect($historyArray);
+        $history = collect($historyArray)->sortBy('punchDate');
+
+
+        dd($history->all());
 
         return view('admin.history.historyMain')
             ->with(compact(
-                //  'users2'
-                    'history'
+                    'users'
+                    ,'history'
                     , 'currentUrl'
                     , 'currentUserInfo'
                     , 'getSearchPeriod'
