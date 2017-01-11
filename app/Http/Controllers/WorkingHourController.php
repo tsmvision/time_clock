@@ -168,7 +168,7 @@ class WorkingHourController extends Controller
                 $breakMinutes = $this->diffInMinutes($breakPunchTime[$date2][2], $breakPunchTime[$date2][1]);
 
             } elseif ($count === 6) {
-                $workingMinutes = $this->diffInMinutes($breakPunchTime[$date2][4], $breakPunchTime[$date2][3])
+                $breakMinutes = $this->diffInMinutes($breakPunchTime[$date2][4], $breakPunchTime[$date2][3])
                     + $this->diffInMinutes($breakPunchTime[$date2][2], $breakPunchTime[$date2][1]);
             } elseif ($count === 8) {
                 $breakMinutes = $this->diffInMinutes($breakPunchTime[$date2][6], $breakPunchTime[$date2][5])
