@@ -4,7 +4,7 @@ This is Simple Time Clock application built with PHP Laravel 5.4 and MariaDB 10.
 
 ## Basic function
 
-When registered user start work or leave office (place), user can click time check to time record. supervisor can check and review each user's time record.
+When registered user start work or leave office (place), user can store time record by clicking time check button. A supervisor can check and review each user's time record.
 
 ## Motivation
 
